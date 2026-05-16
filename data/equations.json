@@ -1,3203 +1,4831 @@
 {
-  "equations": [
+  "metadata": {
+    "name": "Ctrl Alt Math Runner Equations",
+    "language": "en",
+    "totalQuestions": 200,
+    "optionCount": 3,
+    "difficulties": {
+      "easy": 70,
+      "medium": 70,
+      "hard": 60
+    },
+    "supportedTypes": [
+      "single_answer",
+      "multiple_answer"
+    ],
+    "note": "For multiple_answer questions, more than one option can be correct. This is used for quadratic equations with two roots."
+  },
+  "questions": [
     {
       "id": 1,
-      "level": "easy",
-      "operation": "+",
-      "equation": "1 + ? = 13",
-      "answer": 12,
-      "options": [
-        14,
-        22,
-        12
+      "difficulty": "easy",
+      "topic": "addition_missing",
+      "type": "single_answer",
+      "equation": "5 + 🟨 = 6",
+      "correctAnswers": [
+        1
       ],
-      "wrongAnswers": [
-        22,
-        14
+      "options": [
+        {
+          "value": 1,
+          "isCorrect": true
+        },
+        {
+          "value": 0,
+          "isCorrect": false
+        },
+        {
+          "value": 2,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 2,
-      "level": "easy",
-      "operation": "-",
-      "equation": "? - 3 = 9",
-      "answer": 12,
-      "options": [
-        16,
-        2,
-        12
+      "difficulty": "easy",
+      "topic": "subtraction_missing",
+      "type": "single_answer",
+      "equation": "12 - 🟨 = 8",
+      "correctAnswers": [
+        4
       ],
-      "wrongAnswers": [
-        16,
-        2
+      "options": [
+        {
+          "value": 3,
+          "isCorrect": false
+        },
+        {
+          "value": 5,
+          "isCorrect": false
+        },
+        {
+          "value": 4,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 3,
-      "level": "easy",
-      "operation": "+",
-      "equation": "? + 12 = 23",
-      "answer": 11,
-      "options": [
-        7,
-        21,
-        11
+      "difficulty": "easy",
+      "topic": "multiplication_missing",
+      "type": "single_answer",
+      "equation": "10 × 🟨 = 30",
+      "correctAnswers": [
+        3
       ],
-      "wrongAnswers": [
-        21,
-        7
+      "options": [
+        {
+          "value": 3,
+          "isCorrect": true
+        },
+        {
+          "value": 2,
+          "isCorrect": false
+        },
+        {
+          "value": 4,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 4,
-      "level": "easy",
-      "operation": "+",
-      "equation": "10 + 7 = ?",
-      "answer": 17,
-      "options": [
-        18,
-        7,
-        17
+      "difficulty": "easy",
+      "topic": "division_missing",
+      "type": "single_answer",
+      "equation": "4 ÷ 🟨 = 2",
+      "correctAnswers": [
+        2
       ],
-      "wrongAnswers": [
-        18,
-        7
+      "options": [
+        {
+          "value": 1,
+          "isCorrect": false
+        },
+        {
+          "value": 3,
+          "isCorrect": false
+        },
+        {
+          "value": 2,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 5,
-      "level": "easy",
-      "operation": "+",
-      "equation": "2 + 4 = ?",
-      "answer": 6,
-      "options": [
-        10,
-        6,
-        2
+      "difficulty": "easy",
+      "topic": "addition_missing",
+      "type": "single_answer",
+      "equation": "9 + 🟨 = 26",
+      "correctAnswers": [
+        17
       ],
-      "wrongAnswers": [
-        10,
-        2
+      "options": [
+        {
+          "value": 16,
+          "isCorrect": false
+        },
+        {
+          "value": 17,
+          "isCorrect": true
+        },
+        {
+          "value": 18,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 6,
-      "level": "easy",
-      "operation": "+",
-      "equation": "? + 4 = 13",
-      "answer": 9,
-      "options": [
-        9,
-        5,
-        13
+      "difficulty": "easy",
+      "topic": "subtraction_missing",
+      "type": "single_answer",
+      "equation": "16 - 🟨 = 7",
+      "correctAnswers": [
+        9
       ],
-      "wrongAnswers": [
-        5,
-        13
+      "options": [
+        {
+          "value": 9,
+          "isCorrect": true
+        },
+        {
+          "value": 8,
+          "isCorrect": false
+        },
+        {
+          "value": 10,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 7,
-      "level": "easy",
-      "operation": "/",
-      "equation": "? / 5 = 9",
-      "answer": 45,
-      "options": [
-        45,
-        49,
-        42
+      "difficulty": "easy",
+      "topic": "multiplication_missing",
+      "type": "single_answer",
+      "equation": "5 × 🟨 = 45",
+      "correctAnswers": [
+        9
       ],
-      "wrongAnswers": [
-        49,
-        42
+      "options": [
+        {
+          "value": 9,
+          "isCorrect": true
+        },
+        {
+          "value": 8,
+          "isCorrect": false
+        },
+        {
+          "value": 10,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 8,
-      "level": "easy",
-      "operation": "*",
-      "equation": "? * 4 = 8",
-      "answer": 2,
-      "options": [
-        0,
-        3,
+      "difficulty": "easy",
+      "topic": "division_missing",
+      "type": "single_answer",
+      "equation": "8 ÷ 🟨 = 4",
+      "correctAnswers": [
         2
       ],
-      "wrongAnswers": [
-        3,
-        0
+      "options": [
+        {
+          "value": 2,
+          "isCorrect": true
+        },
+        {
+          "value": 1,
+          "isCorrect": false
+        },
+        {
+          "value": 3,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 9,
-      "level": "easy",
-      "operation": "/",
-      "equation": "42 / 7 = ?",
-      "answer": 6,
-      "options": [
-        5,
-        11,
-        6
+      "difficulty": "easy",
+      "topic": "addition_missing",
+      "type": "single_answer",
+      "equation": "12 + 🟨 = 21",
+      "correctAnswers": [
+        9
       ],
-      "wrongAnswers": [
-        5,
-        11
+      "options": [
+        {
+          "value": 8,
+          "isCorrect": false
+        },
+        {
+          "value": 10,
+          "isCorrect": false
+        },
+        {
+          "value": 9,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 10,
-      "level": "easy",
-      "operation": "-",
-      "equation": "15 - 2 = ?",
-      "answer": 13,
-      "options": [
-        15,
-        12,
+      "difficulty": "easy",
+      "topic": "subtraction_missing",
+      "type": "single_answer",
+      "equation": "24 - 🟨 = 11",
+      "correctAnswers": [
         13
       ],
-      "wrongAnswers": [
-        12,
-        15
+      "options": [
+        {
+          "value": 12,
+          "isCorrect": false
+        },
+        {
+          "value": 14,
+          "isCorrect": false
+        },
+        {
+          "value": 13,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 11,
-      "level": "easy",
-      "operation": "/",
-      "equation": "21 / ? = 7",
-      "answer": 3,
-      "options": [
-        3,
-        2,
-        5
+      "difficulty": "easy",
+      "topic": "multiplication_missing",
+      "type": "single_answer",
+      "equation": "8 × 🟨 = 24",
+      "correctAnswers": [
+        3
       ],
-      "wrongAnswers": [
-        5,
-        2
+      "options": [
+        {
+          "value": 3,
+          "isCorrect": true
+        },
+        {
+          "value": 4,
+          "isCorrect": false
+        },
+        {
+          "value": 2,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 12,
-      "level": "easy",
-      "operation": "*",
-      "equation": "? * 9 = 18",
-      "answer": 2,
-      "options": [
-        1,
-        2,
-        3
+      "difficulty": "easy",
+      "topic": "division_missing",
+      "type": "single_answer",
+      "equation": "12 ÷ 🟨 = 2",
+      "correctAnswers": [
+        6
       ],
-      "wrongAnswers": [
-        3,
-        1
+      "options": [
+        {
+          "value": 6,
+          "isCorrect": true
+        },
+        {
+          "value": 5,
+          "isCorrect": false
+        },
+        {
+          "value": 7,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 13,
-      "level": "easy",
-      "operation": "+",
-      "equation": "? + 2 = 9",
-      "answer": 7,
-      "options": [
-        7,
-        5,
-        9
+      "difficulty": "easy",
+      "topic": "addition_missing",
+      "type": "single_answer",
+      "equation": "19 + 🟨 = 23",
+      "correctAnswers": [
+        4
       ],
-      "wrongAnswers": [
-        5,
-        9
+      "options": [
+        {
+          "value": 5,
+          "isCorrect": false
+        },
+        {
+          "value": 4,
+          "isCorrect": true
+        },
+        {
+          "value": 3,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 14,
-      "level": "easy",
-      "operation": "*",
-      "equation": "? * 5 = 35",
-      "answer": 7,
-      "options": [
-        2,
-        7,
-        17
+      "difficulty": "easy",
+      "topic": "subtraction_missing",
+      "type": "single_answer",
+      "equation": "19 - 🟨 = 10",
+      "correctAnswers": [
+        9
       ],
-      "wrongAnswers": [
-        17,
-        2
+      "options": [
+        {
+          "value": 9,
+          "isCorrect": true
+        },
+        {
+          "value": 8,
+          "isCorrect": false
+        },
+        {
+          "value": 10,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 15,
-      "level": "easy",
-      "operation": "+",
-      "equation": "1 + 11 = ?",
-      "answer": 12,
-      "options": [
-        2,
-        14,
-        12
+      "difficulty": "easy",
+      "topic": "multiplication_missing",
+      "type": "single_answer",
+      "equation": "5 × 🟨 = 15",
+      "correctAnswers": [
+        3
       ],
-      "wrongAnswers": [
-        2,
-        14
+      "options": [
+        {
+          "value": 2,
+          "isCorrect": false
+        },
+        {
+          "value": 4,
+          "isCorrect": false
+        },
+        {
+          "value": 3,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 16,
-      "level": "easy",
-      "operation": "*",
-      "equation": "3 * 5 = ?",
-      "answer": 15,
-      "options": [
-        30,
-        20,
-        15
+      "difficulty": "easy",
+      "topic": "division_missing",
+      "type": "single_answer",
+      "equation": "18 ÷ 🟨 = 3",
+      "correctAnswers": [
+        6
       ],
-      "wrongAnswers": [
-        30,
-        20
+      "options": [
+        {
+          "value": 5,
+          "isCorrect": false
+        },
+        {
+          "value": 7,
+          "isCorrect": false
+        },
+        {
+          "value": 6,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 17,
-      "level": "easy",
-      "operation": "/",
-      "equation": "? / 6 = 9",
-      "answer": 54,
-      "options": [
-        54,
-        56,
-        27
+      "difficulty": "easy",
+      "topic": "addition_missing",
+      "type": "single_answer",
+      "equation": "14 + 🟨 = 23",
+      "correctAnswers": [
+        9
       ],
-      "wrongAnswers": [
-        27,
-        56
+      "options": [
+        {
+          "value": 9,
+          "isCorrect": true
+        },
+        {
+          "value": 10,
+          "isCorrect": false
+        },
+        {
+          "value": 8,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 18,
-      "level": "easy",
-      "operation": "*",
-      "equation": "4 * ? = 28",
-      "answer": 7,
-      "options": [
-        17,
-        7,
-        4
+      "difficulty": "easy",
+      "topic": "subtraction_missing",
+      "type": "single_answer",
+      "equation": "15 - 🟨 = 12",
+      "correctAnswers": [
+        3
       ],
-      "wrongAnswers": [
-        4,
-        17
+      "options": [
+        {
+          "value": 4,
+          "isCorrect": false
+        },
+        {
+          "value": 3,
+          "isCorrect": true
+        },
+        {
+          "value": 2,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 19,
-      "level": "easy",
-      "operation": "-",
-      "equation": "? - 12 = 1",
-      "answer": 13,
-      "options": [
-        3,
-        12,
-        13
-      ],
-      "wrongAnswers": [
-        12,
+      "difficulty": "easy",
+      "topic": "multiplication_missing",
+      "type": "single_answer",
+      "equation": "6 × 🟨 = 18",
+      "correctAnswers": [
         3
+      ],
+      "options": [
+        {
+          "value": 2,
+          "isCorrect": false
+        },
+        {
+          "value": 3,
+          "isCorrect": true
+        },
+        {
+          "value": 4,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 20,
-      "level": "easy",
-      "operation": "+",
-      "equation": "10 + 11 = ?",
-      "answer": 21,
-      "options": [
-        11,
-        21,
-        31
+      "difficulty": "easy",
+      "topic": "division_missing",
+      "type": "single_answer",
+      "equation": "50 ÷ 🟨 = 5",
+      "correctAnswers": [
+        10
       ],
-      "wrongAnswers": [
-        11,
-        31
+      "options": [
+        {
+          "value": 11,
+          "isCorrect": false
+        },
+        {
+          "value": 9,
+          "isCorrect": false
+        },
+        {
+          "value": 10,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 21,
-      "level": "easy",
-      "operation": "-",
-      "equation": "10 - ? = 2",
-      "answer": 8,
-      "options": [
-        3,
-        8,
-        11
+      "difficulty": "easy",
+      "topic": "addition_missing",
+      "type": "single_answer",
+      "equation": "12 + 🟨 = 14",
+      "correctAnswers": [
+        2
       ],
-      "wrongAnswers": [
-        3,
-        11
+      "options": [
+        {
+          "value": 1,
+          "isCorrect": false
+        },
+        {
+          "value": 3,
+          "isCorrect": false
+        },
+        {
+          "value": 2,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 22,
-      "level": "easy",
-      "operation": "*",
-      "equation": "? * 5 = 50",
-      "answer": 10,
-      "options": [
-        10,
-        7,
-        13
+      "difficulty": "easy",
+      "topic": "subtraction_missing",
+      "type": "single_answer",
+      "equation": "9 - 🟨 = 7",
+      "correctAnswers": [
+        2
       ],
-      "wrongAnswers": [
-        13,
-        7
+      "options": [
+        {
+          "value": 2,
+          "isCorrect": true
+        },
+        {
+          "value": 1,
+          "isCorrect": false
+        },
+        {
+          "value": 3,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 23,
-      "level": "easy",
-      "operation": "*",
-      "equation": "2 * 5 = ?",
-      "answer": 10,
-      "options": [
-        6,
-        20,
-        10
-      ],
-      "wrongAnswers": [
-        20,
+      "difficulty": "easy",
+      "topic": "multiplication_missing",
+      "type": "single_answer",
+      "equation": "4 × 🟨 = 24",
+      "correctAnswers": [
         6
+      ],
+      "options": [
+        {
+          "value": 5,
+          "isCorrect": false
+        },
+        {
+          "value": 7,
+          "isCorrect": false
+        },
+        {
+          "value": 6,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 24,
-      "level": "easy",
-      "operation": "*",
-      "equation": "8 * 6 = ?",
-      "answer": 48,
-      "options": [
-        24,
-        96,
-        48
+      "difficulty": "easy",
+      "topic": "division_missing",
+      "type": "single_answer",
+      "equation": "100 ÷ 🟨 = 10",
+      "correctAnswers": [
+        10
       ],
-      "wrongAnswers": [
-        24,
-        96
+      "options": [
+        {
+          "value": 10,
+          "isCorrect": true
+        },
+        {
+          "value": 11,
+          "isCorrect": false
+        },
+        {
+          "value": 9,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 25,
-      "level": "easy",
-      "operation": "-",
-      "equation": "23 - ? = 11",
-      "answer": 12,
-      "options": [
-        12,
-        11,
+      "difficulty": "easy",
+      "topic": "addition_missing",
+      "type": "single_answer",
+      "equation": "20 + 🟨 = 33",
+      "correctAnswers": [
         13
       ],
-      "wrongAnswers": [
-        13,
-        11
+      "options": [
+        {
+          "value": 14,
+          "isCorrect": false
+        },
+        {
+          "value": 13,
+          "isCorrect": true
+        },
+        {
+          "value": 12,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 26,
-      "level": "easy",
-      "operation": "-",
-      "equation": "25 - ? = 17",
-      "answer": 8,
-      "options": [
-        8,
-        10,
-        12
+      "difficulty": "easy",
+      "topic": "subtraction_missing",
+      "type": "single_answer",
+      "equation": "20 - 🟨 = 17",
+      "correctAnswers": [
+        3
       ],
-      "wrongAnswers": [
-        10,
-        12
+      "options": [
+        {
+          "value": 4,
+          "isCorrect": false
+        },
+        {
+          "value": 3,
+          "isCorrect": true
+        },
+        {
+          "value": 2,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 27,
-      "level": "easy",
-      "operation": "/",
-      "equation": "24 / 4 = ?",
-      "answer": 6,
-      "options": [
-        6,
-        16,
-        10
+      "difficulty": "easy",
+      "topic": "multiplication_missing",
+      "type": "single_answer",
+      "equation": "2 × 🟨 = 6",
+      "correctAnswers": [
+        3
       ],
-      "wrongAnswers": [
-        10,
-        16
+      "options": [
+        {
+          "value": 2,
+          "isCorrect": false
+        },
+        {
+          "value": 4,
+          "isCorrect": false
+        },
+        {
+          "value": 3,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 28,
-      "level": "easy",
-      "operation": "-",
-      "equation": "22 - ? = 13",
-      "answer": 9,
-      "options": [
-        6,
-        19,
-        9
+      "difficulty": "easy",
+      "topic": "division_missing",
+      "type": "single_answer",
+      "equation": "24 ÷ 🟨 = 3",
+      "correctAnswers": [
+        8
       ],
-      "wrongAnswers": [
-        19,
-        6
+      "options": [
+        {
+          "value": 8,
+          "isCorrect": true
+        },
+        {
+          "value": 9,
+          "isCorrect": false
+        },
+        {
+          "value": 7,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 29,
-      "level": "easy",
-      "operation": "/",
-      "equation": "56 / 8 = ?",
-      "answer": 7,
-      "options": [
-        7,
-        10,
-        11
+      "difficulty": "easy",
+      "topic": "addition_missing",
+      "type": "single_answer",
+      "equation": "16 + 🟨 = 33",
+      "correctAnswers": [
+        17
       ],
-      "wrongAnswers": [
-        10,
-        11
+      "options": [
+        {
+          "value": 18,
+          "isCorrect": false
+        },
+        {
+          "value": 17,
+          "isCorrect": true
+        },
+        {
+          "value": 16,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 30,
-      "level": "easy",
-      "operation": "-",
-      "equation": "21 - 8 = ?",
-      "answer": 13,
-      "options": [
-        13,
-        8,
-        3
+      "difficulty": "easy",
+      "topic": "subtraction_missing",
+      "type": "single_answer",
+      "equation": "15 - 🟨 = 4",
+      "correctAnswers": [
+        11
       ],
-      "wrongAnswers": [
-        3,
-        8
+      "options": [
+        {
+          "value": 11,
+          "isCorrect": true
+        },
+        {
+          "value": 10,
+          "isCorrect": false
+        },
+        {
+          "value": 12,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 31,
-      "level": "easy",
-      "operation": "+",
-      "equation": "? + 3 = 5",
-      "answer": 2,
-      "options": [
-        4,
-        1,
-        2
+      "difficulty": "easy",
+      "topic": "multiplication_missing",
+      "type": "single_answer",
+      "equation": "7 × 🟨 = 21",
+      "correctAnswers": [
+        3
       ],
-      "wrongAnswers": [
-        1,
-        4
+      "options": [
+        {
+          "value": 3,
+          "isCorrect": true
+        },
+        {
+          "value": 4,
+          "isCorrect": false
+        },
+        {
+          "value": 2,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 32,
-      "level": "easy",
-      "operation": "-",
-      "equation": "18 - 10 = ?",
-      "answer": 8,
-      "options": [
-        10,
-        9,
-        8
+      "difficulty": "easy",
+      "topic": "division_missing",
+      "type": "single_answer",
+      "equation": "36 ÷ 🟨 = 9",
+      "correctAnswers": [
+        4
       ],
-      "wrongAnswers": [
-        10,
-        9
+      "options": [
+        {
+          "value": 5,
+          "isCorrect": false
+        },
+        {
+          "value": 3,
+          "isCorrect": false
+        },
+        {
+          "value": 4,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 33,
-      "level": "easy",
-      "operation": "/",
-      "equation": "? / 8 = 9",
-      "answer": 72,
-      "options": [
-        72,
-        82,
-        75
+      "difficulty": "easy",
+      "topic": "addition_missing",
+      "type": "single_answer",
+      "equation": "18 + 🟨 = 24",
+      "correctAnswers": [
+        6
       ],
-      "wrongAnswers": [
-        82,
-        75
+      "options": [
+        {
+          "value": 5,
+          "isCorrect": false
+        },
+        {
+          "value": 6,
+          "isCorrect": true
+        },
+        {
+          "value": 7,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 34,
-      "level": "easy",
-      "operation": "*",
-      "equation": "? * 2 = 20",
-      "answer": 10,
-      "options": [
-        10,
-        12,
-        5
+      "difficulty": "easy",
+      "topic": "subtraction_missing",
+      "type": "single_answer",
+      "equation": "24 - 🟨 = 10",
+      "correctAnswers": [
+        14
       ],
-      "wrongAnswers": [
-        5,
-        12
+      "options": [
+        {
+          "value": 13,
+          "isCorrect": false
+        },
+        {
+          "value": 14,
+          "isCorrect": true
+        },
+        {
+          "value": 15,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 35,
-      "level": "easy",
-      "operation": "+",
-      "equation": "11 + ? = 20",
-      "answer": 9,
-      "options": [
-        9,
-        4,
-        6
+      "difficulty": "easy",
+      "topic": "multiplication_missing",
+      "type": "single_answer",
+      "equation": "4 × 🟨 = 28",
+      "correctAnswers": [
+        7
       ],
-      "wrongAnswers": [
-        4,
-        6
+      "options": [
+        {
+          "value": 6,
+          "isCorrect": false
+        },
+        {
+          "value": 8,
+          "isCorrect": false
+        },
+        {
+          "value": 7,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 36,
-      "level": "easy",
-      "operation": "*",
-      "equation": "3 * ? = 18",
-      "answer": 6,
-      "options": [
-        2,
-        6,
+      "difficulty": "easy",
+      "topic": "division_missing",
+      "type": "single_answer",
+      "equation": "63 ÷ 🟨 = 9",
+      "correctAnswers": [
         7
       ],
-      "wrongAnswers": [
-        2,
-        7
+      "options": [
+        {
+          "value": 6,
+          "isCorrect": false
+        },
+        {
+          "value": 8,
+          "isCorrect": false
+        },
+        {
+          "value": 7,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 37,
-      "level": "easy",
-      "operation": "-",
-      "equation": "? - 1 = 18",
-      "answer": 19,
-      "options": [
-        19,
-        15,
-        29
+      "difficulty": "easy",
+      "topic": "addition_missing",
+      "type": "single_answer",
+      "equation": "13 + 🟨 = 23",
+      "correctAnswers": [
+        10
       ],
-      "wrongAnswers": [
-        29,
-        15
+      "options": [
+        {
+          "value": 9,
+          "isCorrect": false
+        },
+        {
+          "value": 11,
+          "isCorrect": false
+        },
+        {
+          "value": 10,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 38,
-      "level": "easy",
-      "operation": "*",
-      "equation": "? * 4 = 40",
-      "answer": 10,
-      "options": [
-        15,
-        10,
-        12
+      "difficulty": "easy",
+      "topic": "subtraction_missing",
+      "type": "single_answer",
+      "equation": "23 - 🟨 = 19",
+      "correctAnswers": [
+        4
       ],
-      "wrongAnswers": [
-        12,
-        15
+      "options": [
+        {
+          "value": 3,
+          "isCorrect": false
+        },
+        {
+          "value": 5,
+          "isCorrect": false
+        },
+        {
+          "value": 4,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 39,
-      "level": "easy",
-      "operation": "+",
-      "equation": "? + 5 = 16",
-      "answer": 11,
-      "options": [
-        11,
-        8,
-        12
+      "difficulty": "easy",
+      "topic": "multiplication_missing",
+      "type": "single_answer",
+      "equation": "9 × 🟨 = 27",
+      "correctAnswers": [
+        3
       ],
-      "wrongAnswers": [
-        8,
-        12
+      "options": [
+        {
+          "value": 2,
+          "isCorrect": false
+        },
+        {
+          "value": 3,
+          "isCorrect": true
+        },
+        {
+          "value": 4,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 40,
-      "level": "easy",
-      "operation": "-",
-      "equation": "9 - 6 = ?",
-      "answer": 3,
-      "options": [
-        13,
-        3,
+      "difficulty": "easy",
+      "topic": "division_missing",
+      "type": "single_answer",
+      "equation": "60 ÷ 🟨 = 10",
+      "correctAnswers": [
         6
       ],
-      "wrongAnswers": [
-        13,
-        6
+      "options": [
+        {
+          "value": 6,
+          "isCorrect": true
+        },
+        {
+          "value": 5,
+          "isCorrect": false
+        },
+        {
+          "value": 7,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 41,
-      "level": "easy",
-      "operation": "+",
-      "equation": "10 + ? = 16",
-      "answer": 6,
-      "options": [
-        16,
-        6,
-        11
+      "difficulty": "easy",
+      "topic": "addition_missing",
+      "type": "single_answer",
+      "equation": "8 + 🟨 = 26",
+      "correctAnswers": [
+        18
       ],
-      "wrongAnswers": [
-        16,
-        11
+      "options": [
+        {
+          "value": 17,
+          "isCorrect": false
+        },
+        {
+          "value": 18,
+          "isCorrect": true
+        },
+        {
+          "value": 19,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 42,
-      "level": "easy",
-      "operation": "+",
-      "equation": "2 + ? = 8",
-      "answer": 6,
-      "options": [
-        9,
-        5,
-        6
+      "difficulty": "easy",
+      "topic": "subtraction_missing",
+      "type": "single_answer",
+      "equation": "22 - 🟨 = 10",
+      "correctAnswers": [
+        12
       ],
-      "wrongAnswers": [
-        9,
-        5
+      "options": [
+        {
+          "value": 12,
+          "isCorrect": true
+        },
+        {
+          "value": 13,
+          "isCorrect": false
+        },
+        {
+          "value": 11,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 43,
-      "level": "easy",
-      "operation": "-",
-      "equation": "? - 2 = 4",
-      "answer": 6,
-      "options": [
-        5,
-        6,
-        1
+      "difficulty": "easy",
+      "topic": "multiplication_missing",
+      "type": "single_answer",
+      "equation": "9 × 🟨 = 90",
+      "correctAnswers": [
+        10
       ],
-      "wrongAnswers": [
-        1,
-        5
+      "options": [
+        {
+          "value": 11,
+          "isCorrect": false
+        },
+        {
+          "value": 10,
+          "isCorrect": true
+        },
+        {
+          "value": 9,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 44,
-      "level": "easy",
-      "operation": "+",
-      "equation": "2 + ? = 14",
-      "answer": 12,
-      "options": [
-        11,
-        12,
-        14
+      "difficulty": "easy",
+      "topic": "division_missing",
+      "type": "single_answer",
+      "equation": "25 ÷ 🟨 = 5",
+      "correctAnswers": [
+        5
       ],
-      "wrongAnswers": [
-        14,
-        11
+      "options": [
+        {
+          "value": 6,
+          "isCorrect": false
+        },
+        {
+          "value": 4,
+          "isCorrect": false
+        },
+        {
+          "value": 5,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 45,
-      "level": "easy",
-      "operation": "+",
-      "equation": "9 + 3 = ?",
-      "answer": 12,
-      "options": [
-        13,
-        12,
-        16
+      "difficulty": "easy",
+      "topic": "addition_missing",
+      "type": "single_answer",
+      "equation": "2 + 🟨 = 21",
+      "correctAnswers": [
+        19
       ],
-      "wrongAnswers": [
-        13,
-        16
+      "options": [
+        {
+          "value": 18,
+          "isCorrect": false
+        },
+        {
+          "value": 19,
+          "isCorrect": true
+        },
+        {
+          "value": 20,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 46,
-      "level": "easy",
-      "operation": "/",
-      "equation": "40 / ? = 4",
-      "answer": 10,
-      "options": [
-        12,
-        7,
+      "difficulty": "easy",
+      "topic": "subtraction_missing",
+      "type": "single_answer",
+      "equation": "18 - 🟨 = 8",
+      "correctAnswers": [
         10
       ],
-      "wrongAnswers": [
-        12,
-        7
+      "options": [
+        {
+          "value": 9,
+          "isCorrect": false
+        },
+        {
+          "value": 11,
+          "isCorrect": false
+        },
+        {
+          "value": 10,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 47,
-      "level": "easy",
-      "operation": "/",
-      "equation": "? / 5 = 10",
-      "answer": 50,
-      "options": [
-        60,
-        50,
-        53
+      "difficulty": "easy",
+      "topic": "multiplication_missing",
+      "type": "single_answer",
+      "equation": "2 × 🟨 = 10",
+      "correctAnswers": [
+        5
       ],
-      "wrongAnswers": [
-        53,
-        60
+      "options": [
+        {
+          "value": 4,
+          "isCorrect": false
+        },
+        {
+          "value": 6,
+          "isCorrect": false
+        },
+        {
+          "value": 5,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 48,
-      "level": "easy",
-      "operation": "-",
-      "equation": "? - 7 = 7",
-      "answer": 14,
-      "options": [
-        14,
-        19,
-        10
+      "difficulty": "easy",
+      "topic": "division_missing",
+      "type": "single_answer",
+      "equation": "21 ÷ 🟨 = 3",
+      "correctAnswers": [
+        7
       ],
-      "wrongAnswers": [
-        19,
-        10
+      "options": [
+        {
+          "value": 6,
+          "isCorrect": false
+        },
+        {
+          "value": 7,
+          "isCorrect": true
+        },
+        {
+          "value": 8,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 49,
-      "level": "easy",
-      "operation": "*",
-      "equation": "9 * ? = 90",
-      "answer": 10,
-      "options": [
-        14,
-        10,
-        6
+      "difficulty": "easy",
+      "topic": "addition_missing",
+      "type": "single_answer",
+      "equation": "10 + 🟨 = 26",
+      "correctAnswers": [
+        16
       ],
-      "wrongAnswers": [
-        14,
-        6
+      "options": [
+        {
+          "value": 15,
+          "isCorrect": false
+        },
+        {
+          "value": 17,
+          "isCorrect": false
+        },
+        {
+          "value": 16,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 50,
-      "level": "easy",
-      "operation": "+",
-      "equation": "4 + 4 = ?",
-      "answer": 8,
-      "options": [
-        8,
-        13,
-        6
+      "difficulty": "easy",
+      "topic": "subtraction_missing",
+      "type": "single_answer",
+      "equation": "31 - 🟨 = 19",
+      "correctAnswers": [
+        12
       ],
-      "wrongAnswers": [
-        13,
-        6
+      "options": [
+        {
+          "value": 12,
+          "isCorrect": true
+        },
+        {
+          "value": 11,
+          "isCorrect": false
+        },
+        {
+          "value": 13,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 51,
-      "level": "easy",
-      "operation": "*",
-      "equation": "2 * 10 = ?",
-      "answer": 20,
-      "options": [
-        16,
-        20,
-        17
+      "difficulty": "easy",
+      "topic": "multiplication_missing",
+      "type": "single_answer",
+      "equation": "3 × 🟨 = 9",
+      "correctAnswers": [
+        3
       ],
-      "wrongAnswers": [
-        17,
-        16
+      "options": [
+        {
+          "value": 3,
+          "isCorrect": true
+        },
+        {
+          "value": 2,
+          "isCorrect": false
+        },
+        {
+          "value": 4,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 52,
-      "level": "easy",
-      "operation": "-",
-      "equation": "? - 1 = 4",
-      "answer": 5,
-      "options": [
-        15,
-        9,
-        5
+      "difficulty": "easy",
+      "topic": "division_missing",
+      "type": "single_answer",
+      "equation": "56 ÷ 🟨 = 8",
+      "correctAnswers": [
+        7
       ],
-      "wrongAnswers": [
-        9,
-        15
+      "options": [
+        {
+          "value": 7,
+          "isCorrect": true
+        },
+        {
+          "value": 8,
+          "isCorrect": false
+        },
+        {
+          "value": 6,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 53,
-      "level": "easy",
-      "operation": "+",
-      "equation": "4 + 2 = ?",
-      "answer": 6,
-      "options": [
-        7,
-        6,
-        1
+      "difficulty": "easy",
+      "topic": "addition_missing",
+      "type": "single_answer",
+      "equation": "3 + 🟨 = 7",
+      "correctAnswers": [
+        4
       ],
-      "wrongAnswers": [
-        7,
-        1
+      "options": [
+        {
+          "value": 5,
+          "isCorrect": false
+        },
+        {
+          "value": 3,
+          "isCorrect": false
+        },
+        {
+          "value": 4,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 54,
-      "level": "easy",
-      "operation": "*",
-      "equation": "3 * 10 = ?",
-      "answer": 30,
-      "options": [
-        25,
-        34,
-        30
+      "difficulty": "easy",
+      "topic": "subtraction_missing",
+      "type": "single_answer",
+      "equation": "23 - 🟨 = 11",
+      "correctAnswers": [
+        12
       ],
-      "wrongAnswers": [
-        25,
-        34
+      "options": [
+        {
+          "value": 11,
+          "isCorrect": false
+        },
+        {
+          "value": 13,
+          "isCorrect": false
+        },
+        {
+          "value": 12,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 55,
-      "level": "easy",
-      "operation": "*",
-      "equation": "? * 5 = 45",
-      "answer": 9,
-      "options": [
-        18,
-        19,
-        9
+      "difficulty": "easy",
+      "topic": "multiplication_missing",
+      "type": "single_answer",
+      "equation": "5 × 🟨 = 25",
+      "correctAnswers": [
+        5
       ],
-      "wrongAnswers": [
-        18,
-        19
+      "options": [
+        {
+          "value": 5,
+          "isCorrect": true
+        },
+        {
+          "value": 4,
+          "isCorrect": false
+        },
+        {
+          "value": 6,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 56,
-      "level": "easy",
-      "operation": "-",
-      "equation": "23 - ? = 13",
-      "answer": 10,
-      "options": [
-        11,
-        10,
-        12
+      "difficulty": "easy",
+      "topic": "division_missing",
+      "type": "single_answer",
+      "equation": "32 ÷ 🟨 = 8",
+      "correctAnswers": [
+        4
       ],
-      "wrongAnswers": [
-        12,
-        11
+      "options": [
+        {
+          "value": 5,
+          "isCorrect": false
+        },
+        {
+          "value": 3,
+          "isCorrect": false
+        },
+        {
+          "value": 4,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 57,
-      "level": "easy",
-      "operation": "-",
-      "equation": "20 - 7 = ?",
-      "answer": 13,
-      "options": [
-        13,
-        17,
-        9
+      "difficulty": "easy",
+      "topic": "addition_missing",
+      "type": "single_answer",
+      "equation": "16 + 🟨 = 24",
+      "correctAnswers": [
+        8
       ],
-      "wrongAnswers": [
-        9,
-        17
+      "options": [
+        {
+          "value": 9,
+          "isCorrect": false
+        },
+        {
+          "value": 7,
+          "isCorrect": false
+        },
+        {
+          "value": 8,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 58,
-      "level": "easy",
-      "operation": "+",
-      "equation": "2 + ? = 13",
-      "answer": 11,
-      "options": [
-        7,
-        15,
-        11
+      "difficulty": "easy",
+      "topic": "subtraction_missing",
+      "type": "single_answer",
+      "equation": "31 - 🟨 = 18",
+      "correctAnswers": [
+        13
       ],
-      "wrongAnswers": [
-        15,
-        7
+      "options": [
+        {
+          "value": 12,
+          "isCorrect": false
+        },
+        {
+          "value": 14,
+          "isCorrect": false
+        },
+        {
+          "value": 13,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 59,
-      "level": "easy",
-      "operation": "*",
-      "equation": "8 * ? = 64",
-      "answer": 8,
-      "options": [
-        5,
-        8,
-        12
+      "difficulty": "easy",
+      "topic": "multiplication_missing",
+      "type": "single_answer",
+      "equation": "10 × 🟨 = 20",
+      "correctAnswers": [
+        2
       ],
-      "wrongAnswers": [
-        12,
-        5
+      "options": [
+        {
+          "value": 1,
+          "isCorrect": false
+        },
+        {
+          "value": 3,
+          "isCorrect": false
+        },
+        {
+          "value": 2,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 60,
-      "level": "easy",
-      "operation": "+",
-      "equation": "? + 11 = 22",
-      "answer": 11,
-      "options": [
-        11,
-        13,
-        1
+      "difficulty": "easy",
+      "topic": "division_missing",
+      "type": "single_answer",
+      "equation": "40 ÷ 🟨 = 8",
+      "correctAnswers": [
+        5
       ],
-      "wrongAnswers": [
-        13,
-        1
+      "options": [
+        {
+          "value": 4,
+          "isCorrect": false
+        },
+        {
+          "value": 6,
+          "isCorrect": false
+        },
+        {
+          "value": 5,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 61,
-      "level": "easy",
-      "operation": "+",
-      "equation": "? + 7 = 8",
-      "answer": 1,
-      "options": [
-        1,
-        5,
-        4
+      "difficulty": "easy",
+      "topic": "addition_missing",
+      "type": "single_answer",
+      "equation": "14 + 🟨 = 15",
+      "correctAnswers": [
+        1
       ],
-      "wrongAnswers": [
-        4,
-        5
+      "options": [
+        {
+          "value": 1,
+          "isCorrect": true
+        },
+        {
+          "value": 2,
+          "isCorrect": false
+        },
+        {
+          "value": 0,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 62,
-      "level": "easy",
-      "operation": "-",
-      "equation": "22 - 8 = ?",
-      "answer": 14,
-      "options": [
-        4,
-        14,
+      "difficulty": "easy",
+      "topic": "subtraction_missing",
+      "type": "single_answer",
+      "equation": "30 - 🟨 = 15",
+      "correctAnswers": [
         15
       ],
-      "wrongAnswers": [
-        4,
-        15
+      "options": [
+        {
+          "value": 15,
+          "isCorrect": true
+        },
+        {
+          "value": 16,
+          "isCorrect": false
+        },
+        {
+          "value": 14,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 63,
-      "level": "easy",
-      "operation": "/",
-      "equation": "24 / ? = 6",
-      "answer": 4,
-      "options": [
-        4,
-        5,
-        2
+      "difficulty": "easy",
+      "topic": "multiplication_missing",
+      "type": "single_answer",
+      "equation": "10 × 🟨 = 90",
+      "correctAnswers": [
+        9
       ],
-      "wrongAnswers": [
-        5,
-        2
+      "options": [
+        {
+          "value": 8,
+          "isCorrect": false
+        },
+        {
+          "value": 10,
+          "isCorrect": false
+        },
+        {
+          "value": 9,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 64,
-      "level": "easy",
-      "operation": "-",
-      "equation": "? - 4 = 3",
-      "answer": 7,
-      "options": [
-        9,
-        11,
-        7
+      "difficulty": "easy",
+      "topic": "division_missing",
+      "type": "single_answer",
+      "equation": "30 ÷ 🟨 = 5",
+      "correctAnswers": [
+        6
       ],
-      "wrongAnswers": [
-        9,
-        11
+      "options": [
+        {
+          "value": 5,
+          "isCorrect": false
+        },
+        {
+          "value": 7,
+          "isCorrect": false
+        },
+        {
+          "value": 6,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 65,
-      "level": "easy",
-      "operation": "+",
-      "equation": "? + 11 = 12",
-      "answer": 1,
-      "options": [
-        5,
-        6,
-        1
+      "difficulty": "easy",
+      "topic": "addition_missing",
+      "type": "single_answer",
+      "equation": "18 + 🟨 = 35",
+      "correctAnswers": [
+        17
       ],
-      "wrongAnswers": [
-        6,
-        5
+      "options": [
+        {
+          "value": 16,
+          "isCorrect": false
+        },
+        {
+          "value": 18,
+          "isCorrect": false
+        },
+        {
+          "value": 17,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 66,
-      "level": "easy",
-      "operation": "/",
-      "equation": "81 / 9 = ?",
-      "answer": 9,
-      "options": [
-        14,
-        9,
-        12
+      "difficulty": "easy",
+      "topic": "subtraction_missing",
+      "type": "single_answer",
+      "equation": "12 - 🟨 = 3",
+      "correctAnswers": [
+        9
       ],
-      "wrongAnswers": [
-        12,
-        14
+      "options": [
+        {
+          "value": 8,
+          "isCorrect": false
+        },
+        {
+          "value": 10,
+          "isCorrect": false
+        },
+        {
+          "value": 9,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 67,
-      "level": "easy",
-      "operation": "/",
-      "equation": "8 / ? = 4",
-      "answer": 2,
-      "options": [
-        4,
-        2,
-        6
+      "difficulty": "easy",
+      "topic": "multiplication_missing",
+      "type": "single_answer",
+      "equation": "3 × 🟨 = 15",
+      "correctAnswers": [
+        5
       ],
-      "wrongAnswers": [
-        4,
-        6
+      "options": [
+        {
+          "value": 6,
+          "isCorrect": false
+        },
+        {
+          "value": 5,
+          "isCorrect": true
+        },
+        {
+          "value": 4,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 68,
-      "level": "easy",
-      "operation": "+",
-      "equation": "7 + ? = 12",
-      "answer": 5,
-      "options": [
-        6,
-        1,
+      "difficulty": "easy",
+      "topic": "division_missing",
+      "type": "single_answer",
+      "equation": "10 ÷ 🟨 = 2",
+      "correctAnswers": [
         5
       ],
-      "wrongAnswers": [
-        6,
-        1
+      "options": [
+        {
+          "value": 4,
+          "isCorrect": false
+        },
+        {
+          "value": 5,
+          "isCorrect": true
+        },
+        {
+          "value": 6,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 69,
-      "level": "easy",
-      "operation": "*",
-      "equation": "? * 10 = 80",
-      "answer": 8,
-      "options": [
-        8,
-        11,
-        12
+      "difficulty": "easy",
+      "topic": "addition_missing",
+      "type": "single_answer",
+      "equation": "15 + 🟨 = 34",
+      "correctAnswers": [
+        19
       ],
-      "wrongAnswers": [
-        12,
-        11
+      "options": [
+        {
+          "value": 19,
+          "isCorrect": true
+        },
+        {
+          "value": 18,
+          "isCorrect": false
+        },
+        {
+          "value": 20,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 70,
-      "level": "easy",
-      "operation": "/",
-      "equation": "20 / ? = 5",
-      "answer": 4,
-      "options": [
-        8,
-        4,
-        1
+      "difficulty": "easy",
+      "topic": "subtraction_missing",
+      "type": "single_answer",
+      "equation": "24 - 🟨 = 9",
+      "correctAnswers": [
+        15
       ],
-      "wrongAnswers": [
-        1,
-        8
+      "options": [
+        {
+          "value": 16,
+          "isCorrect": false
+        },
+        {
+          "value": 14,
+          "isCorrect": false
+        },
+        {
+          "value": 15,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 71,
-      "level": "medium",
-      "operation": "-",
-      "equation": "? - 28 = 9",
-      "answer": 37,
-      "options": [
-        32,
-        43,
-        37
+      "difficulty": "medium",
+      "topic": "addition_missing",
+      "type": "single_answer",
+      "equation": "35 + 🟨 = 61",
+      "correctAnswers": [
+        26
       ],
-      "wrongAnswers": [
-        43,
-        32
+      "options": [
+        {
+          "value": 27,
+          "isCorrect": false
+        },
+        {
+          "value": 26,
+          "isCorrect": true
+        },
+        {
+          "value": 25,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 72,
-      "level": "medium",
-      "operation": "+",
-      "equation": "55 + 13 = ?",
-      "answer": 68,
-      "options": [
-        68,
-        60,
-        67
+      "difficulty": "medium",
+      "topic": "linear_equation",
+      "type": "single_answer",
+      "equation": "7*🟨 + 11 = 74",
+      "correctAnswers": [
+        9
       ],
-      "wrongAnswers": [
-        67,
-        60
+      "options": [
+        {
+          "value": 8,
+          "isCorrect": false
+        },
+        {
+          "value": 10,
+          "isCorrect": false
+        },
+        {
+          "value": 9,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 73,
-      "level": "medium",
-      "operation": "/",
-      "equation": "120 / 12 = ?",
-      "answer": 10,
-      "options": [
-        15,
-        0,
-        10
+      "difficulty": "medium",
+      "topic": "linear_equation",
+      "type": "single_answer",
+      "equation": "10*🟨 - 19 = 91",
+      "correctAnswers": [
+        11
       ],
-      "wrongAnswers": [
-        0,
-        15
+      "options": [
+        {
+          "value": 10,
+          "isCorrect": false
+        },
+        {
+          "value": 12,
+          "isCorrect": false
+        },
+        {
+          "value": 11,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 74,
-      "level": "medium",
-      "operation": "+",
-      "equation": "? + 14 = 52",
-      "answer": 38,
-      "options": [
-        46,
-        38,
-        40
+      "difficulty": "medium",
+      "topic": "order_of_operations",
+      "type": "single_answer",
+      "equation": "19 + 5 × 🟨 = 69",
+      "correctAnswers": [
+        10
       ],
-      "wrongAnswers": [
-        46,
-        40
+      "options": [
+        {
+          "value": 11,
+          "isCorrect": false
+        },
+        {
+          "value": 10,
+          "isCorrect": true
+        },
+        {
+          "value": 9,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 75,
-      "level": "medium",
-      "operation": "+",
-      "equation": "45 + 35 = ?",
-      "answer": 80,
-      "options": [
-        82,
-        77,
-        80
+      "difficulty": "medium",
+      "topic": "division_equation",
+      "type": "single_answer",
+      "equation": "(🟨 + 10) ÷ 7 = 7",
+      "correctAnswers": [
+        39
       ],
-      "wrongAnswers": [
-        77,
-        82
+      "options": [
+        {
+          "value": 39,
+          "isCorrect": true
+        },
+        {
+          "value": 40,
+          "isCorrect": false
+        },
+        {
+          "value": 38,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 76,
-      "level": "medium",
-      "operation": "-",
-      "equation": "104 - 86 = ?",
-      "answer": 18,
-      "options": [
-        30,
-        6,
-        18
+      "difficulty": "medium",
+      "topic": "addition_missing",
+      "type": "single_answer",
+      "equation": "30 + 🟨 = 68",
+      "correctAnswers": [
+        38
       ],
-      "wrongAnswers": [
-        30,
-        6
+      "options": [
+        {
+          "value": 38,
+          "isCorrect": true
+        },
+        {
+          "value": 37,
+          "isCorrect": false
+        },
+        {
+          "value": 39,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 77,
-      "level": "medium",
-      "operation": "+",
-      "equation": "? + 52 = 120",
-      "answer": 68,
-      "options": [
-        80,
-        71,
-        68
+      "difficulty": "medium",
+      "topic": "linear_equation",
+      "type": "single_answer",
+      "equation": "12*🟨 + 21 = 189",
+      "correctAnswers": [
+        14
       ],
-      "wrongAnswers": [
-        80,
-        71
+      "options": [
+        {
+          "value": 13,
+          "isCorrect": false
+        },
+        {
+          "value": 14,
+          "isCorrect": true
+        },
+        {
+          "value": 15,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 78,
-      "level": "medium",
-      "operation": "*",
-      "equation": "? * 8 = 80",
-      "answer": 10,
-      "options": [
-        20,
-        10,
-        13
+      "difficulty": "medium",
+      "topic": "linear_equation",
+      "type": "single_answer",
+      "equation": "11*🟨 - 4 = 62",
+      "correctAnswers": [
+        6
       ],
-      "wrongAnswers": [
-        13,
-        20
+      "options": [
+        {
+          "value": 7,
+          "isCorrect": false
+        },
+        {
+          "value": 5,
+          "isCorrect": false
+        },
+        {
+          "value": 6,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 79,
-      "level": "medium",
-      "operation": "*",
-      "equation": "9 * ? = 81",
-      "answer": 9,
-      "options": [
-        19,
-        9,
-        11
+      "difficulty": "medium",
+      "topic": "order_of_operations",
+      "type": "single_answer",
+      "equation": "5 + 3 × 🟨 = 35",
+      "correctAnswers": [
+        10
       ],
-      "wrongAnswers": [
-        19,
-        11
+      "options": [
+        {
+          "value": 11,
+          "isCorrect": false
+        },
+        {
+          "value": 9,
+          "isCorrect": false
+        },
+        {
+          "value": 10,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 80,
-      "level": "medium",
-      "operation": "-",
-      "equation": "115 - ? = 67",
-      "answer": 48,
-      "options": [
-        48,
-        60,
-        42
+      "difficulty": "medium",
+      "topic": "division_equation",
+      "type": "single_answer",
+      "equation": "(🟨 + 13) ÷ 6 = 11",
+      "correctAnswers": [
+        53
       ],
-      "wrongAnswers": [
-        42,
-        60
+      "options": [
+        {
+          "value": 54,
+          "isCorrect": false
+        },
+        {
+          "value": 52,
+          "isCorrect": false
+        },
+        {
+          "value": 53,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 81,
-      "level": "medium",
-      "operation": "*",
-      "equation": "18 * 6 = ?",
-      "answer": 108,
-      "options": [
-        105,
-        116,
-        108
+      "difficulty": "medium",
+      "topic": "addition_missing",
+      "type": "single_answer",
+      "equation": "52 + 🟨 = 93",
+      "correctAnswers": [
+        41
       ],
-      "wrongAnswers": [
-        116,
-        105
+      "options": [
+        {
+          "value": 42,
+          "isCorrect": false
+        },
+        {
+          "value": 41,
+          "isCorrect": true
+        },
+        {
+          "value": 40,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 82,
-      "level": "medium",
-      "operation": "/",
-      "equation": "104 / 13 = ?",
-      "answer": 8,
-      "options": [
-        8,
-        3,
-        11
+      "difficulty": "medium",
+      "topic": "linear_equation",
+      "type": "single_answer",
+      "equation": "4*🟨 + 14 = 62",
+      "correctAnswers": [
+        12
       ],
-      "wrongAnswers": [
-        3,
-        11
+      "options": [
+        {
+          "value": 13,
+          "isCorrect": false
+        },
+        {
+          "value": 12,
+          "isCorrect": true
+        },
+        {
+          "value": 11,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 83,
-      "level": "medium",
-      "operation": "-",
-      "equation": "94 - 43 = ?",
-      "answer": 51,
-      "options": [
-        43,
-        48,
-        51
+      "difficulty": "medium",
+      "topic": "linear_equation",
+      "type": "single_answer",
+      "equation": "3*🟨 - 5 = 16",
+      "correctAnswers": [
+        7
       ],
-      "wrongAnswers": [
-        43,
-        48
+      "options": [
+        {
+          "value": 7,
+          "isCorrect": true
+        },
+        {
+          "value": 6,
+          "isCorrect": false
+        },
+        {
+          "value": 8,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 84,
-      "level": "medium",
-      "operation": "*",
-      "equation": "7 * ? = 56",
-      "answer": 8,
-      "options": [
-        0,
-        8,
-        6
+      "difficulty": "medium",
+      "topic": "order_of_operations",
+      "type": "single_answer",
+      "equation": "7 + 9 × 🟨 = 97",
+      "correctAnswers": [
+        10
       ],
-      "wrongAnswers": [
-        0,
-        6
+      "options": [
+        {
+          "value": 10,
+          "isCorrect": true
+        },
+        {
+          "value": 9,
+          "isCorrect": false
+        },
+        {
+          "value": 11,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 85,
-      "level": "medium",
-      "operation": "*",
-      "equation": "? * 12 = 96",
-      "answer": 8,
-      "options": [
-        7,
-        11,
-        8
+      "difficulty": "medium",
+      "topic": "division_equation",
+      "type": "single_answer",
+      "equation": "(🟨 + 5) ÷ 2 = 8",
+      "correctAnswers": [
+        11
       ],
-      "wrongAnswers": [
-        11,
-        7
+      "options": [
+        {
+          "value": 10,
+          "isCorrect": false
+        },
+        {
+          "value": 11,
+          "isCorrect": true
+        },
+        {
+          "value": 12,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 86,
-      "level": "medium",
-      "operation": "*",
-      "equation": "? * 15 = 225",
-      "answer": 15,
-      "options": [
-        20,
-        11,
-        15
+      "difficulty": "medium",
+      "topic": "addition_missing",
+      "type": "single_answer",
+      "equation": "54 + 🟨 = 66",
+      "correctAnswers": [
+        12
       ],
-      "wrongAnswers": [
-        20,
-        11
+      "options": [
+        {
+          "value": 13,
+          "isCorrect": false
+        },
+        {
+          "value": 12,
+          "isCorrect": true
+        },
+        {
+          "value": 11,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 87,
-      "level": "medium",
-      "operation": "+",
-      "equation": "? + 69 = 122",
-      "answer": 53,
-      "options": [
-        51,
-        49,
-        53
+      "difficulty": "medium",
+      "topic": "linear_equation",
+      "type": "single_answer",
+      "equation": "9*🟨 + 2 = 38",
+      "correctAnswers": [
+        4
       ],
-      "wrongAnswers": [
-        49,
-        51
+      "options": [
+        {
+          "value": 4,
+          "isCorrect": true
+        },
+        {
+          "value": 5,
+          "isCorrect": false
+        },
+        {
+          "value": 3,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 88,
-      "level": "medium",
-      "operation": "+",
-      "equation": "32 + 26 = ?",
-      "answer": 58,
-      "options": [
-        46,
-        58,
-        56
+      "difficulty": "medium",
+      "topic": "linear_equation",
+      "type": "single_answer",
+      "equation": "3*🟨 - 7 = 14",
+      "correctAnswers": [
+        7
       ],
-      "wrongAnswers": [
-        46,
-        56
+      "options": [
+        {
+          "value": 6,
+          "isCorrect": false
+        },
+        {
+          "value": 7,
+          "isCorrect": true
+        },
+        {
+          "value": 8,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 89,
-      "level": "medium",
-      "operation": "+",
-      "equation": "34 + ? = 61",
-      "answer": 27,
-      "options": [
-        15,
-        27,
-        25
+      "difficulty": "medium",
+      "topic": "order_of_operations",
+      "type": "single_answer",
+      "equation": "5 + 7 × 🟨 = 75",
+      "correctAnswers": [
+        10
       ],
-      "wrongAnswers": [
-        15,
-        25
+      "options": [
+        {
+          "value": 11,
+          "isCorrect": false
+        },
+        {
+          "value": 10,
+          "isCorrect": true
+        },
+        {
+          "value": 9,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 90,
-      "level": "medium",
-      "operation": "-",
-      "equation": "121 - 53 = ?",
-      "answer": 68,
-      "options": [
-        73,
-        67,
-        68
+      "difficulty": "medium",
+      "topic": "division_equation",
+      "type": "single_answer",
+      "equation": "(🟨 + 8) ÷ 5 = 10",
+      "correctAnswers": [
+        42
       ],
-      "wrongAnswers": [
-        73,
-        67
+      "options": [
+        {
+          "value": 43,
+          "isCorrect": false
+        },
+        {
+          "value": 42,
+          "isCorrect": true
+        },
+        {
+          "value": 41,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 91,
-      "level": "medium",
-      "operation": "*",
-      "equation": "14 * ? = 168",
-      "answer": 12,
-      "options": [
-        12,
-        17,
-        0
+      "difficulty": "medium",
+      "topic": "addition_missing",
+      "type": "single_answer",
+      "equation": "31 + 🟨 = 88",
+      "correctAnswers": [
+        57
       ],
-      "wrongAnswers": [
-        0,
-        17
+      "options": [
+        {
+          "value": 57,
+          "isCorrect": true
+        },
+        {
+          "value": 58,
+          "isCorrect": false
+        },
+        {
+          "value": 56,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 92,
-      "level": "medium",
-      "operation": "+",
-      "equation": "26 + ? = 76",
-      "answer": 50,
-      "options": [
-        47,
-        58,
-        50
+      "difficulty": "medium",
+      "topic": "linear_equation",
+      "type": "single_answer",
+      "equation": "6*🟨 + 6 = 42",
+      "correctAnswers": [
+        6
       ],
-      "wrongAnswers": [
-        58,
-        47
+      "options": [
+        {
+          "value": 5,
+          "isCorrect": false
+        },
+        {
+          "value": 6,
+          "isCorrect": true
+        },
+        {
+          "value": 7,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 93,
-      "level": "medium",
-      "operation": "*",
-      "equation": "6 * ? = 30",
-      "answer": 5,
-      "options": [
-        15,
-        5,
-        4
-      ],
-      "wrongAnswers": [
-        4,
+      "difficulty": "medium",
+      "topic": "linear_equation",
+      "type": "single_answer",
+      "equation": "9*🟨 - 2 = 133",
+      "correctAnswers": [
         15
+      ],
+      "options": [
+        {
+          "value": 16,
+          "isCorrect": false
+        },
+        {
+          "value": 15,
+          "isCorrect": true
+        },
+        {
+          "value": 14,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 94,
-      "level": "medium",
-      "operation": "-",
-      "equation": "111 - 43 = ?",
-      "answer": 68,
-      "options": [
-        62,
-        68,
-        71
+      "difficulty": "medium",
+      "topic": "order_of_operations",
+      "type": "single_answer",
+      "equation": "8 + 9 × 🟨 = 71",
+      "correctAnswers": [
+        7
       ],
-      "wrongAnswers": [
-        71,
-        62
+      "options": [
+        {
+          "value": 8,
+          "isCorrect": false
+        },
+        {
+          "value": 7,
+          "isCorrect": true
+        },
+        {
+          "value": 6,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 95,
-      "level": "medium",
-      "operation": "/",
-      "equation": "? / 12 = 18",
-      "answer": 216,
-      "options": [
-        213,
-        217,
-        216
+      "difficulty": "medium",
+      "topic": "division_equation",
+      "type": "single_answer",
+      "equation": "(🟨 + 9) ÷ 5 = 5",
+      "correctAnswers": [
+        16
       ],
-      "wrongAnswers": [
-        217,
-        213
+      "options": [
+        {
+          "value": 16,
+          "isCorrect": true
+        },
+        {
+          "value": 17,
+          "isCorrect": false
+        },
+        {
+          "value": 15,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 96,
-      "level": "medium",
-      "operation": "+",
-      "equation": "? + 14 = 43",
-      "answer": 29,
-      "options": [
-        29,
-        35,
-        21
+      "difficulty": "medium",
+      "topic": "addition_missing",
+      "type": "single_answer",
+      "equation": "37 + 🟨 = 51",
+      "correctAnswers": [
+        14
       ],
-      "wrongAnswers": [
-        35,
-        21
+      "options": [
+        {
+          "value": 14,
+          "isCorrect": true
+        },
+        {
+          "value": 15,
+          "isCorrect": false
+        },
+        {
+          "value": 13,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 97,
-      "level": "medium",
-      "operation": "-",
-      "equation": "99 - ? = 85",
-      "answer": 14,
-      "options": [
-        2,
-        15,
-        14
+      "difficulty": "medium",
+      "topic": "linear_equation",
+      "type": "single_answer",
+      "equation": "11*🟨 + 22 = 110",
+      "correctAnswers": [
+        8
       ],
-      "wrongAnswers": [
-        2,
-        15
+      "options": [
+        {
+          "value": 8,
+          "isCorrect": true
+        },
+        {
+          "value": 7,
+          "isCorrect": false
+        },
+        {
+          "value": 9,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 98,
-      "level": "medium",
-      "operation": "-",
-      "equation": "85 - 26 = ?",
-      "answer": 59,
-      "options": [
-        61,
-        59,
-        64
+      "difficulty": "medium",
+      "topic": "linear_equation",
+      "type": "single_answer",
+      "equation": "5*🟨 - 9 = 46",
+      "correctAnswers": [
+        11
       ],
-      "wrongAnswers": [
-        64,
-        61
+      "options": [
+        {
+          "value": 10,
+          "isCorrect": false
+        },
+        {
+          "value": 12,
+          "isCorrect": false
+        },
+        {
+          "value": 11,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 99,
-      "level": "medium",
-      "operation": "*",
-      "equation": "11 * ? = 55",
-      "answer": 5,
-      "options": [
-        8,
-        13,
-        5
+      "difficulty": "medium",
+      "topic": "order_of_operations",
+      "type": "single_answer",
+      "equation": "15 + 7 × 🟨 = 64",
+      "correctAnswers": [
+        7
       ],
-      "wrongAnswers": [
-        13,
-        8
+      "options": [
+        {
+          "value": 8,
+          "isCorrect": false
+        },
+        {
+          "value": 7,
+          "isCorrect": true
+        },
+        {
+          "value": 6,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 100,
-      "level": "medium",
-      "operation": "-",
-      "equation": "? - 41 = 76",
-      "answer": 117,
-      "options": [
-        119,
-        117,
-        113
+      "difficulty": "medium",
+      "topic": "division_equation",
+      "type": "single_answer",
+      "equation": "(🟨 + 11) ÷ 8 = 11",
+      "correctAnswers": [
+        77
       ],
-      "wrongAnswers": [
-        113,
-        119
+      "options": [
+        {
+          "value": 78,
+          "isCorrect": false
+        },
+        {
+          "value": 76,
+          "isCorrect": false
+        },
+        {
+          "value": 77,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 101,
-      "level": "medium",
-      "operation": "+",
-      "equation": "? + 59 = 119",
-      "answer": 60,
-      "options": [
-        60,
-        64,
-        70
+      "difficulty": "medium",
+      "topic": "addition_missing",
+      "type": "single_answer",
+      "equation": "20 + 🟨 = 63",
+      "correctAnswers": [
+        43
       ],
-      "wrongAnswers": [
-        70,
-        64
+      "options": [
+        {
+          "value": 42,
+          "isCorrect": false
+        },
+        {
+          "value": 43,
+          "isCorrect": true
+        },
+        {
+          "value": 44,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 102,
-      "level": "medium",
-      "operation": "/",
-      "equation": "117 / 13 = ?",
-      "answer": 9,
-      "options": [
-        14,
-        19,
-        9
+      "difficulty": "medium",
+      "topic": "linear_equation",
+      "type": "single_answer",
+      "equation": "8*🟨 + 3 = 67",
+      "correctAnswers": [
+        8
       ],
-      "wrongAnswers": [
-        14,
-        19
+      "options": [
+        {
+          "value": 8,
+          "isCorrect": true
+        },
+        {
+          "value": 7,
+          "isCorrect": false
+        },
+        {
+          "value": 9,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 103,
-      "level": "medium",
-      "operation": "-",
-      "equation": "132 - ? = 100",
-      "answer": 32,
-      "options": [
-        33,
-        26,
-        32
+      "difficulty": "medium",
+      "topic": "linear_equation",
+      "type": "single_answer",
+      "equation": "12*🟨 - 4 = 80",
+      "correctAnswers": [
+        7
       ],
-      "wrongAnswers": [
-        26,
-        33
+      "options": [
+        {
+          "value": 7,
+          "isCorrect": true
+        },
+        {
+          "value": 6,
+          "isCorrect": false
+        },
+        {
+          "value": 8,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 104,
-      "level": "medium",
-      "operation": "+",
-      "equation": "37 + ? = 94",
-      "answer": 57,
-      "options": [
-        67,
-        57,
-        51
+      "difficulty": "medium",
+      "topic": "order_of_operations",
+      "type": "single_answer",
+      "equation": "18 + 6 × 🟨 = 90",
+      "correctAnswers": [
+        12
       ],
-      "wrongAnswers": [
-        51,
-        67
+      "options": [
+        {
+          "value": 12,
+          "isCorrect": true
+        },
+        {
+          "value": 13,
+          "isCorrect": false
+        },
+        {
+          "value": 11,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 105,
-      "level": "medium",
-      "operation": "/",
-      "equation": "192 / ? = 12",
-      "answer": 16,
-      "options": [
-        11,
-        20,
-        16
+      "difficulty": "medium",
+      "topic": "division_equation",
+      "type": "single_answer",
+      "equation": "(🟨 + 7) ÷ 8 = 14",
+      "correctAnswers": [
+        105
       ],
-      "wrongAnswers": [
-        20,
-        11
+      "options": [
+        {
+          "value": 106,
+          "isCorrect": false
+        },
+        {
+          "value": 104,
+          "isCorrect": false
+        },
+        {
+          "value": 105,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 106,
-      "level": "medium",
-      "operation": "-",
-      "equation": "130 - ? = 107",
-      "answer": 23,
-      "options": [
-        23,
-        31,
-        33
+      "difficulty": "medium",
+      "topic": "addition_missing",
+      "type": "single_answer",
+      "equation": "62 + 🟨 = 96",
+      "correctAnswers": [
+        34
       ],
-      "wrongAnswers": [
-        33,
-        31
+      "options": [
+        {
+          "value": 33,
+          "isCorrect": false
+        },
+        {
+          "value": 34,
+          "isCorrect": true
+        },
+        {
+          "value": 35,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 107,
-      "level": "medium",
-      "operation": "+",
-      "equation": "75 + 24 = ?",
-      "answer": 99,
-      "options": [
-        97,
-        109,
-        99
+      "difficulty": "medium",
+      "topic": "linear_equation",
+      "type": "single_answer",
+      "equation": "12*🟨 + 10 = 142",
+      "correctAnswers": [
+        11
       ],
-      "wrongAnswers": [
-        97,
-        109
+      "options": [
+        {
+          "value": 12,
+          "isCorrect": false
+        },
+        {
+          "value": 11,
+          "isCorrect": true
+        },
+        {
+          "value": 10,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 108,
-      "level": "medium",
-      "operation": "/",
-      "equation": "126 / 9 = ?",
-      "answer": 14,
-      "options": [
-        14,
-        9,
-        22
+      "difficulty": "medium",
+      "topic": "linear_equation",
+      "type": "single_answer",
+      "equation": "7*🟨 - 7 = 35",
+      "correctAnswers": [
+        6
       ],
-      "wrongAnswers": [
-        22,
-        9
+      "options": [
+        {
+          "value": 6,
+          "isCorrect": true
+        },
+        {
+          "value": 7,
+          "isCorrect": false
+        },
+        {
+          "value": 5,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 109,
-      "level": "medium",
-      "operation": "-",
-      "equation": "33 - 31 = ?",
-      "answer": 2,
-      "options": [
-        2,
-        7,
-        4
+      "difficulty": "medium",
+      "topic": "order_of_operations",
+      "type": "single_answer",
+      "equation": "16 + 9 × 🟨 = 97",
+      "correctAnswers": [
+        9
       ],
-      "wrongAnswers": [
-        4,
-        7
+      "options": [
+        {
+          "value": 8,
+          "isCorrect": false
+        },
+        {
+          "value": 9,
+          "isCorrect": true
+        },
+        {
+          "value": 10,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 110,
-      "level": "medium",
-      "operation": "/",
-      "equation": "117 / 9 = ?",
-      "answer": 13,
-      "options": [
-        1,
-        10,
-        13
+      "difficulty": "medium",
+      "topic": "division_equation",
+      "type": "single_answer",
+      "equation": "(🟨 + 5) ÷ 9 = 10",
+      "correctAnswers": [
+        85
       ],
-      "wrongAnswers": [
-        1,
-        10
+      "options": [
+        {
+          "value": 85,
+          "isCorrect": true
+        },
+        {
+          "value": 86,
+          "isCorrect": false
+        },
+        {
+          "value": 84,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 111,
-      "level": "medium",
-      "operation": "*",
-      "equation": "? * 15 = 165",
-      "answer": 11,
-      "options": [
-        11,
-        10,
-        17
+      "difficulty": "medium",
+      "topic": "addition_missing",
+      "type": "single_answer",
+      "equation": "25 + 🟨 = 83",
+      "correctAnswers": [
+        58
       ],
-      "wrongAnswers": [
-        10,
-        17
+      "options": [
+        {
+          "value": 59,
+          "isCorrect": false
+        },
+        {
+          "value": 57,
+          "isCorrect": false
+        },
+        {
+          "value": 58,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 112,
-      "level": "medium",
-      "operation": "/",
-      "equation": "210 / 14 = ?",
-      "answer": 15,
-      "options": [
-        15,
-        17,
-        19
+      "difficulty": "medium",
+      "topic": "linear_equation",
+      "type": "single_answer",
+      "equation": "6*🟨 + 7 = 91",
+      "correctAnswers": [
+        14
       ],
-      "wrongAnswers": [
-        17,
-        19
+      "options": [
+        {
+          "value": 13,
+          "isCorrect": false
+        },
+        {
+          "value": 15,
+          "isCorrect": false
+        },
+        {
+          "value": 14,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 113,
-      "level": "medium",
-      "operation": "+",
-      "equation": "? + 21 = 69",
-      "answer": 48,
-      "options": [
-        45,
-        48,
-        44
+      "difficulty": "medium",
+      "topic": "linear_equation",
+      "type": "single_answer",
+      "equation": "12*🟨 - 3 = 177",
+      "correctAnswers": [
+        15
       ],
-      "wrongAnswers": [
-        44,
-        45
+      "options": [
+        {
+          "value": 15,
+          "isCorrect": true
+        },
+        {
+          "value": 16,
+          "isCorrect": false
+        },
+        {
+          "value": 14,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 114,
-      "level": "medium",
-      "operation": "*",
-      "equation": "? * 6 = 36",
-      "answer": 6,
-      "options": [
-        4,
-        14,
-        6
+      "difficulty": "medium",
+      "topic": "order_of_operations",
+      "type": "single_answer",
+      "equation": "20 + 5 × 🟨 = 60",
+      "correctAnswers": [
+        8
       ],
-      "wrongAnswers": [
-        14,
-        4
+      "options": [
+        {
+          "value": 8,
+          "isCorrect": true
+        },
+        {
+          "value": 9,
+          "isCorrect": false
+        },
+        {
+          "value": 7,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 115,
-      "level": "medium",
-      "operation": "/",
-      "equation": "135 / ? = 15",
-      "answer": 9,
-      "options": [
-        11,
-        3,
-        9
+      "difficulty": "medium",
+      "topic": "division_equation",
+      "type": "single_answer",
+      "equation": "(🟨 + 3) ÷ 5 = 9",
+      "correctAnswers": [
+        42
       ],
-      "wrongAnswers": [
-        11,
-        3
+      "options": [
+        {
+          "value": 43,
+          "isCorrect": false
+        },
+        {
+          "value": 41,
+          "isCorrect": false
+        },
+        {
+          "value": 42,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 116,
-      "level": "medium",
-      "operation": "+",
-      "equation": "? + 67 = 131",
-      "answer": 64,
-      "options": [
-        58,
-        60,
-        64
+      "difficulty": "medium",
+      "topic": "addition_missing",
+      "type": "single_answer",
+      "equation": "34 + 🟨 = 55",
+      "correctAnswers": [
+        21
       ],
-      "wrongAnswers": [
-        60,
-        58
+      "options": [
+        {
+          "value": 21,
+          "isCorrect": true
+        },
+        {
+          "value": 20,
+          "isCorrect": false
+        },
+        {
+          "value": 22,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 117,
-      "level": "medium",
-      "operation": "-",
-      "equation": "? - 12 = 50",
-      "answer": 62,
-      "options": [
-        62,
-        59,
-        66
+      "difficulty": "medium",
+      "topic": "linear_equation",
+      "type": "single_answer",
+      "equation": "3*🟨 + 8 = 38",
+      "correctAnswers": [
+        10
       ],
-      "wrongAnswers": [
-        59,
-        66
+      "options": [
+        {
+          "value": 11,
+          "isCorrect": false
+        },
+        {
+          "value": 9,
+          "isCorrect": false
+        },
+        {
+          "value": 10,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 118,
-      "level": "medium",
-      "operation": "/",
-      "equation": "44 / ? = 11",
-      "answer": 4,
-      "options": [
-        4,
-        3,
-        9
+      "difficulty": "medium",
+      "topic": "linear_equation",
+      "type": "single_answer",
+      "equation": "5*🟨 - 15 = 55",
+      "correctAnswers": [
+        14
       ],
-      "wrongAnswers": [
-        3,
-        9
+      "options": [
+        {
+          "value": 14,
+          "isCorrect": true
+        },
+        {
+          "value": 13,
+          "isCorrect": false
+        },
+        {
+          "value": 15,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 119,
-      "level": "medium",
-      "operation": "/",
-      "equation": "? / 5 = 15",
-      "answer": 75,
-      "options": [
-        75,
-        72,
-        70
+      "difficulty": "medium",
+      "topic": "order_of_operations",
+      "type": "single_answer",
+      "equation": "16 + 10 × 🟨 = 96",
+      "correctAnswers": [
+        8
       ],
-      "wrongAnswers": [
-        72,
-        70
+      "options": [
+        {
+          "value": 8,
+          "isCorrect": true
+        },
+        {
+          "value": 7,
+          "isCorrect": false
+        },
+        {
+          "value": 9,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 120,
-      "level": "medium",
-      "operation": "*",
-      "equation": "? * 6 = 96",
-      "answer": 16,
-      "options": [
-        21,
-        4,
-        16
+      "difficulty": "medium",
+      "topic": "division_equation",
+      "type": "single_answer",
+      "equation": "(🟨 + 17) ÷ 4 = 20",
+      "correctAnswers": [
+        63
       ],
-      "wrongAnswers": [
-        4,
-        21
+      "options": [
+        {
+          "value": 64,
+          "isCorrect": false
+        },
+        {
+          "value": 63,
+          "isCorrect": true
+        },
+        {
+          "value": 62,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 121,
-      "level": "medium",
-      "operation": "*",
-      "equation": "? * 9 = 126",
-      "answer": 14,
-      "options": [
-        14,
-        9,
-        20
+      "difficulty": "medium",
+      "topic": "addition_missing",
+      "type": "single_answer",
+      "equation": "73 + 🟨 = 123",
+      "correctAnswers": [
+        50
       ],
-      "wrongAnswers": [
-        9,
-        20
+      "options": [
+        {
+          "value": 50,
+          "isCorrect": true
+        },
+        {
+          "value": 51,
+          "isCorrect": false
+        },
+        {
+          "value": 49,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 122,
-      "level": "medium",
-      "operation": "/",
-      "equation": "? / 9 = 17",
-      "answer": 153,
-      "options": [
-        141,
-        148,
-        153
+      "difficulty": "medium",
+      "topic": "linear_equation",
+      "type": "single_answer",
+      "equation": "6*🟨 + 15 = 51",
+      "correctAnswers": [
+        6
       ],
-      "wrongAnswers": [
-        148,
-        141
+      "options": [
+        {
+          "value": 7,
+          "isCorrect": false
+        },
+        {
+          "value": 5,
+          "isCorrect": false
+        },
+        {
+          "value": 6,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 123,
-      "level": "medium",
-      "operation": "*",
-      "equation": "14 * 7 = ?",
-      "answer": 98,
-      "options": [
-        98,
-        106,
-        96
+      "difficulty": "medium",
+      "topic": "linear_equation",
+      "type": "single_answer",
+      "equation": "6*🟨 - 11 = 25",
+      "correctAnswers": [
+        6
       ],
-      "wrongAnswers": [
-        96,
-        106
+      "options": [
+        {
+          "value": 7,
+          "isCorrect": false
+        },
+        {
+          "value": 6,
+          "isCorrect": true
+        },
+        {
+          "value": 5,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 124,
-      "level": "medium",
-      "operation": "/",
-      "equation": "? / 14 = 17",
-      "answer": 238,
-      "options": [
-        119,
-        238,
-        230
+      "difficulty": "medium",
+      "topic": "order_of_operations",
+      "type": "single_answer",
+      "equation": "6 + 4 × 🟨 = 26",
+      "correctAnswers": [
+        5
       ],
-      "wrongAnswers": [
-        230,
-        119
+      "options": [
+        {
+          "value": 6,
+          "isCorrect": false
+        },
+        {
+          "value": 5,
+          "isCorrect": true
+        },
+        {
+          "value": 4,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 125,
-      "level": "medium",
-      "operation": "-",
-      "equation": "108 - ? = 26",
-      "answer": 82,
-      "options": [
-        94,
-        82,
-        72
+      "difficulty": "medium",
+      "topic": "division_equation",
+      "type": "single_answer",
+      "equation": "(🟨 + 16) ÷ 5 = 7",
+      "correctAnswers": [
+        19
       ],
-      "wrongAnswers": [
-        94,
-        72
+      "options": [
+        {
+          "value": 19,
+          "isCorrect": true
+        },
+        {
+          "value": 20,
+          "isCorrect": false
+        },
+        {
+          "value": 18,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 126,
-      "level": "medium",
-      "operation": "/",
-      "equation": "60 / ? = 5",
-      "answer": 12,
-      "options": [
-        12,
-        15,
-        10
+      "difficulty": "medium",
+      "topic": "addition_missing",
+      "type": "single_answer",
+      "equation": "54 + 🟨 = 93",
+      "correctAnswers": [
+        39
       ],
-      "wrongAnswers": [
-        15,
-        10
+      "options": [
+        {
+          "value": 40,
+          "isCorrect": false
+        },
+        {
+          "value": 39,
+          "isCorrect": true
+        },
+        {
+          "value": 38,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 127,
-      "level": "medium",
-      "operation": "*",
-      "equation": "? * 11 = 99",
-      "answer": 9,
-      "options": [
-        9,
-        12,
-        19
+      "difficulty": "medium",
+      "topic": "linear_equation",
+      "type": "single_answer",
+      "equation": "6*🟨 + 14 = 104",
+      "correctAnswers": [
+        15
       ],
-      "wrongAnswers": [
-        12,
-        19
+      "options": [
+        {
+          "value": 16,
+          "isCorrect": false
+        },
+        {
+          "value": 15,
+          "isCorrect": true
+        },
+        {
+          "value": 14,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 128,
-      "level": "medium",
-      "operation": "*",
-      "equation": "13 * ? = 156",
-      "answer": 12,
-      "options": [
-        22,
-        20,
-        12
+      "difficulty": "medium",
+      "topic": "linear_equation",
+      "type": "single_answer",
+      "equation": "12*🟨 - 16 = 80",
+      "correctAnswers": [
+        8
       ],
-      "wrongAnswers": [
-        22,
-        20
+      "options": [
+        {
+          "value": 9,
+          "isCorrect": false
+        },
+        {
+          "value": 7,
+          "isCorrect": false
+        },
+        {
+          "value": 8,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 129,
-      "level": "medium",
-      "operation": "-",
-      "equation": "? - 70 = 25",
-      "answer": 95,
-      "options": [
-        105,
-        95,
-        97
+      "difficulty": "medium",
+      "topic": "order_of_operations",
+      "type": "single_answer",
+      "equation": "11 + 8 × 🟨 = 75",
+      "correctAnswers": [
+        8
       ],
-      "wrongAnswers": [
-        97,
-        105
+      "options": [
+        {
+          "value": 7,
+          "isCorrect": false
+        },
+        {
+          "value": 8,
+          "isCorrect": true
+        },
+        {
+          "value": 9,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 130,
-      "level": "medium",
-      "operation": "-",
-      "equation": "114 - ? = 94",
-      "answer": 20,
-      "options": [
-        12,
-        20,
-        14
+      "difficulty": "medium",
+      "topic": "division_equation",
+      "type": "single_answer",
+      "equation": "(🟨 + 11) ÷ 9 = 12",
+      "correctAnswers": [
+        97
       ],
-      "wrongAnswers": [
-        12,
-        14
+      "options": [
+        {
+          "value": 97,
+          "isCorrect": true
+        },
+        {
+          "value": 98,
+          "isCorrect": false
+        },
+        {
+          "value": 96,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 131,
-      "level": "medium",
-      "operation": "*",
-      "equation": "? * 8 = 56",
-      "answer": 7,
-      "options": [
-        17,
-        7,
-        2
+      "difficulty": "medium",
+      "topic": "addition_missing",
+      "type": "single_answer",
+      "equation": "21 + 🟨 = 55",
+      "correctAnswers": [
+        34
       ],
-      "wrongAnswers": [
-        2,
-        17
+      "options": [
+        {
+          "value": 34,
+          "isCorrect": true
+        },
+        {
+          "value": 35,
+          "isCorrect": false
+        },
+        {
+          "value": 33,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 132,
-      "level": "medium",
-      "operation": "*",
-      "equation": "9 * 8 = ?",
-      "answer": 72,
-      "options": [
-        73,
-        77,
-        72
+      "difficulty": "medium",
+      "topic": "linear_equation",
+      "type": "single_answer",
+      "equation": "5*🟨 + 15 = 90",
+      "correctAnswers": [
+        15
       ],
-      "wrongAnswers": [
-        77,
-        73
+      "options": [
+        {
+          "value": 14,
+          "isCorrect": false
+        },
+        {
+          "value": 16,
+          "isCorrect": false
+        },
+        {
+          "value": 15,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 133,
-      "level": "medium",
-      "operation": "+",
-      "equation": "20 + ? = 45",
-      "answer": 25,
-      "options": [
-        25,
-        35,
-        31
+      "difficulty": "medium",
+      "topic": "linear_equation",
+      "type": "single_answer",
+      "equation": "9*🟨 - 19 = 80",
+      "correctAnswers": [
+        11
       ],
-      "wrongAnswers": [
-        35,
-        31
+      "options": [
+        {
+          "value": 10,
+          "isCorrect": false
+        },
+        {
+          "value": 11,
+          "isCorrect": true
+        },
+        {
+          "value": 12,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 134,
-      "level": "medium",
-      "operation": "+",
-      "equation": "? + 36 = 109",
-      "answer": 73,
-      "options": [
-        83,
-        75,
-        73
+      "difficulty": "medium",
+      "topic": "order_of_operations",
+      "type": "single_answer",
+      "equation": "4 + 8 × 🟨 = 36",
+      "correctAnswers": [
+        4
       ],
-      "wrongAnswers": [
-        75,
-        83
+      "options": [
+        {
+          "value": 5,
+          "isCorrect": false
+        },
+        {
+          "value": 4,
+          "isCorrect": true
+        },
+        {
+          "value": 3,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 135,
-      "level": "medium",
-      "operation": "-",
-      "equation": "121 - ? = 62",
-      "answer": 59,
-      "options": [
-        59,
-        64,
-        51
+      "difficulty": "medium",
+      "topic": "division_equation",
+      "type": "single_answer",
+      "equation": "(🟨 + 15) ÷ 2 = 13",
+      "correctAnswers": [
+        11
       ],
-      "wrongAnswers": [
-        64,
-        51
+      "options": [
+        {
+          "value": 12,
+          "isCorrect": false
+        },
+        {
+          "value": 11,
+          "isCorrect": true
+        },
+        {
+          "value": 10,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 136,
-      "level": "medium",
-      "operation": "/",
-      "equation": "? / 7 = 9",
-      "answer": 63,
-      "options": [
-        63,
-        75,
-        55
+      "difficulty": "medium",
+      "topic": "addition_missing",
+      "type": "single_answer",
+      "equation": "49 + 🟨 = 79",
+      "correctAnswers": [
+        30
       ],
-      "wrongAnswers": [
-        55,
-        75
+      "options": [
+        {
+          "value": 30,
+          "isCorrect": true
+        },
+        {
+          "value": 31,
+          "isCorrect": false
+        },
+        {
+          "value": 29,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 137,
-      "level": "medium",
-      "operation": "+",
-      "equation": "28 + ? = 87",
-      "answer": 59,
-      "options": [
-        59,
-        49,
-        65
+      "difficulty": "medium",
+      "topic": "linear_equation",
+      "type": "single_answer",
+      "equation": "7*🟨 + 14 = 112",
+      "correctAnswers": [
+        14
       ],
-      "wrongAnswers": [
-        65,
-        49
+      "options": [
+        {
+          "value": 15,
+          "isCorrect": false
+        },
+        {
+          "value": 14,
+          "isCorrect": true
+        },
+        {
+          "value": 13,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 138,
-      "level": "medium",
-      "operation": "-",
-      "equation": "52 - ? = 9",
-      "answer": 43,
-      "options": [
-        43,
-        53,
-        42
+      "difficulty": "medium",
+      "topic": "linear_equation",
+      "type": "single_answer",
+      "equation": "10*🟨 - 18 = 2",
+      "correctAnswers": [
+        2
       ],
-      "wrongAnswers": [
-        53,
-        42
+      "options": [
+        {
+          "value": 3,
+          "isCorrect": false
+        },
+        {
+          "value": 1,
+          "isCorrect": false
+        },
+        {
+          "value": 2,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 139,
-      "level": "medium",
-      "operation": "+",
-      "equation": "46 + 68 = ?",
-      "answer": 114,
-      "options": [
-        113,
-        114,
-        124
+      "difficulty": "medium",
+      "topic": "order_of_operations",
+      "type": "single_answer",
+      "equation": "9 + 3 × 🟨 = 45",
+      "correctAnswers": [
+        12
       ],
-      "wrongAnswers": [
-        124,
-        113
+      "options": [
+        {
+          "value": 11,
+          "isCorrect": false
+        },
+        {
+          "value": 13,
+          "isCorrect": false
+        },
+        {
+          "value": 12,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 140,
-      "level": "medium",
-      "operation": "/",
-      "equation": "? / 6 = 19",
-      "answer": 114,
-      "options": [
-        114,
-        124,
-        112
+      "difficulty": "medium",
+      "topic": "division_equation",
+      "type": "single_answer",
+      "equation": "(🟨 + 3) ÷ 5 = 11",
+      "correctAnswers": [
+        52
       ],
-      "wrongAnswers": [
-        112,
-        124
+      "options": [
+        {
+          "value": 51,
+          "isCorrect": false
+        },
+        {
+          "value": 52,
+          "isCorrect": true
+        },
+        {
+          "value": 53,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 141,
-      "level": "hard",
-      "operation": "*",
-      "equation": "26 * ? = 624",
-      "answer": 24,
-      "options": [
-        22,
-        12,
-        24
-      ],
-      "wrongAnswers": [
-        22,
+      "difficulty": "hard",
+      "topic": "quadratic_equation",
+      "type": "multiple_answer",
+      "equation": "🟨² - 17*🟨 + 60 = 0",
+      "correctAnswers": [
+        5,
         12
+      ],
+      "options": [
+        {
+          "value": 3,
+          "isCorrect": false
+        },
+        {
+          "value": 5,
+          "isCorrect": true
+        },
+        {
+          "value": 12,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 142,
-      "level": "hard",
-      "operation": "/",
-      "equation": "429 / ? = 33",
-      "answer": 13,
-      "options": [
-        25,
-        13,
+      "difficulty": "hard",
+      "topic": "linear_equation",
+      "type": "single_answer",
+      "equation": "16*🟨 + 26 = 330",
+      "correctAnswers": [
         19
       ],
-      "wrongAnswers": [
-        19,
-        25
+      "options": [
+        {
+          "value": 20,
+          "isCorrect": false
+        },
+        {
+          "value": 19,
+          "isCorrect": true
+        },
+        {
+          "value": 18,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 143,
-      "level": "hard",
-      "operation": "/",
-      "equation": "544 / 16 = ?",
-      "answer": 34,
-      "options": [
-        44,
-        68,
-        34
+      "difficulty": "hard",
+      "topic": "parentheses_expression",
+      "type": "single_answer",
+      "equation": "(8 + 10) × 🟨 = 108",
+      "correctAnswers": [
+        6
       ],
-      "wrongAnswers": [
-        68,
-        44
+      "options": [
+        {
+          "value": 5,
+          "isCorrect": false
+        },
+        {
+          "value": 7,
+          "isCorrect": false
+        },
+        {
+          "value": 6,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 144,
-      "level": "hard",
-      "operation": "*",
-      "equation": "? * 23 = 644",
-      "answer": 28,
-      "options": [
-        28,
-        23,
-        26
+      "difficulty": "hard",
+      "topic": "multi_step_expression",
+      "type": "single_answer",
+      "equation": "6 × 🟨 + 53 = 191",
+      "correctAnswers": [
+        23
       ],
-      "wrongAnswers": [
-        23,
-        26
+      "options": [
+        {
+          "value": 23,
+          "isCorrect": true
+        },
+        {
+          "value": 24,
+          "isCorrect": false
+        },
+        {
+          "value": 22,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 145,
-      "level": "hard",
-      "operation": "-",
-      "equation": "260 - 172 = ?",
-      "answer": 88,
-      "options": [
-        91,
-        83,
-        88
+      "difficulty": "hard",
+      "topic": "subtraction_missing",
+      "type": "single_answer",
+      "equation": "74 - 🟨 = 29",
+      "correctAnswers": [
+        45
       ],
-      "wrongAnswers": [
-        83,
-        91
+      "options": [
+        {
+          "value": 44,
+          "isCorrect": false
+        },
+        {
+          "value": 45,
+          "isCorrect": true
+        },
+        {
+          "value": 46,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 146,
-      "level": "hard",
-      "operation": "*",
-      "equation": "19 * ? = 304",
-      "answer": 16,
-      "options": [
-        12,
-        16,
-        1
+      "difficulty": "hard",
+      "topic": "quadratic_equation",
+      "type": "multiple_answer",
+      "equation": "🟨² - 17*🟨 + 42 = 0",
+      "correctAnswers": [
+        3,
+        14
       ],
-      "wrongAnswers": [
-        12,
-        1
+      "options": [
+        {
+          "value": 14,
+          "isCorrect": true
+        },
+        {
+          "value": 3,
+          "isCorrect": true
+        },
+        {
+          "value": 1,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 147,
-      "level": "hard",
-      "operation": "*",
-      "equation": "29 * 10 = ?",
-      "answer": 290,
-      "options": [
-        286,
-        290,
-        275
+      "difficulty": "hard",
+      "topic": "linear_equation",
+      "type": "single_answer",
+      "equation": "11*🟨 + 44 = 220",
+      "correctAnswers": [
+        16
       ],
-      "wrongAnswers": [
-        275,
-        286
+      "options": [
+        {
+          "value": 16,
+          "isCorrect": true
+        },
+        {
+          "value": 17,
+          "isCorrect": false
+        },
+        {
+          "value": 15,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 148,
-      "level": "hard",
-      "operation": "-",
-      "equation": "? - 158 = 80",
-      "answer": 238,
-      "options": [
-        238,
-        258,
-        235
+      "difficulty": "hard",
+      "topic": "parentheses_expression",
+      "type": "single_answer",
+      "equation": "(7 + 15) × 🟨 = 44",
+      "correctAnswers": [
+        2
       ],
-      "wrongAnswers": [
-        235,
-        258
+      "options": [
+        {
+          "value": 2,
+          "isCorrect": true
+        },
+        {
+          "value": 3,
+          "isCorrect": false
+        },
+        {
+          "value": 1,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 149,
-      "level": "hard",
-      "operation": "-",
-      "equation": "229 - ? = 153",
-      "answer": 76,
-      "options": [
-        64,
-        76,
-        75
+      "difficulty": "hard",
+      "topic": "multi_step_expression",
+      "type": "single_answer",
+      "equation": "3 × 🟨 + 33 = 87",
+      "correctAnswers": [
+        18
       ],
-      "wrongAnswers": [
-        64,
-        75
+      "options": [
+        {
+          "value": 18,
+          "isCorrect": true
+        },
+        {
+          "value": 17,
+          "isCorrect": false
+        },
+        {
+          "value": 19,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 150,
-      "level": "hard",
-      "operation": "/",
-      "equation": "486 / ? = 27",
-      "answer": 18,
-      "options": [
-        18,
-        30,
-        10
+      "difficulty": "hard",
+      "topic": "subtraction_missing",
+      "type": "single_answer",
+      "equation": "114 - 🟨 = 75",
+      "correctAnswers": [
+        39
       ],
-      "wrongAnswers": [
-        10,
-        30
+      "options": [
+        {
+          "value": 40,
+          "isCorrect": false
+        },
+        {
+          "value": 38,
+          "isCorrect": false
+        },
+        {
+          "value": 39,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 151,
-      "level": "hard",
-      "operation": "/",
-      "equation": "144 / ? = 16",
-      "answer": 9,
-      "options": [
+      "difficulty": "hard",
+      "topic": "quadratic_equation",
+      "type": "multiple_answer",
+      "equation": "🟨² - 26*🟨 + 153 = 0",
+      "correctAnswers": [
         9,
-        11,
-        1
+        17
       ],
-      "wrongAnswers": [
-        1,
-        11
+      "options": [
+        {
+          "value": 9,
+          "isCorrect": true
+        },
+        {
+          "value": 7,
+          "isCorrect": false
+        },
+        {
+          "value": 17,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 152,
-      "level": "hard",
-      "operation": "/",
-      "equation": "832 / 26 = ?",
-      "answer": 32,
-      "options": [
-        7,
-        32,
-        28
+      "difficulty": "hard",
+      "topic": "linear_equation",
+      "type": "single_answer",
+      "equation": "20*🟨 + 15 = 255",
+      "correctAnswers": [
+        12
       ],
-      "wrongAnswers": [
-        7,
-        28
+      "options": [
+        {
+          "value": 12,
+          "isCorrect": true
+        },
+        {
+          "value": 13,
+          "isCorrect": false
+        },
+        {
+          "value": 11,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 153,
-      "level": "hard",
-      "operation": "/",
-      "equation": "230 / ? = 10",
-      "answer": 23,
-      "options": [
-        17,
-        23,
-        29
+      "difficulty": "hard",
+      "topic": "parentheses_expression",
+      "type": "single_answer",
+      "equation": "(12 + 19) × 🟨 = 341",
+      "correctAnswers": [
+        11
       ],
-      "wrongAnswers": [
-        17,
-        29
+      "options": [
+        {
+          "value": 11,
+          "isCorrect": true
+        },
+        {
+          "value": 10,
+          "isCorrect": false
+        },
+        {
+          "value": 12,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 154,
-      "level": "hard",
-      "operation": "*",
-      "equation": "? * 21 = 504",
-      "answer": 24,
-      "options": [
-        20,
-        24,
-        9
+      "difficulty": "hard",
+      "topic": "multi_step_expression",
+      "type": "single_answer",
+      "equation": "7 × 🟨 + 41 = 76",
+      "correctAnswers": [
+        5
       ],
-      "wrongAnswers": [
-        20,
-        9
+      "options": [
+        {
+          "value": 6,
+          "isCorrect": false
+        },
+        {
+          "value": 5,
+          "isCorrect": true
+        },
+        {
+          "value": 4,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 155,
-      "level": "hard",
-      "operation": "-",
-      "equation": "369 - ? = 253",
-      "answer": 116,
-      "options": [
-        141,
-        116,
-        120
+      "difficulty": "hard",
+      "topic": "subtraction_missing",
+      "type": "single_answer",
+      "equation": "129 - 🟨 = 47",
+      "correctAnswers": [
+        82
       ],
-      "wrongAnswers": [
-        120,
-        141
+      "options": [
+        {
+          "value": 82,
+          "isCorrect": true
+        },
+        {
+          "value": 83,
+          "isCorrect": false
+        },
+        {
+          "value": 81,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 156,
-      "level": "hard",
-      "operation": "*",
-      "equation": "24 * ? = 312",
-      "answer": 13,
-      "options": [
-        21,
+      "difficulty": "hard",
+      "topic": "quadratic_equation",
+      "type": "multiple_answer",
+      "equation": "🟨² - 21*🟨 + 98 = 0",
+      "correctAnswers": [
         7,
-        13
+        14
       ],
-      "wrongAnswers": [
-        7,
-        21
+      "options": [
+        {
+          "value": 7,
+          "isCorrect": true
+        },
+        {
+          "value": 14,
+          "isCorrect": true
+        },
+        {
+          "value": 5,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 157,
-      "level": "hard",
-      "operation": "-",
-      "equation": "393 - ? = 327",
-      "answer": 66,
-      "options": [
-        64,
-        62,
-        66
+      "difficulty": "hard",
+      "topic": "linear_equation",
+      "type": "single_answer",
+      "equation": "10*🟨 + 22 = 232",
+      "correctAnswers": [
+        21
       ],
-      "wrongAnswers": [
-        62,
-        64
+      "options": [
+        {
+          "value": 20,
+          "isCorrect": false
+        },
+        {
+          "value": 22,
+          "isCorrect": false
+        },
+        {
+          "value": 21,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 158,
-      "level": "hard",
-      "operation": "+",
-      "equation": "101 + 169 = ?",
-      "answer": 270,
-      "options": [
-        270,
-        266,
-        268
+      "difficulty": "hard",
+      "topic": "parentheses_expression",
+      "type": "single_answer",
+      "equation": "(18 + 20) × 🟨 = 380",
+      "correctAnswers": [
+        10
       ],
-      "wrongAnswers": [
-        268,
-        266
+      "options": [
+        {
+          "value": 11,
+          "isCorrect": false
+        },
+        {
+          "value": 9,
+          "isCorrect": false
+        },
+        {
+          "value": 10,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 159,
-      "level": "hard",
-      "operation": "/",
-      "equation": "143 / ? = 11",
-      "answer": 13,
-      "options": [
-        17,
-        13,
-        28
+      "difficulty": "hard",
+      "topic": "multi_step_expression",
+      "type": "single_answer",
+      "equation": "12 × 🟨 + 38 = 278",
+      "correctAnswers": [
+        20
       ],
-      "wrongAnswers": [
-        28,
-        17
+      "options": [
+        {
+          "value": 19,
+          "isCorrect": false
+        },
+        {
+          "value": 21,
+          "isCorrect": false
+        },
+        {
+          "value": 20,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 160,
-      "level": "hard",
-      "operation": "/",
-      "equation": "288 / ? = 16",
-      "answer": 18,
-      "options": [
-        21,
-        18,
-        6
+      "difficulty": "hard",
+      "topic": "subtraction_missing",
+      "type": "single_answer",
+      "equation": "105 - 🟨 = 48",
+      "correctAnswers": [
+        57
       ],
-      "wrongAnswers": [
-        6,
-        21
+      "options": [
+        {
+          "value": 58,
+          "isCorrect": false
+        },
+        {
+          "value": 57,
+          "isCorrect": true
+        },
+        {
+          "value": 56,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 161,
-      "level": "hard",
-      "operation": "*",
-      "equation": "22 * ? = 440",
-      "answer": 20,
-      "options": [
-        45,
-        20,
-        24
+      "difficulty": "hard",
+      "topic": "quadratic_equation",
+      "type": "multiple_answer",
+      "equation": "🟨² - 21*🟨 + 90 = 0",
+      "correctAnswers": [
+        6,
+        15
       ],
-      "wrongAnswers": [
-        45,
-        24
+      "options": [
+        {
+          "value": 6,
+          "isCorrect": true
+        },
+        {
+          "value": 4,
+          "isCorrect": false
+        },
+        {
+          "value": 15,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 162,
-      "level": "hard",
-      "operation": "/",
-      "equation": "192 / ? = 12",
-      "answer": 16,
-      "options": [
-        18,
-        28,
-        16
+      "difficulty": "hard",
+      "topic": "linear_equation",
+      "type": "single_answer",
+      "equation": "23*🟨 + 31 = 537",
+      "correctAnswers": [
+        22
       ],
-      "wrongAnswers": [
-        18,
-        28
+      "options": [
+        {
+          "value": 22,
+          "isCorrect": true
+        },
+        {
+          "value": 23,
+          "isCorrect": false
+        },
+        {
+          "value": 21,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 163,
-      "level": "hard",
-      "operation": "+",
-      "equation": "218 + ? = 291",
-      "answer": 73,
-      "options": [
-        53,
-        79,
-        73
+      "difficulty": "hard",
+      "topic": "parentheses_expression",
+      "type": "single_answer",
+      "equation": "(13 + 14) × 🟨 = 162",
+      "correctAnswers": [
+        6
       ],
-      "wrongAnswers": [
-        53,
-        79
+      "options": [
+        {
+          "value": 5,
+          "isCorrect": false
+        },
+        {
+          "value": 7,
+          "isCorrect": false
+        },
+        {
+          "value": 6,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 164,
-      "level": "hard",
-      "operation": "-",
-      "equation": "155 - 143 = ?",
-      "answer": 12,
-      "options": [
-        4,
-        12,
-        17
+      "difficulty": "hard",
+      "topic": "multi_step_expression",
+      "type": "single_answer",
+      "equation": "5 × 🟨 + 17 = 92",
+      "correctAnswers": [
+        15
       ],
-      "wrongAnswers": [
-        4,
-        17
+      "options": [
+        {
+          "value": 14,
+          "isCorrect": false
+        },
+        {
+          "value": 15,
+          "isCorrect": true
+        },
+        {
+          "value": 16,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 165,
-      "level": "hard",
-      "operation": "+",
-      "equation": "143 + 111 = ?",
-      "answer": 254,
-      "options": [
-        254,
-        255,
-        248
+      "difficulty": "hard",
+      "topic": "subtraction_missing",
+      "type": "single_answer",
+      "equation": "91 - 🟨 = 47",
+      "correctAnswers": [
+        44
       ],
-      "wrongAnswers": [
-        248,
-        255
+      "options": [
+        {
+          "value": 44,
+          "isCorrect": true
+        },
+        {
+          "value": 43,
+          "isCorrect": false
+        },
+        {
+          "value": 45,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 166,
-      "level": "hard",
-      "operation": "-",
-      "equation": "242 - ? = 150",
-      "answer": 92,
-      "options": [
-        100,
-        92,
-        72
+      "difficulty": "hard",
+      "topic": "quadratic_equation",
+      "type": "multiple_answer",
+      "equation": "🟨² - 24*🟨 + 108 = 0",
+      "correctAnswers": [
+        6,
+        18
       ],
-      "wrongAnswers": [
-        100,
-        72
+      "options": [
+        {
+          "value": 6,
+          "isCorrect": true
+        },
+        {
+          "value": 18,
+          "isCorrect": true
+        },
+        {
+          "value": 4,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 167,
-      "level": "hard",
-      "operation": "+",
-      "equation": "224 + ? = 339",
-      "answer": 115,
-      "options": [
-        123,
-        135,
-        115
+      "difficulty": "hard",
+      "topic": "linear_equation",
+      "type": "single_answer",
+      "equation": "13*🟨 + 28 = 171",
+      "correctAnswers": [
+        11
       ],
-      "wrongAnswers": [
-        123,
-        135
+      "options": [
+        {
+          "value": 12,
+          "isCorrect": false
+        },
+        {
+          "value": 10,
+          "isCorrect": false
+        },
+        {
+          "value": 11,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 168,
-      "level": "hard",
-      "operation": "*",
-      "equation": "? * 13 = 299",
-      "answer": 23,
-      "options": [
-        23,
-        43,
-        8
+      "difficulty": "hard",
+      "topic": "parentheses_expression",
+      "type": "single_answer",
+      "equation": "(10 + 14) × 🟨 = 48",
+      "correctAnswers": [
+        2
       ],
-      "wrongAnswers": [
-        43,
-        8
+      "options": [
+        {
+          "value": 1,
+          "isCorrect": false
+        },
+        {
+          "value": 2,
+          "isCorrect": true
+        },
+        {
+          "value": 3,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 169,
-      "level": "hard",
-      "operation": "+",
-      "equation": "121 + 139 = ?",
-      "answer": 260,
-      "options": [
-        256,
-        261,
-        260
+      "difficulty": "hard",
+      "topic": "multi_step_expression",
+      "type": "single_answer",
+      "equation": "6 × 🟨 + 13 = 49",
+      "correctAnswers": [
+        6
       ],
-      "wrongAnswers": [
-        256,
-        261
+      "options": [
+        {
+          "value": 6,
+          "isCorrect": true
+        },
+        {
+          "value": 5,
+          "isCorrect": false
+        },
+        {
+          "value": 7,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 170,
-      "level": "hard",
-      "operation": "+",
-      "equation": "? + 207 = 366",
-      "answer": 159,
-      "options": [
-        144,
-        159,
-        160
+      "difficulty": "hard",
+      "topic": "subtraction_missing",
+      "type": "single_answer",
+      "equation": "137 - 🟨 = 101",
+      "correctAnswers": [
+        36
       ],
-      "wrongAnswers": [
-        144,
-        160
+      "options": [
+        {
+          "value": 37,
+          "isCorrect": false
+        },
+        {
+          "value": 36,
+          "isCorrect": true
+        },
+        {
+          "value": 35,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 171,
-      "level": "hard",
-      "operation": "/",
-      "equation": "640 / 20 = ?",
-      "answer": 32,
-      "options": [
-        64,
-        32,
-        37
+      "difficulty": "hard",
+      "topic": "quadratic_equation",
+      "type": "multiple_answer",
+      "equation": "🟨² - 16*🟨 + 28 = 0",
+      "correctAnswers": [
+        2,
+        14
       ],
-      "wrongAnswers": [
-        37,
-        64
+      "options": [
+        {
+          "value": 2,
+          "isCorrect": true
+        },
+        {
+          "value": 1,
+          "isCorrect": false
+        },
+        {
+          "value": 14,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 172,
-      "level": "hard",
-      "operation": "+",
-      "equation": "231 + 220 = ?",
-      "answer": 451,
-      "options": [
-        451,
-        454,
-        436
+      "difficulty": "hard",
+      "topic": "linear_equation",
+      "type": "single_answer",
+      "equation": "24*🟨 + 21 = 381",
+      "correctAnswers": [
+        15
       ],
-      "wrongAnswers": [
-        436,
-        454
+      "options": [
+        {
+          "value": 16,
+          "isCorrect": false
+        },
+        {
+          "value": 14,
+          "isCorrect": false
+        },
+        {
+          "value": 15,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 173,
-      "level": "hard",
-      "operation": "+",
-      "equation": "157 + 213 = ?",
-      "answer": 370,
-      "options": [
-        367,
-        345,
-        370
+      "difficulty": "hard",
+      "topic": "parentheses_expression",
+      "type": "single_answer",
+      "equation": "(20 + 8) × 🟨 = 420",
+      "correctAnswers": [
+        15
       ],
-      "wrongAnswers": [
-        345,
-        367
+      "options": [
+        {
+          "value": 16,
+          "isCorrect": false
+        },
+        {
+          "value": 14,
+          "isCorrect": false
+        },
+        {
+          "value": 15,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 174,
-      "level": "hard",
-      "operation": "+",
-      "equation": "168 + ? = 364",
-      "answer": 196,
-      "options": [
-        191,
-        196,
-        198
+      "difficulty": "hard",
+      "topic": "multi_step_expression",
+      "type": "single_answer",
+      "equation": "9 × 🟨 + 46 = 109",
+      "correctAnswers": [
+        7
       ],
-      "wrongAnswers": [
-        198,
-        191
+      "options": [
+        {
+          "value": 6,
+          "isCorrect": false
+        },
+        {
+          "value": 7,
+          "isCorrect": true
+        },
+        {
+          "value": 8,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 175,
-      "level": "hard",
-      "operation": "*",
-      "equation": "? * 24 = 336",
-      "answer": 14,
-      "options": [
-        14,
-        9,
-        11
+      "difficulty": "hard",
+      "topic": "subtraction_missing",
+      "type": "single_answer",
+      "equation": "78 - 🟨 = 39",
+      "correctAnswers": [
+        39
       ],
-      "wrongAnswers": [
-        9,
-        11
+      "options": [
+        {
+          "value": 39,
+          "isCorrect": true
+        },
+        {
+          "value": 38,
+          "isCorrect": false
+        },
+        {
+          "value": 40,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 176,
-      "level": "hard",
-      "operation": "*",
-      "equation": "12 * ? = 252",
-      "answer": 21,
-      "options": [
-        16,
-        27,
-        21
+      "difficulty": "hard",
+      "topic": "quadratic_equation",
+      "type": "multiple_answer",
+      "equation": "🟨² - 16*🟨 + 39 = 0",
+      "correctAnswers": [
+        3,
+        13
       ],
-      "wrongAnswers": [
-        27,
-        16
+      "options": [
+        {
+          "value": 1,
+          "isCorrect": false
+        },
+        {
+          "value": 13,
+          "isCorrect": true
+        },
+        {
+          "value": 3,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 177,
-      "level": "hard",
-      "operation": "+",
-      "equation": "? + 152 = 342",
-      "answer": 190,
-      "options": [
-        190,
-        178,
-        170
+      "difficulty": "hard",
+      "topic": "linear_equation",
+      "type": "single_answer",
+      "equation": "17*🟨 + 34 = 391",
+      "correctAnswers": [
+        21
       ],
-      "wrongAnswers": [
-        170,
-        178
+      "options": [
+        {
+          "value": 21,
+          "isCorrect": true
+        },
+        {
+          "value": 22,
+          "isCorrect": false
+        },
+        {
+          "value": 20,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 178,
-      "level": "hard",
-      "operation": "/",
-      "equation": "420 / ? = 14",
-      "answer": 30,
-      "options": [
-        30,
-        15,
-        25
+      "difficulty": "hard",
+      "topic": "parentheses_expression",
+      "type": "single_answer",
+      "equation": "(14 + 18) × 🟨 = 192",
+      "correctAnswers": [
+        6
       ],
-      "wrongAnswers": [
-        25,
-        15
+      "options": [
+        {
+          "value": 5,
+          "isCorrect": false
+        },
+        {
+          "value": 6,
+          "isCorrect": true
+        },
+        {
+          "value": 7,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 179,
-      "level": "hard",
-      "operation": "-",
-      "equation": "387 - ? = 161",
-      "answer": 226,
-      "options": [
-        226,
-        230,
-        238
+      "difficulty": "hard",
+      "topic": "multi_step_expression",
+      "type": "single_answer",
+      "equation": "11 × 🟨 + 58 = 146",
+      "correctAnswers": [
+        8
       ],
-      "wrongAnswers": [
-        238,
-        230
+      "options": [
+        {
+          "value": 7,
+          "isCorrect": false
+        },
+        {
+          "value": 9,
+          "isCorrect": false
+        },
+        {
+          "value": 8,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 180,
-      "level": "hard",
-      "operation": "/",
-      "equation": "? / 22 = 23",
-      "answer": 506,
-      "options": [
-        506,
-        518,
-        500
+      "difficulty": "hard",
+      "topic": "subtraction_missing",
+      "type": "single_answer",
+      "equation": "157 - 🟨 = 104",
+      "correctAnswers": [
+        53
       ],
-      "wrongAnswers": [
-        518,
-        500
+      "options": [
+        {
+          "value": 52,
+          "isCorrect": false
+        },
+        {
+          "value": 54,
+          "isCorrect": false
+        },
+        {
+          "value": 53,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 181,
-      "level": "hard",
-      "operation": "*",
-      "equation": "22 * 15 = ?",
-      "answer": 330,
-      "options": [
-        330,
-        332,
-        328
+      "difficulty": "hard",
+      "topic": "quadratic_equation",
+      "type": "multiple_answer",
+      "equation": "🟨² - 14*🟨 + 40 = 0",
+      "correctAnswers": [
+        4,
+        10
       ],
-      "wrongAnswers": [
-        328,
-        332
+      "options": [
+        {
+          "value": 4,
+          "isCorrect": true
+        },
+        {
+          "value": 2,
+          "isCorrect": false
+        },
+        {
+          "value": 10,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 182,
-      "level": "hard",
-      "operation": "*",
-      "equation": "26 * ? = 390",
-      "answer": 15,
-      "options": [
-        7,
-        23,
-        15
+      "difficulty": "hard",
+      "topic": "linear_equation",
+      "type": "single_answer",
+      "equation": "25*🟨 + 12 = 362",
+      "correctAnswers": [
+        14
       ],
-      "wrongAnswers": [
-        23,
-        7
+      "options": [
+        {
+          "value": 15,
+          "isCorrect": false
+        },
+        {
+          "value": 13,
+          "isCorrect": false
+        },
+        {
+          "value": 14,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 183,
-      "level": "hard",
-      "operation": "/",
-      "equation": "180 / ? = 10",
-      "answer": 18,
-      "options": [
-        18,
-        16,
-        33
+      "difficulty": "hard",
+      "topic": "parentheses_expression",
+      "type": "single_answer",
+      "equation": "(14 + 19) × 🟨 = 99",
+      "correctAnswers": [
+        3
       ],
-      "wrongAnswers": [
-        33,
-        16
+      "options": [
+        {
+          "value": 2,
+          "isCorrect": false
+        },
+        {
+          "value": 3,
+          "isCorrect": true
+        },
+        {
+          "value": 4,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 184,
-      "level": "hard",
-      "operation": "*",
-      "equation": "17 * 23 = ?",
-      "answer": 391,
-      "options": [
-        379,
-        391,
-        393
+      "difficulty": "hard",
+      "topic": "multi_step_expression",
+      "type": "single_answer",
+      "equation": "6 × 🟨 + 47 = 197",
+      "correctAnswers": [
+        25
       ],
-      "wrongAnswers": [
-        379,
-        393
+      "options": [
+        {
+          "value": 24,
+          "isCorrect": false
+        },
+        {
+          "value": 25,
+          "isCorrect": true
+        },
+        {
+          "value": 26,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 185,
-      "level": "hard",
-      "operation": "*",
-      "equation": "20 * ? = 360",
-      "answer": 18,
-      "options": [
-        18,
-        22,
-        30
+      "difficulty": "hard",
+      "topic": "subtraction_missing",
+      "type": "single_answer",
+      "equation": "108 - 🟨 = 34",
+      "correctAnswers": [
+        74
       ],
-      "wrongAnswers": [
-        22,
-        30
+      "options": [
+        {
+          "value": 73,
+          "isCorrect": false
+        },
+        {
+          "value": 74,
+          "isCorrect": true
+        },
+        {
+          "value": 75,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 186,
-      "level": "hard",
-      "operation": "*",
-      "equation": "? * 8 = 232",
-      "answer": 29,
-      "options": [
-        17,
-        21,
-        29
+      "difficulty": "hard",
+      "topic": "quadratic_equation",
+      "type": "multiple_answer",
+      "equation": "🟨² - 18*🟨 + 56 = 0",
+      "correctAnswers": [
+        4,
+        14
       ],
-      "wrongAnswers": [
-        21,
-        17
+      "options": [
+        {
+          "value": 14,
+          "isCorrect": true
+        },
+        {
+          "value": 2,
+          "isCorrect": false
+        },
+        {
+          "value": 4,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 187,
-      "level": "hard",
-      "operation": "-",
-      "equation": "? - 90 = 73",
-      "answer": 163,
-      "options": [
-        163,
-        164,
-        188
+      "difficulty": "hard",
+      "topic": "linear_equation",
+      "type": "single_answer",
+      "equation": "11*🟨 + 29 = 139",
+      "correctAnswers": [
+        10
       ],
-      "wrongAnswers": [
-        188,
-        164
+      "options": [
+        {
+          "value": 10,
+          "isCorrect": true
+        },
+        {
+          "value": 9,
+          "isCorrect": false
+        },
+        {
+          "value": 11,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 188,
-      "level": "hard",
-      "operation": "/",
-      "equation": "621 / 23 = ?",
-      "answer": 27,
-      "options": [
-        31,
-        27,
-        29
+      "difficulty": "hard",
+      "topic": "parentheses_expression",
+      "type": "single_answer",
+      "equation": "(19 + 8) × 🟨 = 243",
+      "correctAnswers": [
+        9
       ],
-      "wrongAnswers": [
-        29,
-        31
+      "options": [
+        {
+          "value": 9,
+          "isCorrect": true
+        },
+        {
+          "value": 8,
+          "isCorrect": false
+        },
+        {
+          "value": 10,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 189,
-      "level": "hard",
-      "operation": "/",
-      "equation": "896 / ? = 32",
-      "answer": 28,
-      "options": [
-        56,
-        24,
-        28
+      "difficulty": "hard",
+      "topic": "multi_step_expression",
+      "type": "single_answer",
+      "equation": "8 × 🟨 + 42 = 146",
+      "correctAnswers": [
+        13
       ],
-      "wrongAnswers": [
-        24,
-        56
+      "options": [
+        {
+          "value": 13,
+          "isCorrect": true
+        },
+        {
+          "value": 12,
+          "isCorrect": false
+        },
+        {
+          "value": 14,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 190,
-      "level": "hard",
-      "operation": "/",
-      "equation": "96 / ? = 12",
-      "answer": 8,
-      "options": [
-        8,
-        5,
-        0
+      "difficulty": "hard",
+      "topic": "subtraction_missing",
+      "type": "single_answer",
+      "equation": "106 - 🟨 = 30",
+      "correctAnswers": [
+        76
       ],
-      "wrongAnswers": [
-        5,
-        0
+      "options": [
+        {
+          "value": 75,
+          "isCorrect": false
+        },
+        {
+          "value": 76,
+          "isCorrect": true
+        },
+        {
+          "value": 77,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 191,
-      "level": "hard",
-      "operation": "-",
-      "equation": "327 - 237 = ?",
-      "answer": 90,
-      "options": [
-        90,
-        85,
-        89
+      "difficulty": "hard",
+      "topic": "quadratic_equation",
+      "type": "multiple_answer",
+      "equation": "🟨² - 23*🟨 + 120 = 0",
+      "correctAnswers": [
+        8,
+        15
       ],
-      "wrongAnswers": [
-        85,
-        89
+      "options": [
+        {
+          "value": 8,
+          "isCorrect": true
+        },
+        {
+          "value": 15,
+          "isCorrect": true
+        },
+        {
+          "value": 6,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 192,
-      "level": "hard",
-      "operation": "*",
-      "equation": "30 * ? = 570",
-      "answer": 19,
-      "options": [
-        19,
-        13,
-        16
+      "difficulty": "hard",
+      "topic": "linear_equation",
+      "type": "single_answer",
+      "equation": "10*🟨 + 24 = 94",
+      "correctAnswers": [
+        7
       ],
-      "wrongAnswers": [
-        16,
-        13
+      "options": [
+        {
+          "value": 6,
+          "isCorrect": false
+        },
+        {
+          "value": 7,
+          "isCorrect": true
+        },
+        {
+          "value": 8,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 193,
-      "level": "hard",
-      "operation": "*",
-      "equation": "25 * ? = 625",
-      "answer": 25,
-      "options": [
-        40,
-        37,
-        25
+      "difficulty": "hard",
+      "topic": "parentheses_expression",
+      "type": "single_answer",
+      "equation": "(13 + 6) × 🟨 = 266",
+      "correctAnswers": [
+        14
       ],
-      "wrongAnswers": [
-        40,
-        37
+      "options": [
+        {
+          "value": 15,
+          "isCorrect": false
+        },
+        {
+          "value": 13,
+          "isCorrect": false
+        },
+        {
+          "value": 14,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 194,
-      "level": "hard",
-      "operation": "*",
-      "equation": "26 * ? = 416",
-      "answer": 16,
-      "options": [
-        14,
-        16,
-        21
+      "difficulty": "hard",
+      "topic": "multi_step_expression",
+      "type": "single_answer",
+      "equation": "10 × 🟨 + 38 = 288",
+      "correctAnswers": [
+        25
       ],
-      "wrongAnswers": [
-        14,
-        21
+      "options": [
+        {
+          "value": 26,
+          "isCorrect": false
+        },
+        {
+          "value": 25,
+          "isCorrect": true
+        },
+        {
+          "value": 24,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 195,
-      "level": "hard",
-      "operation": "*",
-      "equation": "? * 11 = 209",
-      "answer": 19,
-      "options": [
-        19,
-        29,
-        38
+      "difficulty": "hard",
+      "topic": "subtraction_missing",
+      "type": "single_answer",
+      "equation": "176 - 🟨 = 101",
+      "correctAnswers": [
+        75
       ],
-      "wrongAnswers": [
-        29,
-        38
+      "options": [
+        {
+          "value": 76,
+          "isCorrect": false
+        },
+        {
+          "value": 75,
+          "isCorrect": true
+        },
+        {
+          "value": 74,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 196,
-      "level": "hard",
-      "operation": "-",
-      "equation": "? - 90 = 191",
-      "answer": 281,
-      "options": [
-        281,
-        296,
-        280
+      "difficulty": "hard",
+      "topic": "quadratic_equation",
+      "type": "multiple_answer",
+      "equation": "🟨² - 24*🟨 + 135 = 0",
+      "correctAnswers": [
+        9,
+        15
       ],
-      "wrongAnswers": [
-        296,
-        280
+      "options": [
+        {
+          "value": 9,
+          "isCorrect": true
+        },
+        {
+          "value": 7,
+          "isCorrect": false
+        },
+        {
+          "value": 15,
+          "isCorrect": true
+        }
       ]
     },
     {
       "id": 197,
-      "level": "hard",
-      "operation": "-",
-      "equation": "? - 115 = 103",
-      "answer": 218,
-      "options": [
-        228,
-        218,
-        223
+      "difficulty": "hard",
+      "topic": "linear_equation",
+      "type": "single_answer",
+      "equation": "20*🟨 + 20 = 180",
+      "correctAnswers": [
+        8
       ],
-      "wrongAnswers": [
-        223,
-        228
+      "options": [
+        {
+          "value": 8,
+          "isCorrect": true
+        },
+        {
+          "value": 9,
+          "isCorrect": false
+        },
+        {
+          "value": 7,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 198,
-      "level": "hard",
-      "operation": "/",
-      "equation": "? / 16 = 33",
-      "answer": 528,
-      "options": [
-        536,
-        528,
-        525
+      "difficulty": "hard",
+      "topic": "parentheses_expression",
+      "type": "single_answer",
+      "equation": "(20 + 14) × 🟨 = 408",
+      "correctAnswers": [
+        12
       ],
-      "wrongAnswers": [
-        525,
-        536
+      "options": [
+        {
+          "value": 13,
+          "isCorrect": false
+        },
+        {
+          "value": 12,
+          "isCorrect": true
+        },
+        {
+          "value": 11,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 199,
-      "level": "hard",
-      "operation": "*",
-      "equation": "15 * ? = 210",
-      "answer": 14,
-      "options": [
-        20,
-        14,
-        2
+      "difficulty": "hard",
+      "topic": "multi_step_expression",
+      "type": "single_answer",
+      "equation": "9 × 🟨 + 30 = 93",
+      "correctAnswers": [
+        7
       ],
-      "wrongAnswers": [
-        2,
-        20
+      "options": [
+        {
+          "value": 7,
+          "isCorrect": true
+        },
+        {
+          "value": 8,
+          "isCorrect": false
+        },
+        {
+          "value": 6,
+          "isCorrect": false
+        }
       ]
     },
     {
       "id": 200,
-      "level": "hard",
-      "operation": "-",
-      "equation": "304 - ? = 199",
-      "answer": 105,
-      "options": [
-        93,
-        105,
-        108
+      "difficulty": "hard",
+      "topic": "subtraction_missing",
+      "type": "single_answer",
+      "equation": "152 - 🟨 = 118",
+      "correctAnswers": [
+        34
       ],
-      "wrongAnswers": [
-        108,
-        93
+      "options": [
+        {
+          "value": 35,
+          "isCorrect": false
+        },
+        {
+          "value": 34,
+          "isCorrect": true
+        },
+        {
+          "value": 33,
+          "isCorrect": false
+        }
       ]
     }
   ]

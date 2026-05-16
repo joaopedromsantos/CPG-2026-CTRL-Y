@@ -133,5 +133,5 @@ func get_current_options() -> Array:
 	return _current_equation.get("queued_options", _current_equation.get("options", []))
 
 
-func get_current_answer() -> int:
-	return int(_current_equation.get("answer", 0))
+func get_current_correct_answers() -> Array:
+	return _current_equation.get("correctAnswers", [])

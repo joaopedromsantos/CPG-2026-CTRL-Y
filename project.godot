@@ -18,6 +18,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 PlayerRecord="*res://scripts/player_record.gd"
+GameSettings="*res://scripts/game_settings.gd"
 
 [display]
 

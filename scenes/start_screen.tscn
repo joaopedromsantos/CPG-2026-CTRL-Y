@@ -30,6 +30,8 @@ var _subtitle: Label
 var _highscore_tag: Label
 var _highscore_value: Label
 var _start_button: Button
+var _difficulty_buttons: Dictionary = {}
+var _selected_difficulty := \"easy\"
 var _menu_audio: AudioStreamPlayer
 
 
@@ -354,10 +356,6 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed(\"ui_accept\"):
 		_start_game()
 		return
-	if event is InputEventMouseButton:
-		var mouse_event := event as InputEventMouseButton
-		if mouse_event.pressed:
-			_start_game()
 
 
 func _build_screen() -> void:
@@ -396,6 +394,50 @@ func _build_screen() -> void:
 	_start_button.add_theme_stylebox_override(\"hover\", _button_style(Color(0.22, 0.88, 0.42), Color(0.66, 1.0, 0.72)))
 	_start_button.add_theme_stylebox_override(\"pressed\", _button_style(Color(0.12, 0.62, 0.26), Color(0.46, 0.86, 0.52)))
 	_start_button.pressed.connect(_start_game)
+
+	_build_difficulty_buttons()
+
+
+func _build_difficulty_buttons() -> void:
+	var difficulties := [
+		{\"key\": \"easy\", \"label\": \"FACIL\"},
+		{\"key\": \"medium\", \"label\": \"MEDIO\"},
+		{\"key\": \"hard\", \"label\": \"DIFICIL\"},
+	]
+
+	for item in difficulties:
+		var difficulty := String(item[\"key\"])
+		var button := Button.new()
+		button.text = String(item[\"label\"])
+		button.focus_mode = Control.FOCUS_NONE
+		button.add_theme_font_override(\"font\", _font_semi)
+		button.add_theme_font_size_override(\"font_size\", 18)
+		button.add_theme_color_override(\"font_color\", Color.WHITE)
+		button.add_theme_color_override(\"font_hover_color\", Color.WHITE)
+		button.add_theme_color_override(\"font_pressed_color\", Color.WHITE)
+		button.pressed.connect(_select_difficulty.bind(difficulty))
+		add_child(button)
+		_difficulty_buttons[difficulty] = button
+
+	_refresh_difficulty_buttons()
+
+
+func _select_difficulty(difficulty: String) -> void:
+	_selected_difficulty = difficulty
+	_refresh_difficulty_buttons()
+
+
+func _refresh_difficulty_buttons() -> void:
+	for difficulty in _difficulty_buttons.keys():
+		var button := _difficulty_buttons[difficulty] as Button
+		if difficulty == _selected_difficulty:
+			button.add_theme_stylebox_override(\"normal\", _button_style(Color(0.96, 0.50, 0.12), Color(1.0, 0.82, 0.30)))
+			button.add_theme_stylebox_override(\"hover\", _button_style(Color(1.0, 0.58, 0.18), Color(1.0, 0.90, 0.42)))
+			button.add_theme_stylebox_override(\"pressed\", _button_style(Color(0.80, 0.36, 0.08), Color(0.96, 0.70, 0.22)))
+		else:
+			button.add_theme_stylebox_override(\"normal\", _button_style(Color(0.04, 0.16, 0.30), Color(0.36, 0.97, 1.0)))
+			button.add_theme_stylebox_override(\"hover\", _button_style(Color(0.06, 0.22, 0.40), Color(0.52, 1.0, 1.0)))
+			button.add_theme_stylebox_override(\"pressed\", _button_style(Color(0.03, 0.12, 0.24), Color(0.30, 0.82, 0.92)))
 
 
 func _make_label(text: String, font: Font, font_size: int, color: Color, outline_size: int, outline_color: Color) -> Label:
@@ -466,6 +508,17 @@ func _layout() -> void:
 	_start_button.set_position(btn_rect.position)
 	_start_button.set_size(btn_rect.size)
 
+	var difficulty_index := 0
+	for difficulty in [\"easy\", \"medium\", \"hard\"]:
+		if not _difficulty_buttons.has(difficulty):
+			continue
+		var difficulty_button := _difficulty_buttons[difficulty] as Button
+		var difficulty_rect: Rect2 = rect.call(318 + difficulty_index * 136, 500, 120, 42)
+		difficulty_button.set_position(difficulty_rect.position)
+		difficulty_button.set_size(difficulty_rect.size)
+		difficulty_button.add_theme_font_size_override(\"font_size\", maxi(12, int(18 * scale)))
+		difficulty_index += 1
+
 	_start_button.add_theme_font_size_override(\"font_size\", maxi(18, int(34 * scale)))
 	_title.label_settings.font_size = maxi(28, int(72 * scale))
 	_subtitle.label_settings.font_size = maxi(12, int(18 * scale))
@@ -483,6 +536,9 @@ func _update_highscore_display() -> void:
 func _start_game() -> void:
 	if _menu_audio:
 		_menu_audio.stop()
+	var game_settings := get_node_or_null(\"/root/GameSettings\")
+	if game_settings:
+		game_settings.call(\"set_difficulty\", _selected_difficulty)
 	get_tree().change_scene_to_file(GAME_SCENE)
 "
 
