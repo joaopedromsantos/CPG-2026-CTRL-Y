@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://bplx01h40baru"]
+
+[ext_resource type="PackedScene" uid="uid://ddhqhjs0vvh8k" path="res://assets/power-ups/magnifying_glass.glb" id="1_3l4cx"]
+[ext_resource type="Script" uid="uid://d28t031h6j4o4" path="res://scripts/loup.gd" id="2_cb5l4"]
+
+[node name="Power-ups" type="Node3D" unique_id=1343308291]
+
+[node name="loup" parent="." unique_id=1913424500 instance=ExtResource("1_3l4cx")]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -0.44443715, 0, -0.50380445)
+script = ExtResource("2_cb5l4")

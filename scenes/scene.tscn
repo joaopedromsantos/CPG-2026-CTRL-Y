@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://cx6l4gc7ehn4"]
+
+[ext_resource type="Script" uid="uid://bqumo2ef4qcs" path="res://scripts/cenario.gd" id="1_s6dok"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nxogm"]
+albedo_color = Color(2.0094587e-06, 0.2430836, 0.038256463, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3253y"]
+albedo_color = Color(0.0328558, 0.19970185, 0, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_u3cyc"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_m7jmp"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_y2354"]
+
+[node name="Scene" type="MeshInstance3D" unique_id=1798289629]
+transform = Transform3D(4.9999995, 0, 0, 0, 0.99999994, 0, 0, 0, 19.999998, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_nxogm")
+script = ExtResource("1_s6dok")
+
+[node name="Ground" type="MeshInstance3D" parent="." unique_id=1211942847]
+transform = Transform3D(20, 0, 0, 0, 0.2, 0, 0, 0, 25, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_3253y")
+mesh = SubResource("PlaneMesh_u3cyc")
+
+[node name="Road-left" type="MeshInstance3D" parent="." unique_id=1841020403]
+transform = Transform3D(2, 0, 0, 0, 0.1, 0, 0, 0, 25, -8, 0.1, 0)
+material_override = SubResource("StandardMaterial3D_m7jmp")
+mesh = SubResource("PlaneMesh_y2354")
+
+[node name="Road-right" type="MeshInstance3D" parent="." unique_id=750609326]
+transform = Transform3D(2, 0, 0, 0, 0.1, 0, 0, 0, 25, 8, 0.01, 0)
+material_override = SubResource("StandardMaterial3D_m7jmp")
+mesh = SubResource("PlaneMesh_y2354")
+
+[node name="Road-center" type="MeshInstance3D" parent="." unique_id=1029889291]
+transform = Transform3D(2, 0, 0, 0, 0.1, 0, 0, 0, 25, 0, 0.1, 0)
+material_override = SubResource("StandardMaterial3D_m7jmp")
+mesh = SubResource("PlaneMesh_y2354")
