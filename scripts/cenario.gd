@@ -14,6 +14,7 @@ var _lane_markers: Array[MeshInstance3D] = []
 var _mat_floor_light: StandardMaterial3D
 var _mat_floor_dark: StandardMaterial3D
 var _mat_lane: StandardMaterial3D
+var _rows_actual := 0
 
 
 func setup() -> void:
@@ -26,21 +27,25 @@ func setup() -> void:
 
 
 func tick(delta: float) -> void:
+	var depth := float(_rows_actual) * floor_tile_size
+
 	for tile in _floor_tiles:
 		tile.position.z += world_speed * delta
 		if tile.position.z > floor_front_z:
-			tile.position.z -= floor_rows * floor_tile_size
+			tile.position.z -= depth
 
 	for marker in _lane_markers:
 		marker.position.z += world_speed * delta
 		if marker.position.z > floor_front_z:
-			marker.position.z -= 26.0
+			marker.position.z -= depth
 
 
 func _build_materials() -> void:
-	_mat_floor_light = _make_material(Color(0.68, 0.72, 0.68), 0.7, 0.0)
-	_mat_floor_dark = _make_material(Color(0.14, 0.17, 0.2), 0.75, 0.0)
-	_mat_lane = _make_material(Color(1.0, 1.0, 1.0, 0.8), 0.55, 0.0)
+	# Match the environment background for the floor so it blends with the scene
+	var bg_color := Color(0.08, 0.1, 0.13)
+	_mat_floor_light = _make_material(bg_color, 0.9, 0.0)
+	_mat_floor_dark = _make_material(bg_color, 0.9, 0.0)
+	_mat_lane = _make_material(Color(1.0, 1.0, 1.0), 0.2, 0.0)
 
 
 func _make_material(color: Color, roughness: float, metallic: float) -> StandardMaterial3D:
@@ -55,12 +60,17 @@ func _build_floor() -> void:
 	var floor_mesh := BoxMesh.new()
 	floor_mesh.size = Vector3(floor_tile_size, 0.06, floor_tile_size)
 
+	# Compute how many rows are needed to fully cover visible area and have extra for wrapping
+	var visible_depth := floor_front_z - floor_back_z + floor_tile_size
+	var needed_rows := int(ceil(visible_depth / floor_tile_size))
+	_rows_actual = max(floor_rows, needed_rows + 1)
+
 	var start_x := -float(floor_cols - 1) * floor_tile_size * 0.5
-	for row in floor_rows:
-		for col in floor_cols:
+	for row in range(_rows_actual):
+		for col in range(floor_cols):
 			var tile := MeshInstance3D.new()
 			tile.mesh = floor_mesh
-			tile.material_override = _mat_floor_dark if (row + col) % 2 == 0 else _mat_floor_light
+			tile.material_override = _mat_floor_dark
 			tile.position = Vector3(
 				start_x + col * floor_tile_size,
 				-0.06,
@@ -71,16 +81,17 @@ func _build_floor() -> void:
 
 
 func _build_lane_markers() -> void:
+	# Create segmented white strips for each lane, one segment per floor tile row
 	var marker_mesh := BoxMesh.new()
-	marker_mesh.size = Vector3(0.08, 0.05, 0.95)
+	marker_mesh.size = Vector3(lane_width * 0.6, 0.02, floor_tile_size + 0.02)
 
-	for side in 2:
-		var x := -lane_width * 0.5 if side == 0 else lane_width * 0.5
-		for index in 10:
+	var lane_x := [-lane_width, 0.0, lane_width]
+	for x in lane_x:
+		for row in range(_rows_actual):
 			var marker := MeshInstance3D.new()
 			marker.mesh = marker_mesh
 			marker.material_override = _mat_lane
-			marker.position = Vector3(x, 0.03, floor_back_z + index * 2.6)
+			marker.position = Vector3(x, 0.01, floor_back_z + row * floor_tile_size)
 			add_child(marker)
 			_lane_markers.append(marker)
 
