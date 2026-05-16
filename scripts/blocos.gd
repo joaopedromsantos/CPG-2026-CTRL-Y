@@ -14,11 +14,14 @@ var _distance_since_spawn := 0.0
 var _block_rows: Array[Node3D] = []
 var _rng := RandomNumberGenerator.new()
 var _mat_block: StandardMaterial3D
+var _mat_block_correct: StandardMaterial3D
 var _mat_block_side: StandardMaterial3D
 var _mat_number: StandardMaterial3D
 var _block_mesh: ArrayMesh
 var _current_options: Array = []
 var _current_correct_answers: Array = []
+var _highlight_correct_answers := false
+var _auto_correct_rows := false
 
 
 func setup(lane_positions: Array[float]) -> void:
@@ -46,6 +49,17 @@ func set_equation_options(options: Array, correct_answers: Array) -> void:
 func set_equation(equation: Dictionary) -> void:
 	_current_options = equation.get("queued_options", equation.get("options", [])).duplicate()
 	_current_correct_answers = equation.get("correctAnswers", []).duplicate()
+
+
+func set_correct_answers_highlighted(enabled: bool) -> void:
+	_highlight_correct_answers = enabled
+	for row in _block_rows:
+		for block in row.get_children():
+			_apply_block_highlight(block as Node3D, bool(block.get_meta("answer_is_correct", false)))
+
+
+func set_auto_correct_rows(enabled: bool) -> void:
+	_auto_correct_rows = enabled
 
 
 func tick(delta: float, player_position: Vector3) -> void:
@@ -86,8 +100,10 @@ func _spawn_block_row() -> bool:
 		var option := options[lane_index] as Dictionary
 		var option_value := int(option.get("value", 0))
 		var block := _make_number_block(str(option_value))
+		var is_correct := bool(option.get("isCorrect", false))
 		block.set_meta("answer_value", option_value)
-		block.set_meta("answer_is_correct", bool(option.get("isCorrect", false)))
+		block.set_meta("answer_is_correct", is_correct)
+		_apply_block_highlight(block, is_correct)
 		block.position = Vector3(_lane_positions[lane_index], 1.2, 0.0)
 		row.add_child(block)
 
@@ -117,7 +133,12 @@ func _resolve_row(row: Node3D, player_position: Vector3) -> void:
 	var selected_answer := int(block.get_meta("answer_value", 0))
 	var option_is_correct := bool(block.get_meta("answer_is_correct", false))
 	var correct_answers := row.get_meta("correct_answers", _current_correct_answers) as Array
-	answer_selected.emit(option_is_correct or _contains_correct_answer(correct_answers, selected_answer), selected_answer)
+	if _auto_correct_rows:
+		if not correct_answers.is_empty():
+			selected_answer = int(correct_answers[0])
+		answer_selected.emit(true, selected_answer)
+	else:
+		answer_selected.emit(option_is_correct or _contains_correct_answer(correct_answers, selected_answer), selected_answer)
 	_block_rows.erase(row)
 	row.queue_free()
 
@@ -148,6 +169,14 @@ func _build_materials() -> void:
 	_mat_block.roughness = 0.42
 	_mat_block.cull_mode = BaseMaterial3D.CULL_DISABLED
 
+	_mat_block_correct = StandardMaterial3D.new()
+	_mat_block_correct.albedo_color = Color(0.18, 0.88, 0.36)
+	_mat_block_correct.emission_enabled = true
+	_mat_block_correct.emission = Color(0.12, 0.65, 0.28)
+	_mat_block_correct.emission_energy_multiplier = 0.45
+	_mat_block_correct.roughness = 0.35
+	_mat_block_correct.cull_mode = BaseMaterial3D.CULL_DISABLED
+
 	_mat_block_side = StandardMaterial3D.new()
 	_mat_block_side.albedo_color = Color(0.95, 0.48, 0.12)
 	_mat_block_side.roughness = 0.5
@@ -173,6 +202,20 @@ func _make_number_block(text: String) -> Node3D:
 	root.add_child(number)
 
 	return root
+
+
+func _apply_block_highlight(block: Node3D, is_correct: bool) -> void:
+	if block == null:
+		return
+
+	var mesh_instance := block.get_node_or_null("Bloco") as MeshInstance3D
+	if mesh_instance == null:
+		return
+
+	if _highlight_correct_answers and is_correct:
+		mesh_instance.set_surface_override_material(0, _mat_block_correct)
+	else:
+		mesh_instance.set_surface_override_material(0, _mat_block)
 
 
 func _make_text_mesh(text: String) -> Label3D:

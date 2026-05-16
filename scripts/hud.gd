@@ -13,6 +13,7 @@ extends Node2D
 	$CanvasLayer/RootControl/BottomCenterContainer/SlotsRow/Slot1/ContentLabel,
 	$CanvasLayer/RootControl/BottomCenterContainer/SlotsRow/Slot2/ContentLabel,
 	$CanvasLayer/RootControl/BottomCenterContainer/SlotsRow/Slot3/ContentLabel,
+	$CanvasLayer/RootControl/BottomCenterContainer/SlotsRow/Slot3/Slot4/ContentLabel,
 ]
 
 
@@ -51,12 +52,23 @@ const POWER_UP_TYPE_TO_SLOT_ICON := {
 }
 const FEEDBACK_COLOR_CORRECT := Color(0.2, 0.85, 0.3, 1.0)
 const FEEDBACK_COLOR_WRONG := Color(0.95, 0.2, 0.2, 1.0)
+const SLOT_ACTIVE_BORDER_COLOR := Color(0.2, 0.75, 1.0, 1.0)
+const SLOT_ACTIVE_SHADOW_COLOR := Color(0.2, 0.75, 1.0, 0.55)
+const SLOT_COUNTDOWN_FONT_COLOR := Color(1.0, 1.0, 1.0, 1.0)
+const SLOT_COUNTDOWN_OUTLINE_COLOR := Color(0.0, 0.0, 0.0, 0.9)
+const SLOT_ICON_ACTIVE_MODULATE := Color(0.35, 0.35, 0.35, 1.0)
+const SLOT_ICON_INACTIVE_MODULATE := Color(1.0, 1.0, 1.0, 1.0)
+const RESERVE_SLOT_INDEX := 3
 
 var timer := GameTimer.new()
 var _current_equation: Dictionary = {}
 var _feedback_tween: Tween
 var _last_lives := -1
 var _slot_icon_rects: Array[TextureRect] = []
+var _slot_panels: Array[Panel] = []
+var _slot_default_styles: Array[StyleBox] = []
+var _slot_active_styles: Array[StyleBoxFlat] = []
+var _slot_countdown_labels: Array[Label] = []
 
 
 func _ready() -> void:
@@ -123,20 +135,61 @@ func _play_heart_lost_animation(heart: TextureRect) -> void:
 
 func _setup_power_up_slot_icons() -> void:
 	_slot_icon_rects.clear()
+	_slot_panels.clear()
+	_slot_default_styles.clear()
+	_slot_active_styles.clear()
+	_slot_countdown_labels.clear()
 	for label in slot_labels:
 		label.visible = false
+		var panel := label.get_parent() as Panel
+		var is_reserve_slot := _slot_panels.size() == RESERVE_SLOT_INDEX
+		if is_reserve_slot:
+			panel.z_index = 20
+		var key_label := panel.get_node_or_null("KeyLabel") as Label
+		if key_label:
+			key_label.z_index = 10
+		_slot_panels.append(panel)
+		_slot_default_styles.append(panel.get_theme_stylebox("panel"))
+		_slot_active_styles.append(_make_active_slot_style(panel.get_theme_stylebox("panel")))
+
 		var icon := TextureRect.new()
 		icon.name = "PowerUpIcon"
 		icon.set_anchors_preset(Control.PRESET_FULL_RECT)
-		icon.offset_left = 16.0
-		icon.offset_top = 12.0
-		icon.offset_right = -16.0
-		icon.offset_bottom = -12.0
+		if is_reserve_slot:
+			icon.offset_left = 5.0
+			icon.offset_top = 5.0
+			icon.offset_right = -5.0
+			icon.offset_bottom = -5.0
+		else:
+			icon.offset_left = 16.0
+			icon.offset_top = 12.0
+			icon.offset_right = -16.0
+			icon.offset_bottom = -12.0
 		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		label.get_parent().add_child(icon)
 		_slot_icon_rects.append(icon)
+
+		var countdown := Label.new()
+		countdown.name = "PowerUpCountdown"
+		countdown.visible = false
+		countdown.set_anchors_preset(Control.PRESET_FULL_RECT)
+		countdown.offset_left = 0.0
+		countdown.offset_top = 0.0
+		countdown.offset_right = 0.0
+		countdown.offset_bottom = 0.0
+		countdown.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		countdown.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		countdown.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		countdown.add_theme_font_size_override("font_size", 38)
+		countdown.add_theme_color_override("font_color", SLOT_COUNTDOWN_FONT_COLOR)
+		countdown.add_theme_color_override("font_outline_color", SLOT_COUNTDOWN_OUTLINE_COLOR)
+		countdown.add_theme_constant_override("outline_size", 8)
+		if label.has_theme_font("font"):
+			countdown.add_theme_font_override("font", label.get_theme_font("font"))
+		label.get_parent().add_child(countdown)
+		_slot_countdown_labels.append(countdown)
 
 
 func on_power_up_slots_change(slots: Array) -> void:
@@ -145,12 +198,42 @@ func on_power_up_slots_change(slots: Array) -> void:
 		if i < slots.size():
 			type = String(slots[i])
 		_slot_icon_rects[i].texture = _power_up_display(type)
+		if type == "":
+			on_power_up_slot_active_changed(i, "", 0.0, 0.0, false)
+
+
+func on_power_up_slot_active_changed(slot: int, _type: String, remaining: float, _duration: float, active: bool) -> void:
+	if slot < 0 or slot >= _slot_countdown_labels.size():
+		return
+
+	_slot_panels[slot].add_theme_stylebox_override(
+		"panel",
+		_slot_active_styles[slot] if active else _slot_default_styles[slot]
+	)
+	_slot_countdown_labels[slot].visible = active
+	_slot_icon_rects[slot].modulate = SLOT_ICON_ACTIVE_MODULATE if active else SLOT_ICON_INACTIVE_MODULATE
+	if active:
+		_slot_countdown_labels[slot].text = "%d" % [maxi(0, ceili(remaining))]
 
 
 func _power_up_display(type: String) -> Texture2D:
 	var slot_icon := int(POWER_UP_TYPE_TO_SLOT_ICON.get(type, -1))
 	return POWER_UP_SLOT_TEXTURES.get(slot_icon, null) as Texture2D
 
+
+func _make_active_slot_style(base_style: StyleBox) -> StyleBoxFlat:
+	var style := base_style.duplicate(true) as StyleBoxFlat
+	if style == null:
+		style = StyleBoxFlat.new()
+	style.border_width_left = maxi(style.border_width_left, 5)
+	style.border_width_top = maxi(style.border_width_top, 5)
+	style.border_width_right = maxi(style.border_width_right, 5)
+	style.border_width_bottom = maxi(style.border_width_bottom, 5)
+	style.border_color = SLOT_ACTIVE_BORDER_COLOR
+	style.shadow_color = SLOT_ACTIVE_SHADOW_COLOR
+	style.shadow_size = maxi(style.shadow_size, 12)
+	style.shadow_offset = Vector2.ZERO
+	return style
 
 func on_restart_game() -> void:
 	endgame_overlay.visible = false
