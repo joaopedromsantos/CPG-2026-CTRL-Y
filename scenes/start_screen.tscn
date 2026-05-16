@@ -39,8 +39,8 @@ class StartArt:
 		draw_rect(Rect2(Vector2(xf.call(830), yf.call(18)), Vector2(180 * scale, 100 * scale)), Color(0.05, 0.08, 0.11, 0.55))
 		_draw_energy(pf, scale)
 		_draw_robot(xf, yf, pf, scale)
-		_draw_number_tile(pf.call(350, 326), \"7\", scale)
-		_draw_number_tile(pf.call(678, 326), \"5\", scale)
+		_draw_number_tile(pf.call(350, 326), \"6\", scale)
+		_draw_number_tile(pf.call(678, 326), \"7\", scale)
 		_draw_trophy(pf.call(966, 82), scale)
 		draw_rect(Rect2(Vector2.ZERO, s), Color(1.0, 1.0, 1.0, 0.10))
 
