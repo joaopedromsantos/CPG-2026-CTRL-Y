@@ -1,7 +1,7 @@
 extends Node3D
 @onready var hud = $HUD
 
-signal game_over
+signal game_over(score: int)
 signal restart_game
 signal score_event
 signal lives_event
@@ -51,6 +51,8 @@ func _ready() -> void:
 	score_event.connect(hud.on_score_change)
 	lives_event.connect(hud.on_lives_change)
 	hud.pause_event.connect(_on_hud_pause_event)
+	hud.restart_event.connect(_restart)
+	hud.quit_event.connect(_on_hud_quit_event)
 	_blocos.answer_selected.connect(_on_blocos_answer_selected)
 	_restart()
 
@@ -180,9 +182,11 @@ func _end_game() -> void:
 	_is_game_over = true
 	_snd_game.stop()
 	_snd_punch.stop()
+	_snd_correct.stop()
+	_snd_wrong.stop()
 	_snd_lose.play()
 	_player.die()
-	game_over.emit()
+	game_over.emit(int(_score))
 
 
 func _on_hud_pause_event() -> void:
@@ -193,6 +197,10 @@ func _on_hud_pause_event() -> void:
 		_resume()
 	else:
 		_pause()
+
+
+func _on_hud_quit_event() -> void:
+	get_tree().quit()
 
 
 func _pause() -> void:

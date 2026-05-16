@@ -1,0 +1,271 @@
+[gd_scene format=3]
+
+[ext_resource type="FontFile" uid="uid://cnt7bgrpab5pp" path="res://assets/fonts/fredoka/Fredoka-SemiBold.ttf" id="1_fredoka"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_endgame_panel"]
+bg_color = Color(0.08, 0.18, 0.36, 0.96)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(1, 0.72, 0.22, 1)
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_size = 18
+shadow_offset = Vector2(0, 8)
+content_margin_left = 34
+content_margin_top = 30
+content_margin_right = 34
+content_margin_bottom = 30
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_stat_panel"]
+bg_color = Color(1, 0.94, 0.72, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.95, 0.48, 0.12, 1)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+content_margin_left = 18
+content_margin_top = 12
+content_margin_right = 18
+content_margin_bottom = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_restart_normal"]
+bg_color = Color(0.2, 0.8, 0.22, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.7, 1, 0.34, 1)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_restart_hover"]
+bg_color = Color(0.24, 0.88, 0.27, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.78, 1, 0.4, 1)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_restart_pressed"]
+bg_color = Color(0.12, 0.64, 0.17, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.55, 0.88, 0.25, 1)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_quit_normal"]
+bg_color = Color(0.88, 0.18, 0.18, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 0.58, 0.32, 1)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_quit_hover"]
+bg_color = Color(0.98, 0.24, 0.2, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 0.68, 0.38, 1)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_quit_pressed"]
+bg_color = Color(0.62, 0.1, 0.12, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.86, 0.42, 0.22, 1)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+
+[node name="EndGameOverlay" type="Control"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+
+[node name="Dim" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.02, 0.04, 0.08, 0.68)
+
+[node name="Panel" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -330.0
+offset_top = -224.0
+offset_right = 330.0
+offset_bottom = 224.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_endgame_panel")
+
+[node name="Content" type="VBoxContainer" parent="Panel"]
+layout_mode = 2
+theme_override_constants/separation = 18
+alignment = 1
+
+[node name="Title" type="Label" parent="Panel/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.92, 0.26, 1)
+theme_override_colors/font_outline_color = Color(0.35, 0.05, 0.05, 1)
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("1_fredoka")
+theme_override_font_sizes/font_size = 56
+text = "Você morreu!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Subtitle" type="Label" parent="Panel/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0.12, 0.28, 0.55, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("1_fredoka")
+theme_override_font_sizes/font_size = 28
+text = "Fim da corrida"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StatsRow" type="HBoxContainer" parent="Panel/Content"]
+layout_mode = 2
+theme_override_constants/separation = 18
+alignment = 1
+
+[node name="ScoreStat" type="PanelContainer" parent="Panel/Content/StatsRow"]
+custom_minimum_size = Vector2(220, 112)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_stat_panel")
+
+[node name="ScoreContent" type="VBoxContainer" parent="Panel/Content/StatsRow/ScoreStat"]
+layout_mode = 2
+theme_override_constants/separation = 2
+alignment = 1
+
+[node name="ScoreTitle" type="Label" parent="Panel/Content/StatsRow/ScoreStat/ScoreContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.52, 0.18, 0.06, 1)
+theme_override_fonts/font = ExtResource("1_fredoka")
+theme_override_font_sizes/font_size = 20
+text = "ACERTOS"
+horizontal_alignment = 1
+
+[node name="ScoreValue" type="Label" parent="Panel/Content/StatsRow/ScoreStat/ScoreContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.08, 0.08, 0.08, 1)
+theme_override_fonts/font = ExtResource("1_fredoka")
+theme_override_font_sizes/font_size = 46
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TimeStat" type="PanelContainer" parent="Panel/Content/StatsRow"]
+custom_minimum_size = Vector2(220, 112)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_stat_panel")
+
+[node name="TimeContent" type="VBoxContainer" parent="Panel/Content/StatsRow/TimeStat"]
+layout_mode = 2
+theme_override_constants/separation = 2
+alignment = 1
+
+[node name="TimeTitle" type="Label" parent="Panel/Content/StatsRow/TimeStat/TimeContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.52, 0.18, 0.06, 1)
+theme_override_fonts/font = ExtResource("1_fredoka")
+theme_override_font_sizes/font_size = 20
+text = "TEMPO"
+horizontal_alignment = 1
+
+[node name="TimeValue" type="Label" parent="Panel/Content/StatsRow/TimeStat/TimeContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.08, 0.08, 0.08, 1)
+theme_override_fonts/font = ExtResource("1_fredoka")
+theme_override_font_sizes/font_size = 46
+text = "00:00"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ButtonsRow" type="HBoxContainer" parent="Panel/Content"]
+layout_mode = 2
+theme_override_constants/separation = 18
+alignment = 1
+
+[node name="RestartButton" type="Button" parent="Panel/Content/ButtonsRow"]
+custom_minimum_size = Vector2(220, 72)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.22, 0.06, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("1_fredoka")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/normal = SubResource("StyleBoxFlat_restart_normal")
+theme_override_styles/hover = SubResource("StyleBoxFlat_restart_hover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_restart_pressed")
+text = "Tentar novamente"
+
+[node name="QuitButton" type="Button" parent="Panel/Content/ButtonsRow"]
+custom_minimum_size = Vector2(220, 72)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0.32, 0.02, 0.02, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("1_fredoka")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/normal = SubResource("StyleBoxFlat_quit_normal")
+theme_override_styles/hover = SubResource("StyleBoxFlat_quit_hover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_quit_pressed")
+text = "Sair do jogo"
