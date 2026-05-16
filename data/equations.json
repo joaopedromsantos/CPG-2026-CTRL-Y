@@ -1,0 +1,1404 @@
+{
+  "equacoes": [
+    {
+      "id": 1,
+      "nivel": "facil",
+      "op": "+",
+      "equacao": "1 + ? = 13",
+      "resposta": 12
+    },
+    {
+      "id": 2,
+      "nivel": "facil",
+      "op": "-",
+      "equacao": "? - 3 = 9",
+      "resposta": 12
+    },
+    {
+      "id": 3,
+      "nivel": "facil",
+      "op": "+",
+      "equacao": "? + 12 = 23",
+      "resposta": 11
+    },
+    {
+      "id": 4,
+      "nivel": "facil",
+      "op": "+",
+      "equacao": "10 + 7 = ?",
+      "resposta": 17
+    },
+    {
+      "id": 5,
+      "nivel": "facil",
+      "op": "+",
+      "equacao": "2 + 4 = ?",
+      "resposta": 6
+    },
+    {
+      "id": 6,
+      "nivel": "facil",
+      "op": "+",
+      "equacao": "? + 4 = 13",
+      "resposta": 9
+    },
+    {
+      "id": 7,
+      "nivel": "facil",
+      "op": "/",
+      "equacao": "? / 5 = 9",
+      "resposta": 45
+    },
+    {
+      "id": 8,
+      "nivel": "facil",
+      "op": "*",
+      "equacao": "? * 4 = 8",
+      "resposta": 2
+    },
+    {
+      "id": 9,
+      "nivel": "facil",
+      "op": "/",
+      "equacao": "42 / 7 = ?",
+      "resposta": 6
+    },
+    {
+      "id": 10,
+      "nivel": "facil",
+      "op": "-",
+      "equacao": "15 - 2 = ?",
+      "resposta": 13
+    },
+    {
+      "id": 11,
+      "nivel": "facil",
+      "op": "/",
+      "equacao": "21 / ? = 7",
+      "resposta": 3
+    },
+    {
+      "id": 12,
+      "nivel": "facil",
+      "op": "*",
+      "equacao": "? * 9 = 18",
+      "resposta": 2
+    },
+    {
+      "id": 13,
+      "nivel": "facil",
+      "op": "+",
+      "equacao": "? + 2 = 9",
+      "resposta": 7
+    },
+    {
+      "id": 14,
+      "nivel": "facil",
+      "op": "*",
+      "equacao": "? * 5 = 35",
+      "resposta": 7
+    },
+    {
+      "id": 15,
+      "nivel": "facil",
+      "op": "+",
+      "equacao": "1 + 11 = ?",
+      "resposta": 12
+    },
+    {
+      "id": 16,
+      "nivel": "facil",
+      "op": "*",
+      "equacao": "3 * 5 = ?",
+      "resposta": 15
+    },
+    {
+      "id": 17,
+      "nivel": "facil",
+      "op": "/",
+      "equacao": "? / 6 = 9",
+      "resposta": 54
+    },
+    {
+      "id": 18,
+      "nivel": "facil",
+      "op": "*",
+      "equacao": "4 * ? = 28",
+      "resposta": 7
+    },
+    {
+      "id": 19,
+      "nivel": "facil",
+      "op": "-",
+      "equacao": "? - 12 = 1",
+      "resposta": 13
+    },
+    {
+      "id": 20,
+      "nivel": "facil",
+      "op": "+",
+      "equacao": "10 + 11 = ?",
+      "resposta": 21
+    },
+    {
+      "id": 21,
+      "nivel": "facil",
+      "op": "-",
+      "equacao": "10 - ? = 2",
+      "resposta": 8
+    },
+    {
+      "id": 22,
+      "nivel": "facil",
+      "op": "*",
+      "equacao": "? * 5 = 50",
+      "resposta": 10
+    },
+    {
+      "id": 23,
+      "nivel": "facil",
+      "op": "*",
+      "equacao": "2 * 5 = ?",
+      "resposta": 10
+    },
+    {
+      "id": 24,
+      "nivel": "facil",
+      "op": "*",
+      "equacao": "8 * 6 = ?",
+      "resposta": 48
+    },
+    {
+      "id": 25,
+      "nivel": "facil",
+      "op": "-",
+      "equacao": "23 - ? = 11",
+      "resposta": 12
+    },
+    {
+      "id": 26,
+      "nivel": "facil",
+      "op": "-",
+      "equacao": "25 - ? = 17",
+      "resposta": 8
+    },
+    {
+      "id": 27,
+      "nivel": "facil",
+      "op": "/",
+      "equacao": "24 / 4 = ?",
+      "resposta": 6
+    },
+    {
+      "id": 28,
+      "nivel": "facil",
+      "op": "-",
+      "equacao": "22 - ? = 13",
+      "resposta": 9
+    },
+    {
+      "id": 29,
+      "nivel": "facil",
+      "op": "/",
+      "equacao": "56 / 8 = ?",
+      "resposta": 7
+    },
+    {
+      "id": 30,
+      "nivel": "facil",
+      "op": "-",
+      "equacao": "21 - 8 = ?",
+      "resposta": 13
+    },
+    {
+      "id": 31,
+      "nivel": "facil",
+      "op": "+",
+      "equacao": "? + 3 = 5",
+      "resposta": 2
+    },
+    {
+      "id": 32,
+      "nivel": "facil",
+      "op": "-",
+      "equacao": "18 - 10 = ?",
+      "resposta": 8
+    },
+    {
+      "id": 33,
+      "nivel": "facil",
+      "op": "/",
+      "equacao": "? / 8 = 9",
+      "resposta": 72
+    },
+    {
+      "id": 34,
+      "nivel": "facil",
+      "op": "*",
+      "equacao": "? * 2 = 20",
+      "resposta": 10
+    },
+    {
+      "id": 35,
+      "nivel": "facil",
+      "op": "+",
+      "equacao": "11 + ? = 20",
+      "resposta": 9
+    },
+    {
+      "id": 36,
+      "nivel": "facil",
+      "op": "*",
+      "equacao": "3 * ? = 18",
+      "resposta": 6
+    },
+    {
+      "id": 37,
+      "nivel": "facil",
+      "op": "-",
+      "equacao": "? - 1 = 18",
+      "resposta": 19
+    },
+    {
+      "id": 38,
+      "nivel": "facil",
+      "op": "*",
+      "equacao": "? * 4 = 40",
+      "resposta": 10
+    },
+    {
+      "id": 39,
+      "nivel": "facil",
+      "op": "+",
+      "equacao": "? + 5 = 16",
+      "resposta": 11
+    },
+    {
+      "id": 40,
+      "nivel": "facil",
+      "op": "-",
+      "equacao": "9 - 6 = ?",
+      "resposta": 3
+    },
+    {
+      "id": 41,
+      "nivel": "facil",
+      "op": "+",
+      "equacao": "10 + ? = 16",
+      "resposta": 6
+    },
+    {
+      "id": 42,
+      "nivel": "facil",
+      "op": "+",
+      "equacao": "2 + ? = 8",
+      "resposta": 6
+    },
+    {
+      "id": 43,
+      "nivel": "facil",
+      "op": "-",
+      "equacao": "? - 2 = 4",
+      "resposta": 6
+    },
+    {
+      "id": 44,
+      "nivel": "facil",
+      "op": "+",
+      "equacao": "2 + ? = 14",
+      "resposta": 12
+    },
+    {
+      "id": 45,
+      "nivel": "facil",
+      "op": "+",
+      "equacao": "9 + 3 = ?",
+      "resposta": 12
+    },
+    {
+      "id": 46,
+      "nivel": "facil",
+      "op": "/",
+      "equacao": "40 / ? = 4",
+      "resposta": 10
+    },
+    {
+      "id": 47,
+      "nivel": "facil",
+      "op": "/",
+      "equacao": "? / 5 = 10",
+      "resposta": 50
+    },
+    {
+      "id": 48,
+      "nivel": "facil",
+      "op": "-",
+      "equacao": "? - 7 = 7",
+      "resposta": 14
+    },
+    {
+      "id": 49,
+      "nivel": "facil",
+      "op": "*",
+      "equacao": "9 * ? = 90",
+      "resposta": 10
+    },
+    {
+      "id": 50,
+      "nivel": "facil",
+      "op": "+",
+      "equacao": "4 + 4 = ?",
+      "resposta": 8
+    },
+    {
+      "id": 51,
+      "nivel": "facil",
+      "op": "*",
+      "equacao": "2 * 10 = ?",
+      "resposta": 20
+    },
+    {
+      "id": 52,
+      "nivel": "facil",
+      "op": "-",
+      "equacao": "? - 1 = 4",
+      "resposta": 5
+    },
+    {
+      "id": 53,
+      "nivel": "facil",
+      "op": "+",
+      "equacao": "4 + 2 = ?",
+      "resposta": 6
+    },
+    {
+      "id": 54,
+      "nivel": "facil",
+      "op": "*",
+      "equacao": "3 * 10 = ?",
+      "resposta": 30
+    },
+    {
+      "id": 55,
+      "nivel": "facil",
+      "op": "*",
+      "equacao": "? * 5 = 45",
+      "resposta": 9
+    },
+    {
+      "id": 56,
+      "nivel": "facil",
+      "op": "-",
+      "equacao": "23 - ? = 13",
+      "resposta": 10
+    },
+    {
+      "id": 57,
+      "nivel": "facil",
+      "op": "-",
+      "equacao": "20 - 7 = ?",
+      "resposta": 13
+    },
+    {
+      "id": 58,
+      "nivel": "facil",
+      "op": "+",
+      "equacao": "2 + ? = 13",
+      "resposta": 11
+    },
+    {
+      "id": 59,
+      "nivel": "facil",
+      "op": "*",
+      "equacao": "8 * ? = 64",
+      "resposta": 8
+    },
+    {
+      "id": 60,
+      "nivel": "facil",
+      "op": "+",
+      "equacao": "? + 11 = 22",
+      "resposta": 11
+    },
+    {
+      "id": 61,
+      "nivel": "facil",
+      "op": "+",
+      "equacao": "? + 7 = 8",
+      "resposta": 1
+    },
+    {
+      "id": 62,
+      "nivel": "facil",
+      "op": "-",
+      "equacao": "22 - 8 = ?",
+      "resposta": 14
+    },
+    {
+      "id": 63,
+      "nivel": "facil",
+      "op": "/",
+      "equacao": "24 / ? = 6",
+      "resposta": 4
+    },
+    {
+      "id": 64,
+      "nivel": "facil",
+      "op": "-",
+      "equacao": "? - 4 = 3",
+      "resposta": 7
+    },
+    {
+      "id": 65,
+      "nivel": "facil",
+      "op": "+",
+      "equacao": "? + 11 = 12",
+      "resposta": 1
+    },
+    {
+      "id": 66,
+      "nivel": "facil",
+      "op": "/",
+      "equacao": "81 / 9 = ?",
+      "resposta": 9
+    },
+    {
+      "id": 67,
+      "nivel": "facil",
+      "op": "/",
+      "equacao": "8 / ? = 4",
+      "resposta": 2
+    },
+    {
+      "id": 68,
+      "nivel": "facil",
+      "op": "+",
+      "equacao": "7 + ? = 12",
+      "resposta": 5
+    },
+    {
+      "id": 69,
+      "nivel": "facil",
+      "op": "*",
+      "equacao": "? * 10 = 80",
+      "resposta": 8
+    },
+    {
+      "id": 70,
+      "nivel": "facil",
+      "op": "/",
+      "equacao": "20 / ? = 5",
+      "resposta": 4
+    },
+    {
+      "id": 71,
+      "nivel": "medio",
+      "op": "-",
+      "equacao": "? - 28 = 9",
+      "resposta": 37
+    },
+    {
+      "id": 72,
+      "nivel": "medio",
+      "op": "+",
+      "equacao": "55 + 13 = ?",
+      "resposta": 68
+    },
+    {
+      "id": 73,
+      "nivel": "medio",
+      "op": "/",
+      "equacao": "120 / 12 = ?",
+      "resposta": 10
+    },
+    {
+      "id": 74,
+      "nivel": "medio",
+      "op": "+",
+      "equacao": "? + 14 = 52",
+      "resposta": 38
+    },
+    {
+      "id": 75,
+      "nivel": "medio",
+      "op": "+",
+      "equacao": "45 + 35 = ?",
+      "resposta": 80
+    },
+    {
+      "id": 76,
+      "nivel": "medio",
+      "op": "-",
+      "equacao": "104 - 86 = ?",
+      "resposta": 18
+    },
+    {
+      "id": 77,
+      "nivel": "medio",
+      "op": "+",
+      "equacao": "? + 52 = 120",
+      "resposta": 68
+    },
+    {
+      "id": 78,
+      "nivel": "medio",
+      "op": "*",
+      "equacao": "? * 8 = 80",
+      "resposta": 10
+    },
+    {
+      "id": 79,
+      "nivel": "medio",
+      "op": "*",
+      "equacao": "9 * ? = 81",
+      "resposta": 9
+    },
+    {
+      "id": 80,
+      "nivel": "medio",
+      "op": "-",
+      "equacao": "115 - ? = 67",
+      "resposta": 48
+    },
+    {
+      "id": 81,
+      "nivel": "medio",
+      "op": "*",
+      "equacao": "18 * 6 = ?",
+      "resposta": 108
+    },
+    {
+      "id": 82,
+      "nivel": "medio",
+      "op": "/",
+      "equacao": "104 / 13 = ?",
+      "resposta": 8
+    },
+    {
+      "id": 83,
+      "nivel": "medio",
+      "op": "-",
+      "equacao": "94 - 43 = ?",
+      "resposta": 51
+    },
+    {
+      "id": 84,
+      "nivel": "medio",
+      "op": "*",
+      "equacao": "7 * ? = 56",
+      "resposta": 8
+    },
+    {
+      "id": 85,
+      "nivel": "medio",
+      "op": "*",
+      "equacao": "? * 12 = 96",
+      "resposta": 8
+    },
+    {
+      "id": 86,
+      "nivel": "medio",
+      "op": "*",
+      "equacao": "? * 15 = 225",
+      "resposta": 15
+    },
+    {
+      "id": 87,
+      "nivel": "medio",
+      "op": "+",
+      "equacao": "? + 69 = 122",
+      "resposta": 53
+    },
+    {
+      "id": 88,
+      "nivel": "medio",
+      "op": "+",
+      "equacao": "32 + 26 = ?",
+      "resposta": 58
+    },
+    {
+      "id": 89,
+      "nivel": "medio",
+      "op": "+",
+      "equacao": "34 + ? = 61",
+      "resposta": 27
+    },
+    {
+      "id": 90,
+      "nivel": "medio",
+      "op": "-",
+      "equacao": "121 - 53 = ?",
+      "resposta": 68
+    },
+    {
+      "id": 91,
+      "nivel": "medio",
+      "op": "*",
+      "equacao": "14 * ? = 168",
+      "resposta": 12
+    },
+    {
+      "id": 92,
+      "nivel": "medio",
+      "op": "+",
+      "equacao": "26 + ? = 76",
+      "resposta": 50
+    },
+    {
+      "id": 93,
+      "nivel": "medio",
+      "op": "*",
+      "equacao": "6 * ? = 30",
+      "resposta": 5
+    },
+    {
+      "id": 94,
+      "nivel": "medio",
+      "op": "-",
+      "equacao": "111 - 43 = ?",
+      "resposta": 68
+    },
+    {
+      "id": 95,
+      "nivel": "medio",
+      "op": "/",
+      "equacao": "? / 12 = 18",
+      "resposta": 216
+    },
+    {
+      "id": 96,
+      "nivel": "medio",
+      "op": "+",
+      "equacao": "? + 14 = 43",
+      "resposta": 29
+    },
+    {
+      "id": 97,
+      "nivel": "medio",
+      "op": "-",
+      "equacao": "99 - ? = 85",
+      "resposta": 14
+    },
+    {
+      "id": 98,
+      "nivel": "medio",
+      "op": "-",
+      "equacao": "85 - 26 = ?",
+      "resposta": 59
+    },
+    {
+      "id": 99,
+      "nivel": "medio",
+      "op": "*",
+      "equacao": "11 * ? = 55",
+      "resposta": 5
+    },
+    {
+      "id": 100,
+      "nivel": "medio",
+      "op": "-",
+      "equacao": "? - 41 = 76",
+      "resposta": 117
+    },
+    {
+      "id": 101,
+      "nivel": "medio",
+      "op": "+",
+      "equacao": "? + 59 = 119",
+      "resposta": 60
+    },
+    {
+      "id": 102,
+      "nivel": "medio",
+      "op": "/",
+      "equacao": "117 / 13 = ?",
+      "resposta": 9
+    },
+    {
+      "id": 103,
+      "nivel": "medio",
+      "op": "-",
+      "equacao": "132 - ? = 100",
+      "resposta": 32
+    },
+    {
+      "id": 104,
+      "nivel": "medio",
+      "op": "+",
+      "equacao": "37 + ? = 94",
+      "resposta": 57
+    },
+    {
+      "id": 105,
+      "nivel": "medio",
+      "op": "/",
+      "equacao": "192 / ? = 12",
+      "resposta": 16
+    },
+    {
+      "id": 106,
+      "nivel": "medio",
+      "op": "-",
+      "equacao": "130 - ? = 107",
+      "resposta": 23
+    },
+    {
+      "id": 107,
+      "nivel": "medio",
+      "op": "+",
+      "equacao": "75 + 24 = ?",
+      "resposta": 99
+    },
+    {
+      "id": 108,
+      "nivel": "medio",
+      "op": "/",
+      "equacao": "126 / 9 = ?",
+      "resposta": 14
+    },
+    {
+      "id": 109,
+      "nivel": "medio",
+      "op": "-",
+      "equacao": "33 - 31 = ?",
+      "resposta": 2
+    },
+    {
+      "id": 110,
+      "nivel": "medio",
+      "op": "/",
+      "equacao": "117 / 9 = ?",
+      "resposta": 13
+    },
+    {
+      "id": 111,
+      "nivel": "medio",
+      "op": "*",
+      "equacao": "? * 15 = 165",
+      "resposta": 11
+    },
+    {
+      "id": 112,
+      "nivel": "medio",
+      "op": "/",
+      "equacao": "210 / 14 = ?",
+      "resposta": 15
+    },
+    {
+      "id": 113,
+      "nivel": "medio",
+      "op": "+",
+      "equacao": "? + 21 = 69",
+      "resposta": 48
+    },
+    {
+      "id": 114,
+      "nivel": "medio",
+      "op": "*",
+      "equacao": "? * 6 = 36",
+      "resposta": 6
+    },
+    {
+      "id": 115,
+      "nivel": "medio",
+      "op": "/",
+      "equacao": "135 / ? = 15",
+      "resposta": 9
+    },
+    {
+      "id": 116,
+      "nivel": "medio",
+      "op": "+",
+      "equacao": "? + 67 = 131",
+      "resposta": 64
+    },
+    {
+      "id": 117,
+      "nivel": "medio",
+      "op": "-",
+      "equacao": "? - 12 = 50",
+      "resposta": 62
+    },
+    {
+      "id": 118,
+      "nivel": "medio",
+      "op": "/",
+      "equacao": "44 / ? = 11",
+      "resposta": 4
+    },
+    {
+      "id": 119,
+      "nivel": "medio",
+      "op": "/",
+      "equacao": "? / 5 = 15",
+      "resposta": 75
+    },
+    {
+      "id": 120,
+      "nivel": "medio",
+      "op": "*",
+      "equacao": "? * 6 = 96",
+      "resposta": 16
+    },
+    {
+      "id": 121,
+      "nivel": "medio",
+      "op": "*",
+      "equacao": "? * 9 = 126",
+      "resposta": 14
+    },
+    {
+      "id": 122,
+      "nivel": "medio",
+      "op": "/",
+      "equacao": "? / 9 = 17",
+      "resposta": 153
+    },
+    {
+      "id": 123,
+      "nivel": "medio",
+      "op": "*",
+      "equacao": "14 * 7 = ?",
+      "resposta": 98
+    },
+    {
+      "id": 124,
+      "nivel": "medio",
+      "op": "/",
+      "equacao": "? / 14 = 17",
+      "resposta": 238
+    },
+    {
+      "id": 125,
+      "nivel": "medio",
+      "op": "-",
+      "equacao": "108 - ? = 26",
+      "resposta": 82
+    },
+    {
+      "id": 126,
+      "nivel": "medio",
+      "op": "/",
+      "equacao": "60 / ? = 5",
+      "resposta": 12
+    },
+    {
+      "id": 127,
+      "nivel": "medio",
+      "op": "*",
+      "equacao": "? * 11 = 99",
+      "resposta": 9
+    },
+    {
+      "id": 128,
+      "nivel": "medio",
+      "op": "*",
+      "equacao": "13 * ? = 156",
+      "resposta": 12
+    },
+    {
+      "id": 129,
+      "nivel": "medio",
+      "op": "-",
+      "equacao": "? - 70 = 25",
+      "resposta": 95
+    },
+    {
+      "id": 130,
+      "nivel": "medio",
+      "op": "-",
+      "equacao": "114 - ? = 94",
+      "resposta": 20
+    },
+    {
+      "id": 131,
+      "nivel": "medio",
+      "op": "*",
+      "equacao": "? * 8 = 56",
+      "resposta": 7
+    },
+    {
+      "id": 132,
+      "nivel": "medio",
+      "op": "*",
+      "equacao": "9 * 8 = ?",
+      "resposta": 72
+    },
+    {
+      "id": 133,
+      "nivel": "medio",
+      "op": "+",
+      "equacao": "20 + ? = 45",
+      "resposta": 25
+    },
+    {
+      "id": 134,
+      "nivel": "medio",
+      "op": "+",
+      "equacao": "? + 36 = 109",
+      "resposta": 73
+    },
+    {
+      "id": 135,
+      "nivel": "medio",
+      "op": "-",
+      "equacao": "121 - ? = 62",
+      "resposta": 59
+    },
+    {
+      "id": 136,
+      "nivel": "medio",
+      "op": "/",
+      "equacao": "? / 7 = 9",
+      "resposta": 63
+    },
+    {
+      "id": 137,
+      "nivel": "medio",
+      "op": "+",
+      "equacao": "28 + ? = 87",
+      "resposta": 59
+    },
+    {
+      "id": 138,
+      "nivel": "medio",
+      "op": "-",
+      "equacao": "52 - ? = 9",
+      "resposta": 43
+    },
+    {
+      "id": 139,
+      "nivel": "medio",
+      "op": "+",
+      "equacao": "46 + 68 = ?",
+      "resposta": 114
+    },
+    {
+      "id": 140,
+      "nivel": "medio",
+      "op": "/",
+      "equacao": "? / 6 = 19",
+      "resposta": 114
+    },
+    {
+      "id": 141,
+      "nivel": "dificil",
+      "op": "*",
+      "equacao": "26 * ? = 624",
+      "resposta": 24
+    },
+    {
+      "id": 142,
+      "nivel": "dificil",
+      "op": "/",
+      "equacao": "429 / ? = 33",
+      "resposta": 13
+    },
+    {
+      "id": 143,
+      "nivel": "dificil",
+      "op": "/",
+      "equacao": "544 / 16 = ?",
+      "resposta": 34
+    },
+    {
+      "id": 144,
+      "nivel": "dificil",
+      "op": "*",
+      "equacao": "? * 23 = 644",
+      "resposta": 28
+    },
+    {
+      "id": 145,
+      "nivel": "dificil",
+      "op": "-",
+      "equacao": "260 - 172 = ?",
+      "resposta": 88
+    },
+    {
+      "id": 146,
+      "nivel": "dificil",
+      "op": "*",
+      "equacao": "19 * ? = 304",
+      "resposta": 16
+    },
+    {
+      "id": 147,
+      "nivel": "dificil",
+      "op": "*",
+      "equacao": "29 * 10 = ?",
+      "resposta": 290
+    },
+    {
+      "id": 148,
+      "nivel": "dificil",
+      "op": "-",
+      "equacao": "? - 158 = 80",
+      "resposta": 238
+    },
+    {
+      "id": 149,
+      "nivel": "dificil",
+      "op": "-",
+      "equacao": "229 - ? = 153",
+      "resposta": 76
+    },
+    {
+      "id": 150,
+      "nivel": "dificil",
+      "op": "/",
+      "equacao": "486 / ? = 27",
+      "resposta": 18
+    },
+    {
+      "id": 151,
+      "nivel": "dificil",
+      "op": "/",
+      "equacao": "144 / ? = 16",
+      "resposta": 9
+    },
+    {
+      "id": 152,
+      "nivel": "dificil",
+      "op": "/",
+      "equacao": "832 / 26 = ?",
+      "resposta": 32
+    },
+    {
+      "id": 153,
+      "nivel": "dificil",
+      "op": "/",
+      "equacao": "230 / ? = 10",
+      "resposta": 23
+    },
+    {
+      "id": 154,
+      "nivel": "dificil",
+      "op": "*",
+      "equacao": "? * 21 = 504",
+      "resposta": 24
+    },
+    {
+      "id": 155,
+      "nivel": "dificil",
+      "op": "-",
+      "equacao": "369 - ? = 253",
+      "resposta": 116
+    },
+    {
+      "id": 156,
+      "nivel": "dificil",
+      "op": "*",
+      "equacao": "24 * ? = 312",
+      "resposta": 13
+    },
+    {
+      "id": 157,
+      "nivel": "dificil",
+      "op": "-",
+      "equacao": "393 - ? = 327",
+      "resposta": 66
+    },
+    {
+      "id": 158,
+      "nivel": "dificil",
+      "op": "+",
+      "equacao": "101 + 169 = ?",
+      "resposta": 270
+    },
+    {
+      "id": 159,
+      "nivel": "dificil",
+      "op": "/",
+      "equacao": "143 / ? = 11",
+      "resposta": 13
+    },
+    {
+      "id": 160,
+      "nivel": "dificil",
+      "op": "/",
+      "equacao": "288 / ? = 16",
+      "resposta": 18
+    },
+    {
+      "id": 161,
+      "nivel": "dificil",
+      "op": "*",
+      "equacao": "22 * ? = 440",
+      "resposta": 20
+    },
+    {
+      "id": 162,
+      "nivel": "dificil",
+      "op": "/",
+      "equacao": "192 / ? = 12",
+      "resposta": 16
+    },
+    {
+      "id": 163,
+      "nivel": "dificil",
+      "op": "+",
+      "equacao": "218 + ? = 291",
+      "resposta": 73
+    },
+    {
+      "id": 164,
+      "nivel": "dificil",
+      "op": "-",
+      "equacao": "155 - 143 = ?",
+      "resposta": 12
+    },
+    {
+      "id": 165,
+      "nivel": "dificil",
+      "op": "+",
+      "equacao": "143 + 111 = ?",
+      "resposta": 254
+    },
+    {
+      "id": 166,
+      "nivel": "dificil",
+      "op": "-",
+      "equacao": "242 - ? = 150",
+      "resposta": 92
+    },
+    {
+      "id": 167,
+      "nivel": "dificil",
+      "op": "+",
+      "equacao": "224 + ? = 339",
+      "resposta": 115
+    },
+    {
+      "id": 168,
+      "nivel": "dificil",
+      "op": "*",
+      "equacao": "? * 13 = 299",
+      "resposta": 23
+    },
+    {
+      "id": 169,
+      "nivel": "dificil",
+      "op": "+",
+      "equacao": "121 + 139 = ?",
+      "resposta": 260
+    },
+    {
+      "id": 170,
+      "nivel": "dificil",
+      "op": "+",
+      "equacao": "? + 207 = 366",
+      "resposta": 159
+    },
+    {
+      "id": 171,
+      "nivel": "dificil",
+      "op": "/",
+      "equacao": "640 / 20 = ?",
+      "resposta": 32
+    },
+    {
+      "id": 172,
+      "nivel": "dificil",
+      "op": "+",
+      "equacao": "231 + 220 = ?",
+      "resposta": 451
+    },
+    {
+      "id": 173,
+      "nivel": "dificil",
+      "op": "+",
+      "equacao": "157 + 213 = ?",
+      "resposta": 370
+    },
+    {
+      "id": 174,
+      "nivel": "dificil",
+      "op": "+",
+      "equacao": "168 + ? = 364",
+      "resposta": 196
+    },
+    {
+      "id": 175,
+      "nivel": "dificil",
+      "op": "*",
+      "equacao": "? * 24 = 336",
+      "resposta": 14
+    },
+    {
+      "id": 176,
+      "nivel": "dificil",
+      "op": "*",
+      "equacao": "12 * ? = 252",
+      "resposta": 21
+    },
+    {
+      "id": 177,
+      "nivel": "dificil",
+      "op": "+",
+      "equacao": "? + 152 = 342",
+      "resposta": 190
+    },
+    {
+      "id": 178,
+      "nivel": "dificil",
+      "op": "/",
+      "equacao": "420 / ? = 14",
+      "resposta": 30
+    },
+    {
+      "id": 179,
+      "nivel": "dificil",
+      "op": "-",
+      "equacao": "387 - ? = 161",
+      "resposta": 226
+    },
+    {
+      "id": 180,
+      "nivel": "dificil",
+      "op": "/",
+      "equacao": "? / 22 = 23",
+      "resposta": 506
+    },
+    {
+      "id": 181,
+      "nivel": "dificil",
+      "op": "*",
+      "equacao": "22 * 15 = ?",
+      "resposta": 330
+    },
+    {
+      "id": 182,
+      "nivel": "dificil",
+      "op": "*",
+      "equacao": "26 * ? = 390",
+      "resposta": 15
+    },
+    {
+      "id": 183,
+      "nivel": "dificil",
+      "op": "/",
+      "equacao": "180 / ? = 10",
+      "resposta": 18
+    },
+    {
+      "id": 184,
+      "nivel": "dificil",
+      "op": "*",
+      "equacao": "17 * 23 = ?",
+      "resposta": 391
+    },
+    {
+      "id": 185,
+      "nivel": "dificil",
+      "op": "*",
+      "equacao": "20 * ? = 360",
+      "resposta": 18
+    },
+    {
+      "id": 186,
+      "nivel": "dificil",
+      "op": "*",
+      "equacao": "? * 8 = 232",
+      "resposta": 29
+    },
+    {
+      "id": 187,
+      "nivel": "dificil",
+      "op": "-",
+      "equacao": "? - 90 = 73",
+      "resposta": 163
+    },
+    {
+      "id": 188,
+      "nivel": "dificil",
+      "op": "/",
+      "equacao": "621 / 23 = ?",
+      "resposta": 27
+    },
+    {
+      "id": 189,
+      "nivel": "dificil",
+      "op": "/",
+      "equacao": "896 / ? = 32",
+      "resposta": 28
+    },
+    {
+      "id": 190,
+      "nivel": "dificil",
+      "op": "/",
+      "equacao": "96 / ? = 12",
+      "resposta": 8
+    },
+    {
+      "id": 191,
+      "nivel": "dificil",
+      "op": "-",
+      "equacao": "327 - 237 = ?",
+      "resposta": 90
+    },
+    {
+      "id": 192,
+      "nivel": "dificil",
+      "op": "*",
+      "equacao": "30 * ? = 570",
+      "resposta": 19
+    },
+    {
+      "id": 193,
+      "nivel": "dificil",
+      "op": "*",
+      "equacao": "25 * ? = 625",
+      "resposta": 25
+    },
+    {
+      "id": 194,
+      "nivel": "dificil",
+      "op": "*",
+      "equacao": "26 * ? = 416",
+      "resposta": 16
+    },
+    {
+      "id": 195,
+      "nivel": "dificil",
+      "op": "*",
+      "equacao": "? * 11 = 209",
+      "resposta": 19
+    },
+    {
+      "id": 196,
+      "nivel": "dificil",
+      "op": "-",
+      "equacao": "? - 90 = 191",
+      "resposta": 281
+    },
+    {
+      "id": 197,
+      "nivel": "dificil",
+      "op": "-",
+      "equacao": "? - 115 = 103",
+      "resposta": 218
+    },
+    {
+      "id": 198,
+      "nivel": "dificil",
+      "op": "/",
+      "equacao": "? / 16 = 33",
+      "resposta": 528
+    },
+    {
+      "id": 199,
+      "nivel": "dificil",
+      "op": "*",
+      "equacao": "15 * ? = 210",
+      "resposta": 14
+    },
+    {
+      "id": 200,
+      "nivel": "dificil",
+      "op": "-",
+      "equacao": "304 - ? = 199",
+      "resposta": 105
+    }
+  ]
+}
