@@ -25,6 +25,30 @@ const PLAY_BUTTON_IMAGE = preload("res://assets/hud/play-button.png")
 const PAUSE_BUTTON_IMAGE = preload("res://assets/hud/pause-button-hud.png")
 const HEART_FULL_TEXTURE = preload("res://assets/hud/heart_full.svg")
 const HEART_EMPTY_TEXTURE = preload("res://assets/hud/heart_empty.svg")
+enum PowerUpSlotIcon {
+	LUPA,
+	REVIVE,
+	HEART,
+	LIGHTNING,
+	HOURGLASS,
+	DOUBLE,
+}
+const POWER_UP_SLOT_TEXTURES := {
+	PowerUpSlotIcon.LUPA: preload("res://assets/power-ups/slots/lupa.png"),
+	PowerUpSlotIcon.REVIVE: preload("res://assets/power-ups/slots/revive.png"),
+	PowerUpSlotIcon.HEART: preload("res://assets/power-ups/slots/heart.png"),
+	PowerUpSlotIcon.LIGHTNING: preload("res://assets/power-ups/slots/lightning.png"),
+	PowerUpSlotIcon.HOURGLASS: preload("res://assets/power-ups/slots/hourglass.png"),
+	PowerUpSlotIcon.DOUBLE: preload("res://assets/power-ups/slots/double.png"),
+}
+const POWER_UP_TYPE_TO_SLOT_ICON := {
+	"lupa": PowerUpSlotIcon.LUPA,
+	"revive": PowerUpSlotIcon.REVIVE,
+	"heart": PowerUpSlotIcon.HEART,
+	"lightning": PowerUpSlotIcon.LIGHTNING,
+	"hourglass": PowerUpSlotIcon.HOURGLASS,
+	"double": PowerUpSlotIcon.DOUBLE,
+}
 const FEEDBACK_COLOR_CORRECT := Color(0.2, 0.85, 0.3, 1.0)
 const FEEDBACK_COLOR_WRONG := Color(0.95, 0.2, 0.2, 1.0)
 
@@ -32,9 +56,11 @@ var timer := GameTimer.new()
 var _current_equation: Dictionary = {}
 var _feedback_tween: Tween
 var _last_lives := -1
+var _slot_icon_rects: Array[TextureRect] = []
 
 
 func _ready() -> void:
+	_setup_power_up_slot_icons()
 	timer.start_timer()
 
 
@@ -94,24 +120,36 @@ func _play_heart_lost_animation(heart: TextureRect) -> void:
 	tween.tween_property(heart, "scale", Vector2(1.4, 1.4), 0.12).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	tween.chain().tween_property(heart, "scale", Vector2(1.0, 1.0), 0.18).set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
 
+
+func _setup_power_up_slot_icons() -> void:
+	_slot_icon_rects.clear()
+	for label in slot_labels:
+		label.visible = false
+		var icon := TextureRect.new()
+		icon.name = "PowerUpIcon"
+		icon.set_anchors_preset(Control.PRESET_FULL_RECT)
+		icon.offset_left = 16.0
+		icon.offset_top = 12.0
+		icon.offset_right = -16.0
+		icon.offset_bottom = -12.0
+		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		label.get_parent().add_child(icon)
+		_slot_icon_rects.append(icon)
+
+
 func on_power_up_slots_change(slots: Array) -> void:
-	for i in range(slot_labels.size()):
+	for i in range(_slot_icon_rects.size()):
 		var type := ""
 		if i < slots.size():
 			type = String(slots[i])
-		slot_labels[i].text = _power_up_display(type)
+		_slot_icon_rects[i].texture = _power_up_display(type)
 
 
-func _power_up_display(type: String) -> String:
-	match type:
-		"lupa": return "LUPA"
-		"revive": return "REV"
-		"heart": return "HP"
-		"lightning": return "RAIO"
-		"hourglass": return "TIME"
-		"double": return "2x"
-		_: return ""
-
+func _power_up_display(type: String) -> Texture2D:
+	var slot_icon := int(POWER_UP_TYPE_TO_SLOT_ICON.get(type, -1))
+	return POWER_UP_SLOT_TEXTURES.get(slot_icon, null) as Texture2D
 
 
 func on_restart_game() -> void:
