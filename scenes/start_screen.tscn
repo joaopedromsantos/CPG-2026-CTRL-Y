@@ -1,4 +1,4 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://cfjychrxhqmf0"]
 
 [sub_resource type="GDScript" id="GDScript_start_screen"]
 script/source = "extends Control
@@ -9,11 +9,9 @@ const FONT_PATH := \"res://assets/fonts/Fredoka-Bold.ttf\"
 var _font: Font
 var _art: StartArt
 var _title: Label
-var _subtitle: Label
 var _highscore_title: Label
 var _highscore_value: Label
 var _start_button: Button
-var _hint: Label
 
 
 class StartArt:
@@ -164,11 +162,8 @@ func _build_screen() -> void:
 	add_child(_art)
 	move_child(_art, 0)
 
-	_title = _make_label(\"MATH DASH ROBOT ED\", 66, Color.WHITE, 5, Color(0.09, 0.12, 0.16, 0.85))
+	_title = _make_label(\"MATH RUNNER\", 66, Color.WHITE, 5, Color(0.09, 0.12, 0.16, 0.85))
 	add_child(_title)
-
-	_subtitle = _make_label(\"ADDITION ED\", 35, Color.WHITE, 4, Color(0.08, 0.10, 0.14, 0.80))
-	add_child(_subtitle)
 
 	_highscore_title = $HighscoreTitle
 	_apply_label_style(_highscore_title, \"HIGHSCORE\", 34, Color.WHITE, 3, Color(0.07, 0.08, 0.09, 0.85))
@@ -190,9 +185,6 @@ func _build_screen() -> void:
 	_start_button.add_theme_stylebox_override(\"hover\", _button_style(Color(0.24, 0.88, 0.27), Color(0.78, 1.0, 0.40)))
 	_start_button.add_theme_stylebox_override(\"pressed\", _button_style(Color(0.12, 0.64, 0.17), Color(0.55, 0.88, 0.25)))
 	_start_button.pressed.connect(_start_game)
-
-	_hint = _make_label(\"CLICA PARA COMEÇAR!\", 26, Color.WHITE, 3, Color(0.05, 0.11, 0.25, 0.95))
-	add_child(_hint)
 
 
 func _make_label(text: String, font_size: int, color: Color, outline_size: int, outline_color: Color) -> Label:
@@ -242,23 +234,17 @@ func _layout() -> void:
 
 	_title.set_position(rect.call(175, 38, 675, 70).position)
 	_title.set_size(rect.call(175, 38, 675, 70).size)
-	_subtitle.set_position(rect.call(385, 111, 255, 41).position)
-	_subtitle.set_size(rect.call(385, 111, 255, 41).size)
 	_highscore_title.set_position(rect.call(839, 18, 168, 45).position)
 	_highscore_title.set_size(rect.call(839, 18, 168, 45).size)
 	_highscore_value.set_position(rect.call(839, 70, 150, 45).position)
 	_highscore_value.set_size(rect.call(839, 70, 150, 45).size)
 	_start_button.set_position(rect.call(407, 430, 219, 88).position)
 	_start_button.set_size(rect.call(407, 430, 219, 88).size)
-	_hint.set_position(rect.call(402, 527, 235, 36).position)
-	_hint.set_size(rect.call(402, 527, 235, 36).size)
 
 	_start_button.add_theme_font_size_override(\"font_size\", maxi(18, int(45 * scale)))
 	_title.label_settings.font_size = maxi(24, int(66 * scale))
-	_subtitle.label_settings.font_size = maxi(16, int(35 * scale))
 	_highscore_title.label_settings.font_size = maxi(16, int(34 * scale))
 	_highscore_value.label_settings.font_size = maxi(16, int(35 * scale))
-	_hint.label_settings.font_size = maxi(13, int(26 * scale))
 	_art.queue_redraw()
 
 
@@ -266,7 +252,7 @@ func _start_game() -> void:
 	get_tree().change_scene_to_file(GAME_SCENE)
 "
 
-[node name="StartScreen" type="Control"]
+[node name="StartScreen" type="Control" unique_id=405717112]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -275,7 +261,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = SubResource("GDScript_start_screen")
 
-[node name="HighscoreTitle" type="Label" parent="."]
+[node name="HighscoreTitle" type="Label" parent="." unique_id=809046786]
 layout_mode = 0
 offset_left = 839.0
 offset_top = 18.0
@@ -285,7 +271,7 @@ text = "HIGHSCORE"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HighscoreValue" type="Label" parent="."]
+[node name="HighscoreValue" type="Label" parent="." unique_id=644945730]
 layout_mode = 0
 offset_left = 839.0
 offset_top = 70.0
@@ -295,7 +281,7 @@ text = "HS: 1450"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="StartButton" type="Button" parent="."]
+[node name="StartButton" type="Button" parent="." unique_id=1332176397]
 layout_mode = 0
 offset_left = 407.0
 offset_top = 430.0
