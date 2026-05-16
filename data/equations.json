@@ -5,1400 +5,3200 @@
       "level": "easy",
       "operation": "+",
       "equation": "1 + ? = 13",
-      "answer": 12
+      "answer": 12,
+      "options": [
+        14,
+        22,
+        12
+      ],
+      "wrongAnswers": [
+        22,
+        14
+      ]
     },
     {
       "id": 2,
       "level": "easy",
       "operation": "-",
       "equation": "? - 3 = 9",
-      "answer": 12
+      "answer": 12,
+      "options": [
+        16,
+        2,
+        12
+      ],
+      "wrongAnswers": [
+        16,
+        2
+      ]
     },
     {
       "id": 3,
       "level": "easy",
       "operation": "+",
       "equation": "? + 12 = 23",
-      "answer": 11
+      "answer": 11,
+      "options": [
+        7,
+        21,
+        11
+      ],
+      "wrongAnswers": [
+        21,
+        7
+      ]
     },
     {
       "id": 4,
       "level": "easy",
       "operation": "+",
       "equation": "10 + 7 = ?",
-      "answer": 17
+      "answer": 17,
+      "options": [
+        18,
+        7,
+        17
+      ],
+      "wrongAnswers": [
+        18,
+        7
+      ]
     },
     {
       "id": 5,
       "level": "easy",
       "operation": "+",
       "equation": "2 + 4 = ?",
-      "answer": 6
+      "answer": 6,
+      "options": [
+        10,
+        6,
+        2
+      ],
+      "wrongAnswers": [
+        10,
+        2
+      ]
     },
     {
       "id": 6,
       "level": "easy",
       "operation": "+",
       "equation": "? + 4 = 13",
-      "answer": 9
+      "answer": 9,
+      "options": [
+        9,
+        5,
+        13
+      ],
+      "wrongAnswers": [
+        5,
+        13
+      ]
     },
     {
       "id": 7,
       "level": "easy",
       "operation": "/",
       "equation": "? / 5 = 9",
-      "answer": 45
+      "answer": 45,
+      "options": [
+        45,
+        49,
+        42
+      ],
+      "wrongAnswers": [
+        49,
+        42
+      ]
     },
     {
       "id": 8,
       "level": "easy",
       "operation": "*",
       "equation": "? * 4 = 8",
-      "answer": 2
+      "answer": 2,
+      "options": [
+        0,
+        3,
+        2
+      ],
+      "wrongAnswers": [
+        3,
+        0
+      ]
     },
     {
       "id": 9,
       "level": "easy",
       "operation": "/",
       "equation": "42 / 7 = ?",
-      "answer": 6
+      "answer": 6,
+      "options": [
+        5,
+        11,
+        6
+      ],
+      "wrongAnswers": [
+        5,
+        11
+      ]
     },
     {
       "id": 10,
       "level": "easy",
       "operation": "-",
       "equation": "15 - 2 = ?",
-      "answer": 13
+      "answer": 13,
+      "options": [
+        15,
+        12,
+        13
+      ],
+      "wrongAnswers": [
+        12,
+        15
+      ]
     },
     {
       "id": 11,
       "level": "easy",
       "operation": "/",
       "equation": "21 / ? = 7",
-      "answer": 3
+      "answer": 3,
+      "options": [
+        3,
+        2,
+        5
+      ],
+      "wrongAnswers": [
+        5,
+        2
+      ]
     },
     {
       "id": 12,
       "level": "easy",
       "operation": "*",
       "equation": "? * 9 = 18",
-      "answer": 2
+      "answer": 2,
+      "options": [
+        1,
+        2,
+        3
+      ],
+      "wrongAnswers": [
+        3,
+        1
+      ]
     },
     {
       "id": 13,
       "level": "easy",
       "operation": "+",
       "equation": "? + 2 = 9",
-      "answer": 7
+      "answer": 7,
+      "options": [
+        7,
+        5,
+        9
+      ],
+      "wrongAnswers": [
+        5,
+        9
+      ]
     },
     {
       "id": 14,
       "level": "easy",
       "operation": "*",
       "equation": "? * 5 = 35",
-      "answer": 7
+      "answer": 7,
+      "options": [
+        2,
+        7,
+        17
+      ],
+      "wrongAnswers": [
+        17,
+        2
+      ]
     },
     {
       "id": 15,
       "level": "easy",
       "operation": "+",
       "equation": "1 + 11 = ?",
-      "answer": 12
+      "answer": 12,
+      "options": [
+        2,
+        14,
+        12
+      ],
+      "wrongAnswers": [
+        2,
+        14
+      ]
     },
     {
       "id": 16,
       "level": "easy",
       "operation": "*",
       "equation": "3 * 5 = ?",
-      "answer": 15
+      "answer": 15,
+      "options": [
+        30,
+        20,
+        15
+      ],
+      "wrongAnswers": [
+        30,
+        20
+      ]
     },
     {
       "id": 17,
       "level": "easy",
       "operation": "/",
       "equation": "? / 6 = 9",
-      "answer": 54
+      "answer": 54,
+      "options": [
+        54,
+        56,
+        27
+      ],
+      "wrongAnswers": [
+        27,
+        56
+      ]
     },
     {
       "id": 18,
       "level": "easy",
       "operation": "*",
       "equation": "4 * ? = 28",
-      "answer": 7
+      "answer": 7,
+      "options": [
+        17,
+        7,
+        4
+      ],
+      "wrongAnswers": [
+        4,
+        17
+      ]
     },
     {
       "id": 19,
       "level": "easy",
       "operation": "-",
       "equation": "? - 12 = 1",
-      "answer": 13
+      "answer": 13,
+      "options": [
+        3,
+        12,
+        13
+      ],
+      "wrongAnswers": [
+        12,
+        3
+      ]
     },
     {
       "id": 20,
       "level": "easy",
       "operation": "+",
       "equation": "10 + 11 = ?",
-      "answer": 21
+      "answer": 21,
+      "options": [
+        11,
+        21,
+        31
+      ],
+      "wrongAnswers": [
+        11,
+        31
+      ]
     },
     {
       "id": 21,
       "level": "easy",
       "operation": "-",
       "equation": "10 - ? = 2",
-      "answer": 8
+      "answer": 8,
+      "options": [
+        3,
+        8,
+        11
+      ],
+      "wrongAnswers": [
+        3,
+        11
+      ]
     },
     {
       "id": 22,
       "level": "easy",
       "operation": "*",
       "equation": "? * 5 = 50",
-      "answer": 10
+      "answer": 10,
+      "options": [
+        10,
+        7,
+        13
+      ],
+      "wrongAnswers": [
+        13,
+        7
+      ]
     },
     {
       "id": 23,
       "level": "easy",
       "operation": "*",
       "equation": "2 * 5 = ?",
-      "answer": 10
+      "answer": 10,
+      "options": [
+        6,
+        20,
+        10
+      ],
+      "wrongAnswers": [
+        20,
+        6
+      ]
     },
     {
       "id": 24,
       "level": "easy",
       "operation": "*",
       "equation": "8 * 6 = ?",
-      "answer": 48
+      "answer": 48,
+      "options": [
+        24,
+        96,
+        48
+      ],
+      "wrongAnswers": [
+        24,
+        96
+      ]
     },
     {
       "id": 25,
       "level": "easy",
       "operation": "-",
       "equation": "23 - ? = 11",
-      "answer": 12
+      "answer": 12,
+      "options": [
+        12,
+        11,
+        13
+      ],
+      "wrongAnswers": [
+        13,
+        11
+      ]
     },
     {
       "id": 26,
       "level": "easy",
       "operation": "-",
       "equation": "25 - ? = 17",
-      "answer": 8
+      "answer": 8,
+      "options": [
+        8,
+        10,
+        12
+      ],
+      "wrongAnswers": [
+        10,
+        12
+      ]
     },
     {
       "id": 27,
       "level": "easy",
       "operation": "/",
       "equation": "24 / 4 = ?",
-      "answer": 6
+      "answer": 6,
+      "options": [
+        6,
+        16,
+        10
+      ],
+      "wrongAnswers": [
+        10,
+        16
+      ]
     },
     {
       "id": 28,
       "level": "easy",
       "operation": "-",
       "equation": "22 - ? = 13",
-      "answer": 9
+      "answer": 9,
+      "options": [
+        6,
+        19,
+        9
+      ],
+      "wrongAnswers": [
+        19,
+        6
+      ]
     },
     {
       "id": 29,
       "level": "easy",
       "operation": "/",
       "equation": "56 / 8 = ?",
-      "answer": 7
+      "answer": 7,
+      "options": [
+        7,
+        10,
+        11
+      ],
+      "wrongAnswers": [
+        10,
+        11
+      ]
     },
     {
       "id": 30,
       "level": "easy",
       "operation": "-",
       "equation": "21 - 8 = ?",
-      "answer": 13
+      "answer": 13,
+      "options": [
+        13,
+        8,
+        3
+      ],
+      "wrongAnswers": [
+        3,
+        8
+      ]
     },
     {
       "id": 31,
       "level": "easy",
       "operation": "+",
       "equation": "? + 3 = 5",
-      "answer": 2
+      "answer": 2,
+      "options": [
+        4,
+        1,
+        2
+      ],
+      "wrongAnswers": [
+        1,
+        4
+      ]
     },
     {
       "id": 32,
       "level": "easy",
       "operation": "-",
       "equation": "18 - 10 = ?",
-      "answer": 8
+      "answer": 8,
+      "options": [
+        10,
+        9,
+        8
+      ],
+      "wrongAnswers": [
+        10,
+        9
+      ]
     },
     {
       "id": 33,
       "level": "easy",
       "operation": "/",
       "equation": "? / 8 = 9",
-      "answer": 72
+      "answer": 72,
+      "options": [
+        72,
+        82,
+        75
+      ],
+      "wrongAnswers": [
+        82,
+        75
+      ]
     },
     {
       "id": 34,
       "level": "easy",
       "operation": "*",
       "equation": "? * 2 = 20",
-      "answer": 10
+      "answer": 10,
+      "options": [
+        10,
+        12,
+        5
+      ],
+      "wrongAnswers": [
+        5,
+        12
+      ]
     },
     {
       "id": 35,
       "level": "easy",
       "operation": "+",
       "equation": "11 + ? = 20",
-      "answer": 9
+      "answer": 9,
+      "options": [
+        9,
+        4,
+        6
+      ],
+      "wrongAnswers": [
+        4,
+        6
+      ]
     },
     {
       "id": 36,
       "level": "easy",
       "operation": "*",
       "equation": "3 * ? = 18",
-      "answer": 6
+      "answer": 6,
+      "options": [
+        2,
+        6,
+        7
+      ],
+      "wrongAnswers": [
+        2,
+        7
+      ]
     },
     {
       "id": 37,
       "level": "easy",
       "operation": "-",
       "equation": "? - 1 = 18",
-      "answer": 19
+      "answer": 19,
+      "options": [
+        19,
+        15,
+        29
+      ],
+      "wrongAnswers": [
+        29,
+        15
+      ]
     },
     {
       "id": 38,
       "level": "easy",
       "operation": "*",
       "equation": "? * 4 = 40",
-      "answer": 10
+      "answer": 10,
+      "options": [
+        15,
+        10,
+        12
+      ],
+      "wrongAnswers": [
+        12,
+        15
+      ]
     },
     {
       "id": 39,
       "level": "easy",
       "operation": "+",
       "equation": "? + 5 = 16",
-      "answer": 11
+      "answer": 11,
+      "options": [
+        11,
+        8,
+        12
+      ],
+      "wrongAnswers": [
+        8,
+        12
+      ]
     },
     {
       "id": 40,
       "level": "easy",
       "operation": "-",
       "equation": "9 - 6 = ?",
-      "answer": 3
+      "answer": 3,
+      "options": [
+        13,
+        3,
+        6
+      ],
+      "wrongAnswers": [
+        13,
+        6
+      ]
     },
     {
       "id": 41,
       "level": "easy",
       "operation": "+",
       "equation": "10 + ? = 16",
-      "answer": 6
+      "answer": 6,
+      "options": [
+        16,
+        6,
+        11
+      ],
+      "wrongAnswers": [
+        16,
+        11
+      ]
     },
     {
       "id": 42,
       "level": "easy",
       "operation": "+",
       "equation": "2 + ? = 8",
-      "answer": 6
+      "answer": 6,
+      "options": [
+        9,
+        5,
+        6
+      ],
+      "wrongAnswers": [
+        9,
+        5
+      ]
     },
     {
       "id": 43,
       "level": "easy",
       "operation": "-",
       "equation": "? - 2 = 4",
-      "answer": 6
+      "answer": 6,
+      "options": [
+        5,
+        6,
+        1
+      ],
+      "wrongAnswers": [
+        1,
+        5
+      ]
     },
     {
       "id": 44,
       "level": "easy",
       "operation": "+",
       "equation": "2 + ? = 14",
-      "answer": 12
+      "answer": 12,
+      "options": [
+        11,
+        12,
+        14
+      ],
+      "wrongAnswers": [
+        14,
+        11
+      ]
     },
     {
       "id": 45,
       "level": "easy",
       "operation": "+",
       "equation": "9 + 3 = ?",
-      "answer": 12
+      "answer": 12,
+      "options": [
+        13,
+        12,
+        16
+      ],
+      "wrongAnswers": [
+        13,
+        16
+      ]
     },
     {
       "id": 46,
       "level": "easy",
       "operation": "/",
       "equation": "40 / ? = 4",
-      "answer": 10
+      "answer": 10,
+      "options": [
+        12,
+        7,
+        10
+      ],
+      "wrongAnswers": [
+        12,
+        7
+      ]
     },
     {
       "id": 47,
       "level": "easy",
       "operation": "/",
       "equation": "? / 5 = 10",
-      "answer": 50
+      "answer": 50,
+      "options": [
+        60,
+        50,
+        53
+      ],
+      "wrongAnswers": [
+        53,
+        60
+      ]
     },
     {
       "id": 48,
       "level": "easy",
       "operation": "-",
       "equation": "? - 7 = 7",
-      "answer": 14
+      "answer": 14,
+      "options": [
+        14,
+        19,
+        10
+      ],
+      "wrongAnswers": [
+        19,
+        10
+      ]
     },
     {
       "id": 49,
       "level": "easy",
       "operation": "*",
       "equation": "9 * ? = 90",
-      "answer": 10
+      "answer": 10,
+      "options": [
+        14,
+        10,
+        6
+      ],
+      "wrongAnswers": [
+        14,
+        6
+      ]
     },
     {
       "id": 50,
       "level": "easy",
       "operation": "+",
       "equation": "4 + 4 = ?",
-      "answer": 8
+      "answer": 8,
+      "options": [
+        8,
+        13,
+        6
+      ],
+      "wrongAnswers": [
+        13,
+        6
+      ]
     },
     {
       "id": 51,
       "level": "easy",
       "operation": "*",
       "equation": "2 * 10 = ?",
-      "answer": 20
+      "answer": 20,
+      "options": [
+        16,
+        20,
+        17
+      ],
+      "wrongAnswers": [
+        17,
+        16
+      ]
     },
     {
       "id": 52,
       "level": "easy",
       "operation": "-",
       "equation": "? - 1 = 4",
-      "answer": 5
+      "answer": 5,
+      "options": [
+        15,
+        9,
+        5
+      ],
+      "wrongAnswers": [
+        9,
+        15
+      ]
     },
     {
       "id": 53,
       "level": "easy",
       "operation": "+",
       "equation": "4 + 2 = ?",
-      "answer": 6
+      "answer": 6,
+      "options": [
+        7,
+        6,
+        1
+      ],
+      "wrongAnswers": [
+        7,
+        1
+      ]
     },
     {
       "id": 54,
       "level": "easy",
       "operation": "*",
       "equation": "3 * 10 = ?",
-      "answer": 30
+      "answer": 30,
+      "options": [
+        25,
+        34,
+        30
+      ],
+      "wrongAnswers": [
+        25,
+        34
+      ]
     },
     {
       "id": 55,
       "level": "easy",
       "operation": "*",
       "equation": "? * 5 = 45",
-      "answer": 9
+      "answer": 9,
+      "options": [
+        18,
+        19,
+        9
+      ],
+      "wrongAnswers": [
+        18,
+        19
+      ]
     },
     {
       "id": 56,
       "level": "easy",
       "operation": "-",
       "equation": "23 - ? = 13",
-      "answer": 10
+      "answer": 10,
+      "options": [
+        11,
+        10,
+        12
+      ],
+      "wrongAnswers": [
+        12,
+        11
+      ]
     },
     {
       "id": 57,
       "level": "easy",
       "operation": "-",
       "equation": "20 - 7 = ?",
-      "answer": 13
+      "answer": 13,
+      "options": [
+        13,
+        17,
+        9
+      ],
+      "wrongAnswers": [
+        9,
+        17
+      ]
     },
     {
       "id": 58,
       "level": "easy",
       "operation": "+",
       "equation": "2 + ? = 13",
-      "answer": 11
+      "answer": 11,
+      "options": [
+        7,
+        15,
+        11
+      ],
+      "wrongAnswers": [
+        15,
+        7
+      ]
     },
     {
       "id": 59,
       "level": "easy",
       "operation": "*",
       "equation": "8 * ? = 64",
-      "answer": 8
+      "answer": 8,
+      "options": [
+        5,
+        8,
+        12
+      ],
+      "wrongAnswers": [
+        12,
+        5
+      ]
     },
     {
       "id": 60,
       "level": "easy",
       "operation": "+",
       "equation": "? + 11 = 22",
-      "answer": 11
+      "answer": 11,
+      "options": [
+        11,
+        13,
+        1
+      ],
+      "wrongAnswers": [
+        13,
+        1
+      ]
     },
     {
       "id": 61,
       "level": "easy",
       "operation": "+",
       "equation": "? + 7 = 8",
-      "answer": 1
+      "answer": 1,
+      "options": [
+        1,
+        5,
+        4
+      ],
+      "wrongAnswers": [
+        4,
+        5
+      ]
     },
     {
       "id": 62,
       "level": "easy",
       "operation": "-",
       "equation": "22 - 8 = ?",
-      "answer": 14
+      "answer": 14,
+      "options": [
+        4,
+        14,
+        15
+      ],
+      "wrongAnswers": [
+        4,
+        15
+      ]
     },
     {
       "id": 63,
       "level": "easy",
       "operation": "/",
       "equation": "24 / ? = 6",
-      "answer": 4
+      "answer": 4,
+      "options": [
+        4,
+        5,
+        2
+      ],
+      "wrongAnswers": [
+        5,
+        2
+      ]
     },
     {
       "id": 64,
       "level": "easy",
       "operation": "-",
       "equation": "? - 4 = 3",
-      "answer": 7
+      "answer": 7,
+      "options": [
+        9,
+        11,
+        7
+      ],
+      "wrongAnswers": [
+        9,
+        11
+      ]
     },
     {
       "id": 65,
       "level": "easy",
       "operation": "+",
       "equation": "? + 11 = 12",
-      "answer": 1
+      "answer": 1,
+      "options": [
+        5,
+        6,
+        1
+      ],
+      "wrongAnswers": [
+        6,
+        5
+      ]
     },
     {
       "id": 66,
       "level": "easy",
       "operation": "/",
       "equation": "81 / 9 = ?",
-      "answer": 9
+      "answer": 9,
+      "options": [
+        14,
+        9,
+        12
+      ],
+      "wrongAnswers": [
+        12,
+        14
+      ]
     },
     {
       "id": 67,
       "level": "easy",
       "operation": "/",
       "equation": "8 / ? = 4",
-      "answer": 2
+      "answer": 2,
+      "options": [
+        4,
+        2,
+        6
+      ],
+      "wrongAnswers": [
+        4,
+        6
+      ]
     },
     {
       "id": 68,
       "level": "easy",
       "operation": "+",
       "equation": "7 + ? = 12",
-      "answer": 5
+      "answer": 5,
+      "options": [
+        6,
+        1,
+        5
+      ],
+      "wrongAnswers": [
+        6,
+        1
+      ]
     },
     {
       "id": 69,
       "level": "easy",
       "operation": "*",
       "equation": "? * 10 = 80",
-      "answer": 8
+      "answer": 8,
+      "options": [
+        8,
+        11,
+        12
+      ],
+      "wrongAnswers": [
+        12,
+        11
+      ]
     },
     {
       "id": 70,
       "level": "easy",
       "operation": "/",
       "equation": "20 / ? = 5",
-      "answer": 4
+      "answer": 4,
+      "options": [
+        8,
+        4,
+        1
+      ],
+      "wrongAnswers": [
+        1,
+        8
+      ]
     },
     {
       "id": 71,
       "level": "medium",
       "operation": "-",
       "equation": "? - 28 = 9",
-      "answer": 37
+      "answer": 37,
+      "options": [
+        32,
+        43,
+        37
+      ],
+      "wrongAnswers": [
+        43,
+        32
+      ]
     },
     {
       "id": 72,
       "level": "medium",
       "operation": "+",
       "equation": "55 + 13 = ?",
-      "answer": 68
+      "answer": 68,
+      "options": [
+        68,
+        60,
+        67
+      ],
+      "wrongAnswers": [
+        67,
+        60
+      ]
     },
     {
       "id": 73,
       "level": "medium",
       "operation": "/",
       "equation": "120 / 12 = ?",
-      "answer": 10
+      "answer": 10,
+      "options": [
+        15,
+        0,
+        10
+      ],
+      "wrongAnswers": [
+        0,
+        15
+      ]
     },
     {
       "id": 74,
       "level": "medium",
       "operation": "+",
       "equation": "? + 14 = 52",
-      "answer": 38
+      "answer": 38,
+      "options": [
+        46,
+        38,
+        40
+      ],
+      "wrongAnswers": [
+        46,
+        40
+      ]
     },
     {
       "id": 75,
       "level": "medium",
       "operation": "+",
       "equation": "45 + 35 = ?",
-      "answer": 80
+      "answer": 80,
+      "options": [
+        82,
+        77,
+        80
+      ],
+      "wrongAnswers": [
+        77,
+        82
+      ]
     },
     {
       "id": 76,
       "level": "medium",
       "operation": "-",
       "equation": "104 - 86 = ?",
-      "answer": 18
+      "answer": 18,
+      "options": [
+        30,
+        6,
+        18
+      ],
+      "wrongAnswers": [
+        30,
+        6
+      ]
     },
     {
       "id": 77,
       "level": "medium",
       "operation": "+",
       "equation": "? + 52 = 120",
-      "answer": 68
+      "answer": 68,
+      "options": [
+        80,
+        71,
+        68
+      ],
+      "wrongAnswers": [
+        80,
+        71
+      ]
     },
     {
       "id": 78,
       "level": "medium",
       "operation": "*",
       "equation": "? * 8 = 80",
-      "answer": 10
+      "answer": 10,
+      "options": [
+        20,
+        10,
+        13
+      ],
+      "wrongAnswers": [
+        13,
+        20
+      ]
     },
     {
       "id": 79,
       "level": "medium",
       "operation": "*",
       "equation": "9 * ? = 81",
-      "answer": 9
+      "answer": 9,
+      "options": [
+        19,
+        9,
+        11
+      ],
+      "wrongAnswers": [
+        19,
+        11
+      ]
     },
     {
       "id": 80,
       "level": "medium",
       "operation": "-",
       "equation": "115 - ? = 67",
-      "answer": 48
+      "answer": 48,
+      "options": [
+        48,
+        60,
+        42
+      ],
+      "wrongAnswers": [
+        42,
+        60
+      ]
     },
     {
       "id": 81,
       "level": "medium",
       "operation": "*",
       "equation": "18 * 6 = ?",
-      "answer": 108
+      "answer": 108,
+      "options": [
+        105,
+        116,
+        108
+      ],
+      "wrongAnswers": [
+        116,
+        105
+      ]
     },
     {
       "id": 82,
       "level": "medium",
       "operation": "/",
       "equation": "104 / 13 = ?",
-      "answer": 8
+      "answer": 8,
+      "options": [
+        8,
+        3,
+        11
+      ],
+      "wrongAnswers": [
+        3,
+        11
+      ]
     },
     {
       "id": 83,
       "level": "medium",
       "operation": "-",
       "equation": "94 - 43 = ?",
-      "answer": 51
+      "answer": 51,
+      "options": [
+        43,
+        48,
+        51
+      ],
+      "wrongAnswers": [
+        43,
+        48
+      ]
     },
     {
       "id": 84,
       "level": "medium",
       "operation": "*",
       "equation": "7 * ? = 56",
-      "answer": 8
+      "answer": 8,
+      "options": [
+        0,
+        8,
+        6
+      ],
+      "wrongAnswers": [
+        0,
+        6
+      ]
     },
     {
       "id": 85,
       "level": "medium",
       "operation": "*",
       "equation": "? * 12 = 96",
-      "answer": 8
+      "answer": 8,
+      "options": [
+        7,
+        11,
+        8
+      ],
+      "wrongAnswers": [
+        11,
+        7
+      ]
     },
     {
       "id": 86,
       "level": "medium",
       "operation": "*",
       "equation": "? * 15 = 225",
-      "answer": 15
+      "answer": 15,
+      "options": [
+        20,
+        11,
+        15
+      ],
+      "wrongAnswers": [
+        20,
+        11
+      ]
     },
     {
       "id": 87,
       "level": "medium",
       "operation": "+",
       "equation": "? + 69 = 122",
-      "answer": 53
+      "answer": 53,
+      "options": [
+        51,
+        49,
+        53
+      ],
+      "wrongAnswers": [
+        49,
+        51
+      ]
     },
     {
       "id": 88,
       "level": "medium",
       "operation": "+",
       "equation": "32 + 26 = ?",
-      "answer": 58
+      "answer": 58,
+      "options": [
+        46,
+        58,
+        56
+      ],
+      "wrongAnswers": [
+        46,
+        56
+      ]
     },
     {
       "id": 89,
       "level": "medium",
       "operation": "+",
       "equation": "34 + ? = 61",
-      "answer": 27
+      "answer": 27,
+      "options": [
+        15,
+        27,
+        25
+      ],
+      "wrongAnswers": [
+        15,
+        25
+      ]
     },
     {
       "id": 90,
       "level": "medium",
       "operation": "-",
       "equation": "121 - 53 = ?",
-      "answer": 68
+      "answer": 68,
+      "options": [
+        73,
+        67,
+        68
+      ],
+      "wrongAnswers": [
+        73,
+        67
+      ]
     },
     {
       "id": 91,
       "level": "medium",
       "operation": "*",
       "equation": "14 * ? = 168",
-      "answer": 12
+      "answer": 12,
+      "options": [
+        12,
+        17,
+        0
+      ],
+      "wrongAnswers": [
+        0,
+        17
+      ]
     },
     {
       "id": 92,
       "level": "medium",
       "operation": "+",
       "equation": "26 + ? = 76",
-      "answer": 50
+      "answer": 50,
+      "options": [
+        47,
+        58,
+        50
+      ],
+      "wrongAnswers": [
+        58,
+        47
+      ]
     },
     {
       "id": 93,
       "level": "medium",
       "operation": "*",
       "equation": "6 * ? = 30",
-      "answer": 5
+      "answer": 5,
+      "options": [
+        15,
+        5,
+        4
+      ],
+      "wrongAnswers": [
+        4,
+        15
+      ]
     },
     {
       "id": 94,
       "level": "medium",
       "operation": "-",
       "equation": "111 - 43 = ?",
-      "answer": 68
+      "answer": 68,
+      "options": [
+        62,
+        68,
+        71
+      ],
+      "wrongAnswers": [
+        71,
+        62
+      ]
     },
     {
       "id": 95,
       "level": "medium",
       "operation": "/",
       "equation": "? / 12 = 18",
-      "answer": 216
+      "answer": 216,
+      "options": [
+        213,
+        217,
+        216
+      ],
+      "wrongAnswers": [
+        217,
+        213
+      ]
     },
     {
       "id": 96,
       "level": "medium",
       "operation": "+",
       "equation": "? + 14 = 43",
-      "answer": 29
+      "answer": 29,
+      "options": [
+        29,
+        35,
+        21
+      ],
+      "wrongAnswers": [
+        35,
+        21
+      ]
     },
     {
       "id": 97,
       "level": "medium",
       "operation": "-",
       "equation": "99 - ? = 85",
-      "answer": 14
+      "answer": 14,
+      "options": [
+        2,
+        15,
+        14
+      ],
+      "wrongAnswers": [
+        2,
+        15
+      ]
     },
     {
       "id": 98,
       "level": "medium",
       "operation": "-",
       "equation": "85 - 26 = ?",
-      "answer": 59
+      "answer": 59,
+      "options": [
+        61,
+        59,
+        64
+      ],
+      "wrongAnswers": [
+        64,
+        61
+      ]
     },
     {
       "id": 99,
       "level": "medium",
       "operation": "*",
       "equation": "11 * ? = 55",
-      "answer": 5
+      "answer": 5,
+      "options": [
+        8,
+        13,
+        5
+      ],
+      "wrongAnswers": [
+        13,
+        8
+      ]
     },
     {
       "id": 100,
       "level": "medium",
       "operation": "-",
       "equation": "? - 41 = 76",
-      "answer": 117
+      "answer": 117,
+      "options": [
+        119,
+        117,
+        113
+      ],
+      "wrongAnswers": [
+        113,
+        119
+      ]
     },
     {
       "id": 101,
       "level": "medium",
       "operation": "+",
       "equation": "? + 59 = 119",
-      "answer": 60
+      "answer": 60,
+      "options": [
+        60,
+        64,
+        70
+      ],
+      "wrongAnswers": [
+        70,
+        64
+      ]
     },
     {
       "id": 102,
       "level": "medium",
       "operation": "/",
       "equation": "117 / 13 = ?",
-      "answer": 9
+      "answer": 9,
+      "options": [
+        14,
+        19,
+        9
+      ],
+      "wrongAnswers": [
+        14,
+        19
+      ]
     },
     {
       "id": 103,
       "level": "medium",
       "operation": "-",
       "equation": "132 - ? = 100",
-      "answer": 32
+      "answer": 32,
+      "options": [
+        33,
+        26,
+        32
+      ],
+      "wrongAnswers": [
+        26,
+        33
+      ]
     },
     {
       "id": 104,
       "level": "medium",
       "operation": "+",
       "equation": "37 + ? = 94",
-      "answer": 57
+      "answer": 57,
+      "options": [
+        67,
+        57,
+        51
+      ],
+      "wrongAnswers": [
+        51,
+        67
+      ]
     },
     {
       "id": 105,
       "level": "medium",
       "operation": "/",
       "equation": "192 / ? = 12",
-      "answer": 16
+      "answer": 16,
+      "options": [
+        11,
+        20,
+        16
+      ],
+      "wrongAnswers": [
+        20,
+        11
+      ]
     },
     {
       "id": 106,
       "level": "medium",
       "operation": "-",
       "equation": "130 - ? = 107",
-      "answer": 23
+      "answer": 23,
+      "options": [
+        23,
+        31,
+        33
+      ],
+      "wrongAnswers": [
+        33,
+        31
+      ]
     },
     {
       "id": 107,
       "level": "medium",
       "operation": "+",
       "equation": "75 + 24 = ?",
-      "answer": 99
+      "answer": 99,
+      "options": [
+        97,
+        109,
+        99
+      ],
+      "wrongAnswers": [
+        97,
+        109
+      ]
     },
     {
       "id": 108,
       "level": "medium",
       "operation": "/",
       "equation": "126 / 9 = ?",
-      "answer": 14
+      "answer": 14,
+      "options": [
+        14,
+        9,
+        22
+      ],
+      "wrongAnswers": [
+        22,
+        9
+      ]
     },
     {
       "id": 109,
       "level": "medium",
       "operation": "-",
       "equation": "33 - 31 = ?",
-      "answer": 2
+      "answer": 2,
+      "options": [
+        2,
+        7,
+        4
+      ],
+      "wrongAnswers": [
+        4,
+        7
+      ]
     },
     {
       "id": 110,
       "level": "medium",
       "operation": "/",
       "equation": "117 / 9 = ?",
-      "answer": 13
+      "answer": 13,
+      "options": [
+        1,
+        10,
+        13
+      ],
+      "wrongAnswers": [
+        1,
+        10
+      ]
     },
     {
       "id": 111,
       "level": "medium",
       "operation": "*",
       "equation": "? * 15 = 165",
-      "answer": 11
+      "answer": 11,
+      "options": [
+        11,
+        10,
+        17
+      ],
+      "wrongAnswers": [
+        10,
+        17
+      ]
     },
     {
       "id": 112,
       "level": "medium",
       "operation": "/",
       "equation": "210 / 14 = ?",
-      "answer": 15
+      "answer": 15,
+      "options": [
+        15,
+        17,
+        19
+      ],
+      "wrongAnswers": [
+        17,
+        19
+      ]
     },
     {
       "id": 113,
       "level": "medium",
       "operation": "+",
       "equation": "? + 21 = 69",
-      "answer": 48
+      "answer": 48,
+      "options": [
+        45,
+        48,
+        44
+      ],
+      "wrongAnswers": [
+        44,
+        45
+      ]
     },
     {
       "id": 114,
       "level": "medium",
       "operation": "*",
       "equation": "? * 6 = 36",
-      "answer": 6
+      "answer": 6,
+      "options": [
+        4,
+        14,
+        6
+      ],
+      "wrongAnswers": [
+        14,
+        4
+      ]
     },
     {
       "id": 115,
       "level": "medium",
       "operation": "/",
       "equation": "135 / ? = 15",
-      "answer": 9
+      "answer": 9,
+      "options": [
+        11,
+        3,
+        9
+      ],
+      "wrongAnswers": [
+        11,
+        3
+      ]
     },
     {
       "id": 116,
       "level": "medium",
       "operation": "+",
       "equation": "? + 67 = 131",
-      "answer": 64
+      "answer": 64,
+      "options": [
+        58,
+        60,
+        64
+      ],
+      "wrongAnswers": [
+        60,
+        58
+      ]
     },
     {
       "id": 117,
       "level": "medium",
       "operation": "-",
       "equation": "? - 12 = 50",
-      "answer": 62
+      "answer": 62,
+      "options": [
+        62,
+        59,
+        66
+      ],
+      "wrongAnswers": [
+        59,
+        66
+      ]
     },
     {
       "id": 118,
       "level": "medium",
       "operation": "/",
       "equation": "44 / ? = 11",
-      "answer": 4
+      "answer": 4,
+      "options": [
+        4,
+        3,
+        9
+      ],
+      "wrongAnswers": [
+        3,
+        9
+      ]
     },
     {
       "id": 119,
       "level": "medium",
       "operation": "/",
       "equation": "? / 5 = 15",
-      "answer": 75
+      "answer": 75,
+      "options": [
+        75,
+        72,
+        70
+      ],
+      "wrongAnswers": [
+        72,
+        70
+      ]
     },
     {
       "id": 120,
       "level": "medium",
       "operation": "*",
       "equation": "? * 6 = 96",
-      "answer": 16
+      "answer": 16,
+      "options": [
+        21,
+        4,
+        16
+      ],
+      "wrongAnswers": [
+        4,
+        21
+      ]
     },
     {
       "id": 121,
       "level": "medium",
       "operation": "*",
       "equation": "? * 9 = 126",
-      "answer": 14
+      "answer": 14,
+      "options": [
+        14,
+        9,
+        20
+      ],
+      "wrongAnswers": [
+        9,
+        20
+      ]
     },
     {
       "id": 122,
       "level": "medium",
       "operation": "/",
       "equation": "? / 9 = 17",
-      "answer": 153
+      "answer": 153,
+      "options": [
+        141,
+        148,
+        153
+      ],
+      "wrongAnswers": [
+        148,
+        141
+      ]
     },
     {
       "id": 123,
       "level": "medium",
       "operation": "*",
       "equation": "14 * 7 = ?",
-      "answer": 98
+      "answer": 98,
+      "options": [
+        98,
+        106,
+        96
+      ],
+      "wrongAnswers": [
+        96,
+        106
+      ]
     },
     {
       "id": 124,
       "level": "medium",
       "operation": "/",
       "equation": "? / 14 = 17",
-      "answer": 238
+      "answer": 238,
+      "options": [
+        119,
+        238,
+        230
+      ],
+      "wrongAnswers": [
+        230,
+        119
+      ]
     },
     {
       "id": 125,
       "level": "medium",
       "operation": "-",
       "equation": "108 - ? = 26",
-      "answer": 82
+      "answer": 82,
+      "options": [
+        94,
+        82,
+        72
+      ],
+      "wrongAnswers": [
+        94,
+        72
+      ]
     },
     {
       "id": 126,
       "level": "medium",
       "operation": "/",
       "equation": "60 / ? = 5",
-      "answer": 12
+      "answer": 12,
+      "options": [
+        12,
+        15,
+        10
+      ],
+      "wrongAnswers": [
+        15,
+        10
+      ]
     },
     {
       "id": 127,
       "level": "medium",
       "operation": "*",
       "equation": "? * 11 = 99",
-      "answer": 9
+      "answer": 9,
+      "options": [
+        9,
+        12,
+        19
+      ],
+      "wrongAnswers": [
+        12,
+        19
+      ]
     },
     {
       "id": 128,
       "level": "medium",
       "operation": "*",
       "equation": "13 * ? = 156",
-      "answer": 12
+      "answer": 12,
+      "options": [
+        22,
+        20,
+        12
+      ],
+      "wrongAnswers": [
+        22,
+        20
+      ]
     },
     {
       "id": 129,
       "level": "medium",
       "operation": "-",
       "equation": "? - 70 = 25",
-      "answer": 95
+      "answer": 95,
+      "options": [
+        105,
+        95,
+        97
+      ],
+      "wrongAnswers": [
+        97,
+        105
+      ]
     },
     {
       "id": 130,
       "level": "medium",
       "operation": "-",
       "equation": "114 - ? = 94",
-      "answer": 20
+      "answer": 20,
+      "options": [
+        12,
+        20,
+        14
+      ],
+      "wrongAnswers": [
+        12,
+        14
+      ]
     },
     {
       "id": 131,
       "level": "medium",
       "operation": "*",
       "equation": "? * 8 = 56",
-      "answer": 7
+      "answer": 7,
+      "options": [
+        17,
+        7,
+        2
+      ],
+      "wrongAnswers": [
+        2,
+        17
+      ]
     },
     {
       "id": 132,
       "level": "medium",
       "operation": "*",
       "equation": "9 * 8 = ?",
-      "answer": 72
+      "answer": 72,
+      "options": [
+        73,
+        77,
+        72
+      ],
+      "wrongAnswers": [
+        77,
+        73
+      ]
     },
     {
       "id": 133,
       "level": "medium",
       "operation": "+",
       "equation": "20 + ? = 45",
-      "answer": 25
+      "answer": 25,
+      "options": [
+        25,
+        35,
+        31
+      ],
+      "wrongAnswers": [
+        35,
+        31
+      ]
     },
     {
       "id": 134,
       "level": "medium",
       "operation": "+",
       "equation": "? + 36 = 109",
-      "answer": 73
+      "answer": 73,
+      "options": [
+        83,
+        75,
+        73
+      ],
+      "wrongAnswers": [
+        75,
+        83
+      ]
     },
     {
       "id": 135,
       "level": "medium",
       "operation": "-",
       "equation": "121 - ? = 62",
-      "answer": 59
+      "answer": 59,
+      "options": [
+        59,
+        64,
+        51
+      ],
+      "wrongAnswers": [
+        64,
+        51
+      ]
     },
     {
       "id": 136,
       "level": "medium",
       "operation": "/",
       "equation": "? / 7 = 9",
-      "answer": 63
+      "answer": 63,
+      "options": [
+        63,
+        75,
+        55
+      ],
+      "wrongAnswers": [
+        55,
+        75
+      ]
     },
     {
       "id": 137,
       "level": "medium",
       "operation": "+",
       "equation": "28 + ? = 87",
-      "answer": 59
+      "answer": 59,
+      "options": [
+        59,
+        49,
+        65
+      ],
+      "wrongAnswers": [
+        65,
+        49
+      ]
     },
     {
       "id": 138,
       "level": "medium",
       "operation": "-",
       "equation": "52 - ? = 9",
-      "answer": 43
+      "answer": 43,
+      "options": [
+        43,
+        53,
+        42
+      ],
+      "wrongAnswers": [
+        53,
+        42
+      ]
     },
     {
       "id": 139,
       "level": "medium",
       "operation": "+",
       "equation": "46 + 68 = ?",
-      "answer": 114
+      "answer": 114,
+      "options": [
+        113,
+        114,
+        124
+      ],
+      "wrongAnswers": [
+        124,
+        113
+      ]
     },
     {
       "id": 140,
       "level": "medium",
       "operation": "/",
       "equation": "? / 6 = 19",
-      "answer": 114
+      "answer": 114,
+      "options": [
+        114,
+        124,
+        112
+      ],
+      "wrongAnswers": [
+        112,
+        124
+      ]
     },
     {
       "id": 141,
       "level": "hard",
       "operation": "*",
       "equation": "26 * ? = 624",
-      "answer": 24
+      "answer": 24,
+      "options": [
+        22,
+        12,
+        24
+      ],
+      "wrongAnswers": [
+        22,
+        12
+      ]
     },
     {
       "id": 142,
       "level": "hard",
       "operation": "/",
       "equation": "429 / ? = 33",
-      "answer": 13
+      "answer": 13,
+      "options": [
+        25,
+        13,
+        19
+      ],
+      "wrongAnswers": [
+        19,
+        25
+      ]
     },
     {
       "id": 143,
       "level": "hard",
       "operation": "/",
       "equation": "544 / 16 = ?",
-      "answer": 34
+      "answer": 34,
+      "options": [
+        44,
+        68,
+        34
+      ],
+      "wrongAnswers": [
+        68,
+        44
+      ]
     },
     {
       "id": 144,
       "level": "hard",
       "operation": "*",
       "equation": "? * 23 = 644",
-      "answer": 28
+      "answer": 28,
+      "options": [
+        28,
+        23,
+        26
+      ],
+      "wrongAnswers": [
+        23,
+        26
+      ]
     },
     {
       "id": 145,
       "level": "hard",
       "operation": "-",
       "equation": "260 - 172 = ?",
-      "answer": 88
+      "answer": 88,
+      "options": [
+        91,
+        83,
+        88
+      ],
+      "wrongAnswers": [
+        83,
+        91
+      ]
     },
     {
       "id": 146,
       "level": "hard",
       "operation": "*",
       "equation": "19 * ? = 304",
-      "answer": 16
+      "answer": 16,
+      "options": [
+        12,
+        16,
+        1
+      ],
+      "wrongAnswers": [
+        12,
+        1
+      ]
     },
     {
       "id": 147,
       "level": "hard",
       "operation": "*",
       "equation": "29 * 10 = ?",
-      "answer": 290
+      "answer": 290,
+      "options": [
+        286,
+        290,
+        275
+      ],
+      "wrongAnswers": [
+        275,
+        286
+      ]
     },
     {
       "id": 148,
       "level": "hard",
       "operation": "-",
       "equation": "? - 158 = 80",
-      "answer": 238
+      "answer": 238,
+      "options": [
+        238,
+        258,
+        235
+      ],
+      "wrongAnswers": [
+        235,
+        258
+      ]
     },
     {
       "id": 149,
       "level": "hard",
       "operation": "-",
       "equation": "229 - ? = 153",
-      "answer": 76
+      "answer": 76,
+      "options": [
+        64,
+        76,
+        75
+      ],
+      "wrongAnswers": [
+        64,
+        75
+      ]
     },
     {
       "id": 150,
       "level": "hard",
       "operation": "/",
       "equation": "486 / ? = 27",
-      "answer": 18
+      "answer": 18,
+      "options": [
+        18,
+        30,
+        10
+      ],
+      "wrongAnswers": [
+        10,
+        30
+      ]
     },
     {
       "id": 151,
       "level": "hard",
       "operation": "/",
       "equation": "144 / ? = 16",
-      "answer": 9
+      "answer": 9,
+      "options": [
+        9,
+        11,
+        1
+      ],
+      "wrongAnswers": [
+        1,
+        11
+      ]
     },
     {
       "id": 152,
       "level": "hard",
       "operation": "/",
       "equation": "832 / 26 = ?",
-      "answer": 32
+      "answer": 32,
+      "options": [
+        7,
+        32,
+        28
+      ],
+      "wrongAnswers": [
+        7,
+        28
+      ]
     },
     {
       "id": 153,
       "level": "hard",
       "operation": "/",
       "equation": "230 / ? = 10",
-      "answer": 23
+      "answer": 23,
+      "options": [
+        17,
+        23,
+        29
+      ],
+      "wrongAnswers": [
+        17,
+        29
+      ]
     },
     {
       "id": 154,
       "level": "hard",
       "operation": "*",
       "equation": "? * 21 = 504",
-      "answer": 24
+      "answer": 24,
+      "options": [
+        20,
+        24,
+        9
+      ],
+      "wrongAnswers": [
+        20,
+        9
+      ]
     },
     {
       "id": 155,
       "level": "hard",
       "operation": "-",
       "equation": "369 - ? = 253",
-      "answer": 116
+      "answer": 116,
+      "options": [
+        141,
+        116,
+        120
+      ],
+      "wrongAnswers": [
+        120,
+        141
+      ]
     },
     {
       "id": 156,
       "level": "hard",
       "operation": "*",
       "equation": "24 * ? = 312",
-      "answer": 13
+      "answer": 13,
+      "options": [
+        21,
+        7,
+        13
+      ],
+      "wrongAnswers": [
+        7,
+        21
+      ]
     },
     {
       "id": 157,
       "level": "hard",
       "operation": "-",
       "equation": "393 - ? = 327",
-      "answer": 66
+      "answer": 66,
+      "options": [
+        64,
+        62,
+        66
+      ],
+      "wrongAnswers": [
+        62,
+        64
+      ]
     },
     {
       "id": 158,
       "level": "hard",
       "operation": "+",
       "equation": "101 + 169 = ?",
-      "answer": 270
+      "answer": 270,
+      "options": [
+        270,
+        266,
+        268
+      ],
+      "wrongAnswers": [
+        268,
+        266
+      ]
     },
     {
       "id": 159,
       "level": "hard",
       "operation": "/",
       "equation": "143 / ? = 11",
-      "answer": 13
+      "answer": 13,
+      "options": [
+        17,
+        13,
+        28
+      ],
+      "wrongAnswers": [
+        28,
+        17
+      ]
     },
     {
       "id": 160,
       "level": "hard",
       "operation": "/",
       "equation": "288 / ? = 16",
-      "answer": 18
+      "answer": 18,
+      "options": [
+        21,
+        18,
+        6
+      ],
+      "wrongAnswers": [
+        6,
+        21
+      ]
     },
     {
       "id": 161,
       "level": "hard",
       "operation": "*",
       "equation": "22 * ? = 440",
-      "answer": 20
+      "answer": 20,
+      "options": [
+        45,
+        20,
+        24
+      ],
+      "wrongAnswers": [
+        45,
+        24
+      ]
     },
     {
       "id": 162,
       "level": "hard",
       "operation": "/",
       "equation": "192 / ? = 12",
-      "answer": 16
+      "answer": 16,
+      "options": [
+        18,
+        28,
+        16
+      ],
+      "wrongAnswers": [
+        18,
+        28
+      ]
     },
     {
       "id": 163,
       "level": "hard",
       "operation": "+",
       "equation": "218 + ? = 291",
-      "answer": 73
+      "answer": 73,
+      "options": [
+        53,
+        79,
+        73
+      ],
+      "wrongAnswers": [
+        53,
+        79
+      ]
     },
     {
       "id": 164,
       "level": "hard",
       "operation": "-",
       "equation": "155 - 143 = ?",
-      "answer": 12
+      "answer": 12,
+      "options": [
+        4,
+        12,
+        17
+      ],
+      "wrongAnswers": [
+        4,
+        17
+      ]
     },
     {
       "id": 165,
       "level": "hard",
       "operation": "+",
       "equation": "143 + 111 = ?",
-      "answer": 254
+      "answer": 254,
+      "options": [
+        254,
+        255,
+        248
+      ],
+      "wrongAnswers": [
+        248,
+        255
+      ]
     },
     {
       "id": 166,
       "level": "hard",
       "operation": "-",
       "equation": "242 - ? = 150",
-      "answer": 92
+      "answer": 92,
+      "options": [
+        100,
+        92,
+        72
+      ],
+      "wrongAnswers": [
+        100,
+        72
+      ]
     },
     {
       "id": 167,
       "level": "hard",
       "operation": "+",
       "equation": "224 + ? = 339",
-      "answer": 115
+      "answer": 115,
+      "options": [
+        123,
+        135,
+        115
+      ],
+      "wrongAnswers": [
+        123,
+        135
+      ]
     },
     {
       "id": 168,
       "level": "hard",
       "operation": "*",
       "equation": "? * 13 = 299",
-      "answer": 23
+      "answer": 23,
+      "options": [
+        23,
+        43,
+        8
+      ],
+      "wrongAnswers": [
+        43,
+        8
+      ]
     },
     {
       "id": 169,
       "level": "hard",
       "operation": "+",
       "equation": "121 + 139 = ?",
-      "answer": 260
+      "answer": 260,
+      "options": [
+        256,
+        261,
+        260
+      ],
+      "wrongAnswers": [
+        256,
+        261
+      ]
     },
     {
       "id": 170,
       "level": "hard",
       "operation": "+",
       "equation": "? + 207 = 366",
-      "answer": 159
+      "answer": 159,
+      "options": [
+        144,
+        159,
+        160
+      ],
+      "wrongAnswers": [
+        144,
+        160
+      ]
     },
     {
       "id": 171,
       "level": "hard",
       "operation": "/",
       "equation": "640 / 20 = ?",
-      "answer": 32
+      "answer": 32,
+      "options": [
+        64,
+        32,
+        37
+      ],
+      "wrongAnswers": [
+        37,
+        64
+      ]
     },
     {
       "id": 172,
       "level": "hard",
       "operation": "+",
       "equation": "231 + 220 = ?",
-      "answer": 451
+      "answer": 451,
+      "options": [
+        451,
+        454,
+        436
+      ],
+      "wrongAnswers": [
+        436,
+        454
+      ]
     },
     {
       "id": 173,
       "level": "hard",
       "operation": "+",
       "equation": "157 + 213 = ?",
-      "answer": 370
+      "answer": 370,
+      "options": [
+        367,
+        345,
+        370
+      ],
+      "wrongAnswers": [
+        345,
+        367
+      ]
     },
     {
       "id": 174,
       "level": "hard",
       "operation": "+",
       "equation": "168 + ? = 364",
-      "answer": 196
+      "answer": 196,
+      "options": [
+        191,
+        196,
+        198
+      ],
+      "wrongAnswers": [
+        198,
+        191
+      ]
     },
     {
       "id": 175,
       "level": "hard",
       "operation": "*",
       "equation": "? * 24 = 336",
-      "answer": 14
+      "answer": 14,
+      "options": [
+        14,
+        9,
+        11
+      ],
+      "wrongAnswers": [
+        9,
+        11
+      ]
     },
     {
       "id": 176,
       "level": "hard",
       "operation": "*",
       "equation": "12 * ? = 252",
-      "answer": 21
+      "answer": 21,
+      "options": [
+        16,
+        27,
+        21
+      ],
+      "wrongAnswers": [
+        27,
+        16
+      ]
     },
     {
       "id": 177,
       "level": "hard",
       "operation": "+",
       "equation": "? + 152 = 342",
-      "answer": 190
+      "answer": 190,
+      "options": [
+        190,
+        178,
+        170
+      ],
+      "wrongAnswers": [
+        170,
+        178
+      ]
     },
     {
       "id": 178,
       "level": "hard",
       "operation": "/",
       "equation": "420 / ? = 14",
-      "answer": 30
+      "answer": 30,
+      "options": [
+        30,
+        15,
+        25
+      ],
+      "wrongAnswers": [
+        25,
+        15
+      ]
     },
     {
       "id": 179,
       "level": "hard",
       "operation": "-",
       "equation": "387 - ? = 161",
-      "answer": 226
+      "answer": 226,
+      "options": [
+        226,
+        230,
+        238
+      ],
+      "wrongAnswers": [
+        238,
+        230
+      ]
     },
     {
       "id": 180,
       "level": "hard",
       "operation": "/",
       "equation": "? / 22 = 23",
-      "answer": 506
+      "answer": 506,
+      "options": [
+        506,
+        518,
+        500
+      ],
+      "wrongAnswers": [
+        518,
+        500
+      ]
     },
     {
       "id": 181,
       "level": "hard",
       "operation": "*",
       "equation": "22 * 15 = ?",
-      "answer": 330
+      "answer": 330,
+      "options": [
+        330,
+        332,
+        328
+      ],
+      "wrongAnswers": [
+        328,
+        332
+      ]
     },
     {
       "id": 182,
       "level": "hard",
       "operation": "*",
       "equation": "26 * ? = 390",
-      "answer": 15
+      "answer": 15,
+      "options": [
+        7,
+        23,
+        15
+      ],
+      "wrongAnswers": [
+        23,
+        7
+      ]
     },
     {
       "id": 183,
       "level": "hard",
       "operation": "/",
       "equation": "180 / ? = 10",
-      "answer": 18
+      "answer": 18,
+      "options": [
+        18,
+        16,
+        33
+      ],
+      "wrongAnswers": [
+        33,
+        16
+      ]
     },
     {
       "id": 184,
       "level": "hard",
       "operation": "*",
       "equation": "17 * 23 = ?",
-      "answer": 391
+      "answer": 391,
+      "options": [
+        379,
+        391,
+        393
+      ],
+      "wrongAnswers": [
+        379,
+        393
+      ]
     },
     {
       "id": 185,
       "level": "hard",
       "operation": "*",
       "equation": "20 * ? = 360",
-      "answer": 18
+      "answer": 18,
+      "options": [
+        18,
+        22,
+        30
+      ],
+      "wrongAnswers": [
+        22,
+        30
+      ]
     },
     {
       "id": 186,
       "level": "hard",
       "operation": "*",
       "equation": "? * 8 = 232",
-      "answer": 29
+      "answer": 29,
+      "options": [
+        17,
+        21,
+        29
+      ],
+      "wrongAnswers": [
+        21,
+        17
+      ]
     },
     {
       "id": 187,
       "level": "hard",
       "operation": "-",
       "equation": "? - 90 = 73",
-      "answer": 163
+      "answer": 163,
+      "options": [
+        163,
+        164,
+        188
+      ],
+      "wrongAnswers": [
+        188,
+        164
+      ]
     },
     {
       "id": 188,
       "level": "hard",
       "operation": "/",
       "equation": "621 / 23 = ?",
-      "answer": 27
+      "answer": 27,
+      "options": [
+        31,
+        27,
+        29
+      ],
+      "wrongAnswers": [
+        29,
+        31
+      ]
     },
     {
       "id": 189,
       "level": "hard",
       "operation": "/",
       "equation": "896 / ? = 32",
-      "answer": 28
+      "answer": 28,
+      "options": [
+        56,
+        24,
+        28
+      ],
+      "wrongAnswers": [
+        24,
+        56
+      ]
     },
     {
       "id": 190,
       "level": "hard",
       "operation": "/",
       "equation": "96 / ? = 12",
-      "answer": 8
+      "answer": 8,
+      "options": [
+        8,
+        5,
+        0
+      ],
+      "wrongAnswers": [
+        5,
+        0
+      ]
     },
     {
       "id": 191,
       "level": "hard",
       "operation": "-",
       "equation": "327 - 237 = ?",
-      "answer": 90
+      "answer": 90,
+      "options": [
+        90,
+        85,
+        89
+      ],
+      "wrongAnswers": [
+        85,
+        89
+      ]
     },
     {
       "id": 192,
       "level": "hard",
       "operation": "*",
       "equation": "30 * ? = 570",
-      "answer": 19
+      "answer": 19,
+      "options": [
+        19,
+        13,
+        16
+      ],
+      "wrongAnswers": [
+        16,
+        13
+      ]
     },
     {
       "id": 193,
       "level": "hard",
       "operation": "*",
       "equation": "25 * ? = 625",
-      "answer": 25
+      "answer": 25,
+      "options": [
+        40,
+        37,
+        25
+      ],
+      "wrongAnswers": [
+        40,
+        37
+      ]
     },
     {
       "id": 194,
       "level": "hard",
       "operation": "*",
       "equation": "26 * ? = 416",
-      "answer": 16
+      "answer": 16,
+      "options": [
+        14,
+        16,
+        21
+      ],
+      "wrongAnswers": [
+        14,
+        21
+      ]
     },
     {
       "id": 195,
       "level": "hard",
       "operation": "*",
       "equation": "? * 11 = 209",
-      "answer": 19
+      "answer": 19,
+      "options": [
+        19,
+        29,
+        38
+      ],
+      "wrongAnswers": [
+        29,
+        38
+      ]
     },
     {
       "id": 196,
       "level": "hard",
       "operation": "-",
       "equation": "? - 90 = 191",
-      "answer": 281
+      "answer": 281,
+      "options": [
+        281,
+        296,
+        280
+      ],
+      "wrongAnswers": [
+        296,
+        280
+      ]
     },
     {
       "id": 197,
       "level": "hard",
       "operation": "-",
       "equation": "? - 115 = 103",
-      "answer": 218
+      "answer": 218,
+      "options": [
+        228,
+        218,
+        223
+      ],
+      "wrongAnswers": [
+        223,
+        228
+      ]
     },
     {
       "id": 198,
       "level": "hard",
       "operation": "/",
       "equation": "? / 16 = 33",
-      "answer": 528
+      "answer": 528,
+      "options": [
+        536,
+        528,
+        525
+      ],
+      "wrongAnswers": [
+        525,
+        536
+      ]
     },
     {
       "id": 199,
       "level": "hard",
       "operation": "*",
       "equation": "15 * ? = 210",
-      "answer": 14
+      "answer": 14,
+      "options": [
+        20,
+        14,
+        2
+      ],
+      "wrongAnswers": [
+        2,
+        20
+      ]
     },
     {
       "id": 200,
       "level": "hard",
       "operation": "-",
       "equation": "304 - ? = 199",
-      "answer": 105
+      "answer": 105,
+      "options": [
+        93,
+        105,
+        108
+      ],
+      "wrongAnswers": [
+        108,
+        93
+      ]
     }
   ]
 }
