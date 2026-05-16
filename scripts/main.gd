@@ -63,7 +63,6 @@ func _process(delta: float) -> void:
 	_player.tick(delta)
 	_cenario.tick(delta)
 	_blocos.tick(delta, _player.get_runner_position())
-	_update_score(delta)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -183,12 +182,11 @@ func _resume() -> void:
 	_snd_lose.play()
 
 
-func _update_score(delta: float) -> void:
-	_score += delta * (WORLD_SPEED * 0.05)
-	score_event.emit(_score)
+func _on_blocos_answer_selected(is_correct: bool, _selected_answer: int) -> void:
+	if is_correct:
+		_score += 1
+		score_event.emit(int(_score))
 
-
-func _on_blocos_answer_selected(_is_correct: bool, _selected_answer: int) -> void:
 	_set_active_equation(_equation_sequence.advance())
 
 
