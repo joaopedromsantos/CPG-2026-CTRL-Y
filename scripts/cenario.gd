@@ -42,11 +42,14 @@ func tick(delta: float) -> void:
 
 
 func _build_materials() -> void:
-	# Match the environment background for the floor so it blends with the scene
-	var bg_color := Color(0.08, 0.1, 0.13)
-	_mat_floor_light = _make_material(bg_color, 0.9, 0.0)
-	_mat_floor_dark = _make_material(bg_color, 0.9, 0.0)
-	_mat_lane = _make_material(Color(1.0, 1.0, 1.0), 0.2, 0.0)
+	var asphalt_color := Color(0.05, 0.06, 0.08)
+	var sidewalk_color := Color(0.11, 0.12, 0.14)
+	_mat_floor_light = _make_material(sidewalk_color, 1.0, 0.0)
+	_mat_floor_dark = _make_material(asphalt_color, 0.95, 0.0)
+	_mat_lane = _make_material(Color(0.96, 0.93, 0.78), 0.35, 0.0)
+	_mat_lane.emission_enabled = true
+	_mat_lane.emission = Color(0.96, 0.93, 0.78)
+	_mat_lane.emission_energy_multiplier = 0.5
 
 
 func _make_material(color: Color, roughness: float, metallic: float) -> StandardMaterial3D:
@@ -69,9 +72,10 @@ func _build_floor() -> void:
 	var start_x := -float(floor_cols - 1) * floor_tile_size * 0.5
 	for row in range(_rows_actual):
 		for col in range(floor_cols):
+			var is_shoulder := col == 0 or col == floor_cols - 1
 			var tile := MeshInstance3D.new()
 			tile.mesh = floor_mesh
-			tile.material_override = _mat_floor_dark
+			tile.material_override = _mat_floor_light if is_shoulder else _mat_floor_dark
 			tile.position = Vector3(
 				start_x + col * floor_tile_size,
 				-0.06,
@@ -82,15 +86,28 @@ func _build_floor() -> void:
 
 
 func _build_lane_markers() -> void:
-	# Create segmented white strips for each lane, one segment per floor tile row
-	var marker_mesh := BoxMesh.new()
-	marker_mesh.size = Vector3(lane_width * 0.6, 0.02, floor_tile_size + 0.02)
+	# Faixas tracejadas entre as pistas (divisores) e sólidas nas bordas da rua
+	var dash_mesh := BoxMesh.new()
+	dash_mesh.size = Vector3(0.18, 0.02, floor_tile_size * 0.55)
 
-	var lane_x := [-lane_width, 0.0, lane_width]
-	for x in lane_x:
+	var divider_xs := [-lane_width * 0.5, lane_width * 0.5]
+	for x in divider_xs:
 		for row in range(_rows_actual):
 			var marker := MeshInstance3D.new()
-			marker.mesh = marker_mesh
+			marker.mesh = dash_mesh
+			marker.material_override = _mat_lane
+			marker.position = Vector3(x, 0.01, floor_back_z + row * floor_tile_size)
+			add_child(marker)
+			_lane_markers.append(marker)
+
+	var edge_mesh := BoxMesh.new()
+	edge_mesh.size = Vector3(0.22, 0.02, floor_tile_size + 0.02)
+
+	var edge_xs := [-lane_width * 1.5, lane_width * 1.5]
+	for x in edge_xs:
+		for row in range(_rows_actual):
+			var marker := MeshInstance3D.new()
+			marker.mesh = edge_mesh
 			marker.material_override = _mat_lane
 			marker.position = Vector3(x, 0.01, floor_back_z + row * floor_tile_size)
 			add_child(marker)
