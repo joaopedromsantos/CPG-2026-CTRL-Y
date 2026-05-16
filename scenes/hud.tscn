@@ -117,6 +117,39 @@ text = "000"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="LivesContainer" type="Control" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper"]
+custom_minimum_size = Vector2(240, 80)
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="Background" type="TextureRect" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper/LivesContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_6fi6k")
+expand_mode = 1
+
+[node name="LivesLabel" type="Label" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper/LivesContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 64.0
+offset_top = 2.0
+offset_right = -10.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.1, 0.1, 0.1, 1)
+theme_override_fonts/font = ExtResource("4_fredoka")
+theme_override_font_sizes/font_size = 28
+text = "3"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="CronometerContainer" type="Control" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper" unique_id=1445436165]
 custom_minimum_size = Vector2(240, 80)
 layout_mode = 2

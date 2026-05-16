@@ -4,12 +4,14 @@ extends Node3D
 signal game_over
 signal restart_game
 signal score_event
+signal lives_event
 
 const LANE_WIDTH := 2.8
 const WORLD_SPEED := 8.0
 const FLOOR_BACK_Z := -18.0
 const FLOOR_FRONT_Z := 11.6
 const EQUATION_QUEUE_SIZE := 3
+const MAX_LIVES := 3
 const EQUATION_SEQUENCE_SCRIPT = preload("res://scripts/equation_sequence.gd")
 
 var _lane_positions: Array[float] = [
@@ -19,6 +21,7 @@ var _lane_positions: Array[float] = [
 ]
 
 var _score := 0.0
+var _lives := MAX_LIVES
 var _is_game_over := false
 var _is_paused := false
 
@@ -44,6 +47,7 @@ func _ready() -> void:
 	game_over.connect(hud.on_game_over)
 	restart_game.connect(hud.on_restart_game)
 	score_event.connect(hud.on_score_change)
+	lives_event.connect(hud.on_lives_change)
 	hud.pause_event.connect(_on_hud_pause_event)
 	_blocos.answer_selected.connect(_on_blocos_answer_selected)
 	_restart()
@@ -141,6 +145,7 @@ func _build_audio() -> void:
 
 func _restart() -> void:
 	_score = 0.0
+	_lives = MAX_LIVES
 	_is_game_over = false
 	if _is_paused:
 		_resume()
@@ -154,6 +159,8 @@ func _restart() -> void:
 		_snd_game.play()
 	
 	restart_game.emit()
+	score_event.emit(int(_score))
+	lives_event.emit(_lives)
 	_set_active_equation(_equation_sequence.start(EQUATION_QUEUE_SIZE))
 
 
@@ -161,6 +168,9 @@ func _end_game() -> void:
 	if _is_paused:
 		_resume()
 	_is_game_over = true
+	_snd_game.stop()
+	_snd_punch.stop()
+	_snd_lose.play()
 	_player.die()
 	game_over.emit()
 
@@ -193,6 +203,13 @@ func _on_blocos_answer_selected(is_correct: bool, _selected_answer: int) -> void
 	if is_correct:
 		_score += 1
 		score_event.emit(int(_score))
+	else:
+		_lives = maxi(_lives - 1, 0)
+		lives_event.emit(_lives)
+		if _lives <= 0:
+			_end_game()
+			return
+		_snd_punch.play()
 
 	_set_active_equation(_equation_sequence.advance())
 

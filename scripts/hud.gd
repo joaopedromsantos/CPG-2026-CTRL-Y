@@ -3,6 +3,7 @@ extends Node2D
 
 @onready var cronometer_label: Label = $CanvasLayer/RootControl/TopRightContainer/Wrapper/CronometerContainer/CronometerLabel
 @onready var score_label: Label = $CanvasLayer/RootControl/TopRightContainer/Wrapper/ScoreContainer/ScoreLabel
+@onready var lives_label: Label = $CanvasLayer/RootControl/TopRightContainer/Wrapper/LivesContainer/LivesLabel
 @onready var pause_button: TextureButton = $CanvasLayer/RootControl/TopLeftContainer/PauseButton
 
 
@@ -42,6 +43,10 @@ func on_resume() -> void:
 
 func on_score_change(score: int) -> void:
 	score_label.text = "%d" % [score]
+
+
+func on_lives_change(lives: int) -> void:
+	lives_label.text = "%d" % [lives]
 	
 	
 func on_restart_game() -> void:
