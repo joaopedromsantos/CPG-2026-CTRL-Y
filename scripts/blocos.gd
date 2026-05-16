@@ -56,7 +56,7 @@ func _spawn_block_row() -> void:
 
 	for lane_index in _lane_positions.size():
 		var block := _make_number_block(str(_rng.randi_range(0, 9)))
-		block.position = Vector3(_lane_positions[lane_index], 0.68, 0.0)
+		block.position = Vector3(_lane_positions[lane_index], 1.2, 0.0)
 		row.add_child(block)
 
 
