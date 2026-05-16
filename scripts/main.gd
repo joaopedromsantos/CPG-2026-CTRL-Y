@@ -7,9 +7,10 @@ signal score_event
 signal lives_event
 
 const LANE_WIDTH := 2.8
-const WORLD_SPEED := 8.0
 const FLOOR_BACK_Z := -18.0
 const FLOOR_FRONT_Z := 11.6
+const BASE_WORLD_SPEED := 8.0
+const WORLD_SPEED_PER_SCORE := 0.2
 const EQUATION_QUEUE_SIZE := 3
 const MAX_LIVES := 3
 const EQUATION_SEQUENCE_SCRIPT = preload("res://scripts/equation_sequence.gd")
@@ -24,6 +25,7 @@ var _score := 0.0
 var _lives := MAX_LIVES
 var _is_game_over := false
 var _is_paused := false
+var world_speed := BASE_WORLD_SPEED
 
 var _player: RunnerPlayer
 # var _hud: RunnerHud
@@ -71,6 +73,19 @@ func _process(delta: float) -> void:
 	_cenario.tick(delta)
 	_blocos.tick(delta, _player.get_runner_position())
 
+	_update_score(delta)
+	_update_world_speed(delta)
+
+
+func _update_world_speed(_delta: float) -> void:
+	var target_speed := BASE_WORLD_SPEED + _score * WORLD_SPEED_PER_SCORE
+	if is_equal_approx(world_speed, target_speed):
+		return
+
+	world_speed = target_speed
+	_cenario.world_speed = world_speed
+	_blocos.world_speed = world_speed
+
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not (event is InputEventKey):
@@ -100,7 +115,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _build_cenario() -> void:
 	_cenario = RunnerScenario.new()
-	_cenario.world_speed = WORLD_SPEED
+	_cenario.world_speed = world_speed
 	_cenario.lane_width = LANE_WIDTH
 	_cenario.floor_back_z = FLOOR_BACK_Z
 	_cenario.floor_front_z = FLOOR_FRONT_Z
@@ -117,7 +132,7 @@ func _build_player() -> void:
 
 func _build_blocos() -> void:
 	_blocos = RunnerBlocos.new()
-	_blocos.world_speed = WORLD_SPEED
+	_blocos.world_speed = world_speed
 	_blocos.floor_back_z = FLOOR_BACK_Z
 	_blocos.floor_front_z = FLOOR_FRONT_Z
 	add_child(_blocos)
@@ -155,6 +170,9 @@ func _build_audio() -> void:
 
 func _restart() -> void:
 	_score = 0.0
+	world_speed = BASE_WORLD_SPEED
+	_cenario.world_speed = world_speed
+	_blocos.world_speed = world_speed
 	_lives = MAX_LIVES
 	_is_game_over = false
 	if _is_paused:
@@ -224,6 +242,10 @@ func _on_blocos_answer_selected(is_correct: bool, _selected_answer: int) -> void
 
 	hud.show_feedback(is_correct)
 	_set_active_equation(_equation_sequence.advance())
+
+func _update_score(delta: float) -> void:
+	_score += delta * (world_speed * 0.05)
+	score_event.emit(int(_score))
 
 
 func _set_active_equation(equation: Dictionary) -> void:
