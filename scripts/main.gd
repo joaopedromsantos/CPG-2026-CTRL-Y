@@ -39,6 +39,7 @@ var _player: RunnerPlayer
 var _cenario: RunnerScenario
 var _blocos: RunnerBlocos
 var _power_ups: RunnerPowerUps
+var _cones: RunnerCones
 var _power_up_effects: RunnerPowerUpEffectController
 var _snd_game: AudioStreamPlayer
 var _snd_lose: AudioStreamPlayer
@@ -57,6 +58,7 @@ func _ready() -> void:
 	_build_player()
 	_build_blocos()
 	_build_power_ups()
+	_build_cones()
 	_build_power_up_effect_controller()
 	# _build_hud()
 	_setup_camera()
@@ -93,6 +95,7 @@ func _process(delta: float) -> void:
 	_cenario.tick(delta)
 	_blocos.tick(delta, _player.get_runner_position())
 	_power_ups.tick(delta, _player.get_runner_position())
+	_cones.tick(delta)
 	_update_world_speed(delta)
 
 
@@ -108,6 +111,7 @@ func _update_world_speed(_delta: float) -> void:
 	_cenario.world_speed = world_speed
 	_blocos.world_speed = world_speed
 	_power_ups.world_speed = world_speed
+	_cones.world_speed = world_speed
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -183,6 +187,15 @@ func _build_power_ups() -> void:
 	_power_ups.setup(_lane_positions)
 
 
+func _build_cones() -> void:
+	_cones = RunnerCones.new()
+	_cones.world_speed = BASE_WORLD_SPEED
+	_cones.floor_back_z = FLOOR_BACK_Z
+	_cones.floor_front_z = FLOOR_FRONT_Z
+	add_child(_cones)
+	_cones.setup(_lane_positions)
+
+
 func _build_power_up_effect_controller() -> void:
 	_power_up_effects = RunnerPowerUpEffectController.new()
 	add_child(_power_up_effects)
@@ -227,6 +240,7 @@ func _restart() -> void:
 	_cenario.world_speed = world_speed
 	_blocos.world_speed = world_speed
 	_power_ups.world_speed = world_speed
+	_cones.world_speed = world_speed
 	_lives = MAX_LIVES
 	_is_game_over = false
 	if _is_paused:
@@ -234,6 +248,7 @@ func _restart() -> void:
 	_player.reset(1)
 	_blocos.reset()
 	_power_ups.reset()
+	_cones.reset()
 	_power_up_effects.reset(_lives)
 	for i in range(POWER_UP_SLOT_COUNT):
 		_power_up_slots[i] = ""

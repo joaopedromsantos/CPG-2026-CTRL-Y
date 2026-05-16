@@ -1,5 +1,7 @@
 [gd_scene format=3 uid="uid://dl3mrdxm470pj"]
 
+[ext_resource type="PackedScene" uid="uid://cofypyl68ho7i" path="res://assets/player/Robot.fbx" id="1_tx5wa"]
+
 [sub_resource type="GDScript" id="GDScript_start_screen"]
 script/source = "extends Control
 
@@ -579,3 +581,6 @@ offset_right = 638.0
 offset_bottom = 489.0
 focus_mode = 0
 text = "COMEÇAR"
+
+[node name="Robot" parent="." unique_id=2043943188 instance=ExtResource("1_tx5wa")]
+transform = Transform3D(-0.48011452, -0.22038832, 0.8490694, 0.83929515, -0.39688736, 0.3715696, 0.25509527, 0.89101577, 0.37552226, -0.37257493, 0, -5.92693)
