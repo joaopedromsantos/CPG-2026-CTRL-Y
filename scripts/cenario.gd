@@ -1,6 +1,8 @@
 class_name RunnerScenario
 extends Node3D
 
+const LIGHT_POLE_SCENE: PackedScene = preload("res://assets/city-kit-roads/models/light-curved.glb")
+
 var world_speed := 8.0
 var lane_width := 2.8
 var floor_tile_size := 1.4
@@ -11,6 +13,7 @@ var floor_front_z := 11.6
 
 var _floor_tiles: Array[MeshInstance3D] = []
 var _lane_markers: Array[MeshInstance3D] = []
+var _light_poles: Array[Node3D] = []
 var _mat_floor_light: StandardMaterial3D
 var _mat_floor_dark: StandardMaterial3D
 var _mat_lane: StandardMaterial3D
@@ -42,6 +45,11 @@ func tick(delta: float) -> void:
 		marker.position.z += world_speed * delta
 		if marker.position.z > wrap_z:
 			marker.position.z -= depth
+
+	for pole in _light_poles:
+		pole.position.z += world_speed * delta
+		if pole.position.z > wrap_z:
+			pole.position.z -= depth
 
 
 func _build_materials() -> void:
@@ -196,6 +204,25 @@ func _build_scenery() -> void:
 		var sz := rng.randf_range(floor_back_z - 12.0, floor_back_z - 4.0)
 		star.position = Vector3(sx, sy, sz)
 		add_child(star)
+
+	_build_light_poles(road_half_width, scenery_depth)
+
+
+func _build_light_poles(road_half_width: float, scenery_depth: float) -> void:
+	var poles_per_side := 7
+	var pole_x := road_half_width + 1.05
+	var first_z := floor_back_z + floor_tile_size * 0.6
+	var z_step := scenery_depth / float(poles_per_side)
+
+	for side in [-1, 1]:
+		for i in range(poles_per_side):
+			var pole := LIGHT_POLE_SCENE.instantiate() as Node3D
+			pole.name = "LightPole"
+			pole.position = Vector3(float(side) * pole_x, 0.0, first_z + float(i) * z_step)
+			pole.rotation_degrees = Vector3(0.0, -90.0 if side < 0 else 90.0, 0.0)
+			pole.scale = Vector3.ONE * 1.15
+			add_child(pole)
+			_light_poles.append(pole)
 
 
 func _build_camera() -> void:
