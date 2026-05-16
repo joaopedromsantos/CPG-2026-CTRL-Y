@@ -1,10 +1,8 @@
 extends Node3D
+@onready var hud: Node2D = $HUD
 
-@export var hud_sentences: Array[String] = [
-	"Frase 1",
-	"Frase 2",
-	"Frase 3",
-]
+signal game_over
+signal restart_game
 
 const LANE_WIDTH := 2.8
 const WORLD_SPEED := 8.0
@@ -19,9 +17,10 @@ var _lane_positions: Array[float] = [
 
 var _score := 0.0
 var _is_game_over := false
+var _is_paused := false
 
 var _player: RunnerPlayer
-var _hud: RunnerHud
+# var _hud: RunnerHud
 var _cenario: RunnerScenario
 var _blocos: RunnerBlocos
 
@@ -30,9 +29,13 @@ func _ready() -> void:
 	_build_cenario()
 	_build_player()
 	_build_blocos()
-	_build_hud()
+	# _build_hud()
 	_setup_camera()
 	_restart()
+	
+	game_over.connect(hud.on_game_over)
+	restart_game.connect(hud.on_restart_game)
+	hud.pause_event.connect(_on_hud_pause_event)
 
 
 func _setup_camera() -> void:
@@ -44,7 +47,7 @@ func _setup_camera() -> void:
 
 
 func _process(delta: float) -> void:
-	if _is_game_over:
+	if _is_game_over or _is_paused:
 		return
 
 	_player.tick(delta)
@@ -63,11 +66,11 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	match key_event.keycode:
 		KEY_LEFT, KEY_A:
-			if not _is_game_over:
+			if not _is_game_over and not _is_paused:
 				_player.change_lane(-1)
 				get_tree().root.set_input_as_handled()
 		KEY_RIGHT, KEY_D:
-			if not _is_game_over:
+			if not _is_game_over and not _is_paused:
 				_player.change_lane(1)
 				get_tree().root.set_input_as_handled()
 		KEY_SPACE:
@@ -105,27 +108,53 @@ func _build_blocos() -> void:
 	_blocos.setup(_lane_positions)
 
 
-func _build_hud() -> void:
-	_hud = RunnerHud.new()
-	add_child(_hud)
-	_hud.setup(hud_sentences)
+# func _build_hud() -> void:
+# 	_hud = RunnerHud.new()
+# 	add_child(_hud)
+# 	_hud.setup(hud_sentences)
 
 
 func _restart() -> void:
 	_score = 0.0
 	_is_game_over = false
+	if _is_paused:
+		_resume()
 	_player.reset(1)
 	_blocos.reset()
-	_hud.hide_game_over()
-	_hud.update_score(0)
+	# _hud.hide_game_over()
+	# _hud.update_score(0)
+	
+	restart_game.emit()
 
 
 func _end_game() -> void:
+	if _is_paused:
+		_resume()
 	_is_game_over = true
 	_player.die()
-	_hud.show_game_over()
+	game_over.emit()
+
+
+func _on_hud_pause_event() -> void:
+	if _is_game_over:
+		return
+
+	if _is_paused:
+		_resume()
+	else:
+		_pause()
+
+
+func _pause() -> void:
+	_is_paused = true
+	hud.on_pause()
+
+
+func _resume() -> void:
+	_is_paused = false
+	hud.on_resume()
 
 
 func _update_score(delta: float) -> void:
 	_score += delta * 10.0
-	_hud.update_score(int(_score))
+	# _hud.update_score(int(_score))
