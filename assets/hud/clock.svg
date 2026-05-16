@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="clockBody" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#7ad7ff"/>
+      <stop offset="55%" stop-color="#2a9adf"/>
+      <stop offset="100%" stop-color="#0f5fa0"/>
+    </linearGradient>
+    <radialGradient id="clockFace" cx="50%" cy="45%" r="55%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#dbeaf4"/>
+    </radialGradient>
+  </defs>
+  <circle cx="32" cy="34" r="24" fill="url(#clockBody)" stroke="#0a3a66" stroke-width="3"/>
+  <circle cx="32" cy="34" r="18" fill="url(#clockFace)" stroke="#0a3a66" stroke-width="2"/>
+  <rect x="29" y="4" width="6" height="6" rx="1.5" fill="#0a3a66"/>
+  <rect x="24" y="2" width="16" height="4" rx="1.5" fill="#0a3a66"/>
+  <circle cx="32" cy="34" r="2" fill="#0a3a66"/>
+  <line x1="32" y1="34" x2="32" y2="22" stroke="#0a3a66" stroke-width="3" stroke-linecap="round"/>
+  <line x1="32" y1="34" x2="42" y2="36" stroke="#0a3a66" stroke-width="3" stroke-linecap="round"/>
+  <line x1="32" y1="16" x2="32" y2="19" stroke="#0a3a66" stroke-width="2" stroke-linecap="round"/>
+  <line x1="32" y1="49" x2="32" y2="52" stroke="#0a3a66" stroke-width="2" stroke-linecap="round"/>
+  <line x1="15" y1="34" x2="18" y2="34" stroke="#0a3a66" stroke-width="2" stroke-linecap="round"/>
+  <line x1="46" y1="34" x2="49" y2="34" stroke="#0a3a66" stroke-width="2" stroke-linecap="round"/>
+</svg>
