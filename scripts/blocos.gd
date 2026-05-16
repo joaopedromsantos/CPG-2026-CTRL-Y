@@ -13,6 +13,7 @@ var _number_rows: Array[Node3D] = []
 var _rng := RandomNumberGenerator.new()
 var _mat_number: StandardMaterial3D
 var _mat_number_side: StandardMaterial3D
+var _mat_number_border: StandardMaterial3D
 
 
 func setup(lane_positions: Array[float]) -> void:
@@ -75,8 +76,33 @@ func _build_materials() -> void:
 	_mat_number_side.albedo_color = Color(0.04, 0.04, 0.05)
 	_mat_number_side.roughness = 0.45
 
+	_mat_number_border = StandardMaterial3D.new()
+	_mat_number_border.albedo_color = Color.BLACK
+	_mat_number_border.roughness = 0.4
 
-func _make_number_label(text: String) -> MeshInstance3D:
+
+func _make_number_label(text: String) -> Node3D:
+	var root := Node3D.new()
+
+	var border := _make_text_mesh(text)
+	border.name = "Borda"
+	border.scale = Vector3(1.18, 1.18, 1.0)
+	border.position.z = -0.04
+	border.set_surface_override_material(0, _mat_number_border)
+	border.set_surface_override_material(1, _mat_number_border)
+	root.add_child(border)
+
+	var front := _make_text_mesh(text)
+	front.name = "Frente"
+	front.position.z = 0.03
+	front.set_surface_override_material(0, _mat_number)
+	front.set_surface_override_material(1, _mat_number_side)
+	root.add_child(front)
+
+	return root
+
+
+func _make_text_mesh(text: String) -> MeshInstance3D:
 	var text_mesh := TextMesh.new()
 	text_mesh.text = text
 	text_mesh.font_size = 96
@@ -87,6 +113,4 @@ func _make_number_label(text: String) -> MeshInstance3D:
 
 	var mesh := MeshInstance3D.new()
 	mesh.mesh = text_mesh
-	mesh.set_surface_override_material(0, _mat_number)
-	mesh.set_surface_override_material(1, _mat_number_side)
 	return mesh
