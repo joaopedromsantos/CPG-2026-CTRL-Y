@@ -4,12 +4,17 @@ extends RefCounted
 const DEFAULT_JSON_PATH := "res://data/equations.json"
 const EASY_LIMIT := 10
 const MEDIUM_LIMIT := 10
+const DEFAULT_QUEUE_SIZE := 3
 
 var _rng := RandomNumberGenerator.new()
 var _easy_equations: Array[Dictionary] = []
 var _medium_equations: Array[Dictionary] = []
 var _hard_equations: Array[Dictionary] = []
+var _source_equations: Array = []
+var _equation_queue: Array[Dictionary] = []
+var _current_equation: Dictionary = {}
 var _shown_count := 0
+var _queue_size := DEFAULT_QUEUE_SIZE
 
 
 func _init() -> void:
@@ -32,15 +37,37 @@ func load_from_file(path := DEFAULT_JSON_PATH) -> bool:
 		push_error("Invalid equations JSON list: %s" % path)
 		return false
 
-	_reset_buckets(root["equations"])
+	_source_equations = (root["equations"] as Array).duplicate(true)
+	_reset_buckets(_source_equations)
 	return true
 
 
 func reset() -> void:
-	_shown_count = 0
-	_shuffle_bucket(_easy_equations)
-	_shuffle_bucket(_medium_equations)
-	_shuffle_bucket(_hard_equations)
+	_current_equation = {}
+	_equation_queue.clear()
+	_reset_buckets(_source_equations)
+	_fill_queue()
+
+
+func start(queue_size := DEFAULT_QUEUE_SIZE) -> Dictionary:
+	_queue_size = queue_size
+	reset()
+	return advance()
+
+
+func advance() -> Dictionary:
+	_fill_queue()
+	if _equation_queue.is_empty():
+		_current_equation = {}
+		return _current_equation
+
+	_current_equation = _equation_queue.pop_front()
+	_fill_queue()
+	return _current_equation
+
+
+func current_equation() -> Dictionary:
+	return _current_equation
 
 
 func next_equation() -> Dictionary:
@@ -50,6 +77,24 @@ func next_equation() -> Dictionary:
 
 	_shown_count += 1
 	return bucket.pop_back()
+
+
+func _fill_queue() -> void:
+	while _equation_queue.size() < _queue_size:
+		var equation := next_equation()
+		if equation.is_empty():
+			return
+
+		_equation_queue.append(_prepare_queued_equation(equation))
+
+
+func _prepare_queued_equation(equation: Dictionary) -> Dictionary:
+	var queued := equation.duplicate(true)
+	var options: Array = queued.get("options", [])
+	var queued_options := options.duplicate()
+	_shuffle_options(queued_options)
+	queued["queued_options"] = queued_options
+	return queued
 
 
 func _reset_buckets(equations: Array) -> void:
@@ -92,3 +137,11 @@ func _shuffle_bucket(bucket: Array[Dictionary]) -> void:
 		var temp := bucket[i]
 		bucket[i] = bucket[j]
 		bucket[j] = temp
+
+
+func _shuffle_options(options: Array) -> void:
+	for i in range(options.size() - 1, 0, -1):
+		var j := _rng.randi_range(0, i)
+		var temp = options[i]
+		options[i] = options[j]
+		options[j] = temp
