@@ -60,12 +60,12 @@ func _spawn_block_row() -> void:
 
 func _build_materials() -> void:
 	_mat_block = StandardMaterial3D.new()
-	_mat_block.albedo_color = Color(1.0, 0.48, 0.08)
+	_mat_block.albedo_color = Color(1.0, 0.66, 0.22)
 	_mat_block.roughness = 0.42
 	_mat_block.cull_mode = BaseMaterial3D.CULL_DISABLED
 
 	_mat_block_side = StandardMaterial3D.new()
-	_mat_block_side.albedo_color = Color(0.82, 0.31, 0.03)
+	_mat_block_side.albedo_color = Color(0.95, 0.48, 0.12)
 	_mat_block_side.roughness = 0.5
 	_mat_block_side.cull_mode = BaseMaterial3D.CULL_DISABLED
 
