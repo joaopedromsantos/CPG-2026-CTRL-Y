@@ -1,6 +1,8 @@
 class_name RunnerCones
 extends Node3D
 
+signal cone_hit
+
 const CONE_SCENE: PackedScene = preload("res://assets/city-kit-roads/models/construction-cone.glb")
 
 var world_speed := 8.0
@@ -29,7 +31,7 @@ func reset() -> void:
 	_time = 0.0
 
 
-func tick(delta: float) -> void:
+func tick(delta: float, player_position: Vector3) -> void:
 	_time += delta
 	if _time >= spawn_interval:
 		_time = 0.0
@@ -37,6 +39,11 @@ func tick(delta: float) -> void:
 
 	for active_cone in _cones.duplicate():
 		active_cone.position.z += world_speed * delta
+		if active_cone.position.z >= player_position.z and _is_player_in_cone_lane(active_cone, player_position):
+			_cones.erase(active_cone)
+			active_cone.queue_free()
+			cone_hit.emit()
+			continue
 		if active_cone.position.z > floor_front_z:
 			_cones.erase(active_cone)
 			active_cone.queue_free()
@@ -64,3 +71,7 @@ func _make_cone() -> Node3D:
 	cone.scale = Vector3.ONE * 12.1
 	cone.rotation_degrees = Vector3(0.0, 0.0, 0.0)
 	return cone
+
+
+func _is_player_in_cone_lane(cone: Node3D, player_position: Vector3) -> bool:
+	return absf(cone.position.x - player_position.x) <= 1.0

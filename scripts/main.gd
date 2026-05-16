@@ -74,6 +74,7 @@ func _ready() -> void:
 	hud.quit_event.connect(_on_hud_quit_event)
 	_blocos.answer_selected.connect(_on_blocos_answer_selected)
 	_power_ups.power_up_collected.connect(_on_power_up_collected)
+	_cones.cone_hit.connect(_on_cone_hit)
 	power_up_slots_event.connect(hud.on_power_up_slots_change)
 	_restart()
 
@@ -95,7 +96,7 @@ func _process(delta: float) -> void:
 	_cenario.tick(delta)
 	_blocos.tick(delta, _player.get_runner_position())
 	_power_ups.tick(delta, _player.get_runner_position())
-	_cones.tick(delta)
+	_cones.tick(delta, _player.get_runner_position())
 	_update_world_speed(delta)
 
 
@@ -320,16 +321,8 @@ func _on_blocos_answer_selected(is_correct: bool, _selected_answer: int) -> void
 		score_event.emit(int(_score))
 		_snd_correct.play()
 	else:
-		_lives = maxi(_lives - 1, 0)
-		_power_up_effects.set_current_lives(_lives)
-		if _lives <= 0 and _power_up_effects.consume_revive_if_available(_lives):
-			_lives = 1
-			_power_up_effects.set_current_lives(_lives)
-		lives_event.emit(_lives)
-		if _lives <= 0:
-			_end_game()
+		if _lose_life():
 			return
-		_snd_wrong.play()
 
 	hud.show_feedback(is_correct)
 	_set_active_equation(_equation_sequence.advance())
@@ -346,6 +339,28 @@ func _on_power_up_collected(type: String) -> void:
 	else:
 		_power_up_slots[RESERVE_POWER_UP_SLOT] = type
 	power_up_slots_event.emit(_power_up_slots.duplicate())
+
+
+func _on_cone_hit() -> void:
+	if _is_game_over:
+		return
+	if _lose_life():
+		return
+	hud.show_feedback(false)
+
+
+func _lose_life() -> bool:
+	_lives = maxi(_lives - 1, 0)
+	_power_up_effects.set_current_lives(_lives)
+	if _lives <= 0 and _power_up_effects.consume_revive_if_available(_lives):
+		_lives = 1
+		_power_up_effects.set_current_lives(_lives)
+	lives_event.emit(_lives)
+	if _lives <= 0:
+		_end_game()
+		return true
+	_snd_wrong.play()
+	return false
 
 
 func _on_power_up_lives_changed(lives: int) -> void:
