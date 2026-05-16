@@ -1,8 +1,9 @@
 extends Node3D
-@onready var hud: Node2D = $HUD
+@onready var hud = $HUD
 
 signal game_over
 signal restart_game
+signal score_event
 
 const LANE_WIDTH := 2.8
 const WORLD_SPEED := 8.0
@@ -35,18 +36,20 @@ func _ready() -> void:
 	# _build_hud()
 	_setup_camera()
 	_build_audio()
-	_restart()
 	
 	game_over.connect(hud.on_game_over)
 	restart_game.connect(hud.on_restart_game)
+	score_event.connect(hud.on_score_change)
 	hud.pause_event.connect(_on_hud_pause_event)
+	_blocos.answer_selected.connect(_on_blocos_answer_selected)
+	_restart()
 
 
 func _setup_camera() -> void:
 	var camera = Camera3D.new()
 	camera.position = Vector3(0, 4.0, 15.0)
-	camera.look_at(Vector3(0, 1.5, 0), Vector3.UP)
 	add_child(camera)
+	camera.look_at(Vector3(0, 1.5, 0), Vector3.UP)
 	camera.current = true
 
 
@@ -148,6 +151,7 @@ func _restart() -> void:
 		_snd_game.play()
 	
 	restart_game.emit()
+	_sync_block_options_from_hud()
 
 
 func _end_game() -> void:
@@ -183,5 +187,14 @@ func _resume() -> void:
 
 
 func _update_score(delta: float) -> void:
-	_score += delta * 10.0
-	# _hud.update_score(int(_score))
+	_score += delta * (WORLD_SPEED * 0.05)
+	score_event.emit(_score)
+
+
+func _on_blocos_answer_selected(_is_correct: bool, _selected_answer: int) -> void:
+	hud.show_next_equation()
+	_sync_block_options_from_hud()
+
+
+func _sync_block_options_from_hud() -> void:
+	_blocos.set_equation_options(hud.get_current_options(), hud.get_current_answer())
