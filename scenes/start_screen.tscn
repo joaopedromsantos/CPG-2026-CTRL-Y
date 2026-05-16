@@ -333,6 +333,7 @@ func _ready() -> void:
 	_font_regular = load(FONT_REGULAR)
 	_build_screen()
 	_layout()
+	_update_highscore_display()
 	_play_menu_music()
 
 
@@ -471,6 +472,12 @@ func _layout() -> void:
 	_highscore_tag.label_settings.font_size = maxi(10, int(14 * scale))
 	_highscore_value.label_settings.font_size = maxi(16, int(30 * scale))
 	_art.queue_redraw()
+
+
+func _update_highscore_display() -> void:
+	if _highscore_value == null:
+		return
+	_highscore_value.text = PlayerRecord.get_high_score_text()
 
 
 func _start_game() -> void:

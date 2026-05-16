@@ -208,6 +208,7 @@ func _end_game() -> void:
 	if _is_paused:
 		_resume()
 	_is_game_over = true
+	PlayerRecord.update_high_score(int(_score))
 	_snd_game.stop()
 	_snd_punch.stop()
 	_snd_lose.play()
