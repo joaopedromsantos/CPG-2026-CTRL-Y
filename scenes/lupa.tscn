@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://lupa_scene"]
+
+[ext_resource type="Script" uid="uid://lupa_asset_script" path="res://scripts/lupa_asset.gd" id="1"]
+
+[node name="Lupa" type="Node3D"]
+script = ExtResource( "1" )
