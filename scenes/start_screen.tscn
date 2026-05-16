@@ -4,7 +4,7 @@
 script/source = "extends Control
 
 const GAME_SCENE := \"res://scenes/main.tscn\"
-const FONT_PATH := \"res://assets/fonts/ChauPhilomeneOne-Regular.ttf\"
+const FONT_PATH := \"res://assets/fonts/Fredoka-Bold.ttf\"
 
 var _font: Font
 var _art: StartArt
@@ -162,6 +162,7 @@ func _build_screen() -> void:
 	_art.font = _font
 	_art.set_anchors_preset(Control.PRESET_FULL_RECT)
 	add_child(_art)
+	move_child(_art, 0)
 
 	_title = _make_label(\"MATH DASH ROBOT ED\", 66, Color.WHITE, 5, Color(0.09, 0.12, 0.16, 0.85))
 	add_child(_title)
@@ -169,13 +170,13 @@ func _build_screen() -> void:
 	_subtitle = _make_label(\"ADDITION ED\", 35, Color.WHITE, 4, Color(0.08, 0.10, 0.14, 0.80))
 	add_child(_subtitle)
 
-	_highscore_title = _make_label(\"HIGHSCORE\", 34, Color.WHITE, 3, Color(0.07, 0.08, 0.09, 0.85))
-	add_child(_highscore_title)
+	_highscore_title = $HighscoreTitle
+	_apply_label_style(_highscore_title, \"HIGHSCORE\", 34, Color.WHITE, 3, Color(0.07, 0.08, 0.09, 0.85))
 
-	_highscore_value = _make_label(\"HS: 1450\", 35, Color.WHITE, 3, Color(0.09, 0.10, 0.10, 0.90))
-	add_child(_highscore_value)
+	_highscore_value = $HighscoreValue
+	_apply_label_style(_highscore_value, \"HS: 1450\", 35, Color.WHITE, 3, Color(0.09, 0.10, 0.10, 0.90))
 
-	_start_button = Button.new()
+	_start_button = $StartButton
 	_start_button.text = \"COMEÇAR\"
 	_start_button.focus_mode = Control.FOCUS_NONE
 	_start_button.add_theme_font_override(\"font\", _font)
@@ -189,7 +190,6 @@ func _build_screen() -> void:
 	_start_button.add_theme_stylebox_override(\"hover\", _button_style(Color(0.24, 0.88, 0.27), Color(0.78, 1.0, 0.40)))
 	_start_button.add_theme_stylebox_override(\"pressed\", _button_style(Color(0.12, 0.64, 0.17), Color(0.55, 0.88, 0.25)))
 	_start_button.pressed.connect(_start_game)
-	add_child(_start_button)
 
 	_hint = _make_label(\"CLICA PARA COMEÇAR!\", 26, Color.WHITE, 3, Color(0.05, 0.11, 0.25, 0.95))
 	add_child(_hint)
@@ -197,6 +197,11 @@ func _build_screen() -> void:
 
 func _make_label(text: String, font_size: int, color: Color, outline_size: int, outline_color: Color) -> Label:
 	var label := Label.new()
+	_apply_label_style(label, text, font_size, color, outline_size, outline_color)
+	return label
+
+
+func _apply_label_style(label: Label, text: String, font_size: int, color: Color, outline_size: int, outline_color: Color) -> void:
 	var settings := LabelSettings.new()
 	settings.font = _font
 	settings.font_size = font_size
@@ -207,7 +212,6 @@ func _make_label(text: String, font_size: int, color: Color, outline_size: int, 
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	label.label_settings = settings
-	return label
 
 
 func _button_style(fill: Color, border: Color) -> StyleBoxFlat:
@@ -270,3 +274,32 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = SubResource("GDScript_start_screen")
+
+[node name="HighscoreTitle" type="Label" parent="."]
+layout_mode = 0
+offset_left = 839.0
+offset_top = 18.0
+offset_right = 1007.0
+offset_bottom = 63.0
+text = "HIGHSCORE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HighscoreValue" type="Label" parent="."]
+layout_mode = 0
+offset_left = 839.0
+offset_top = 70.0
+offset_right = 989.0
+offset_bottom = 115.0
+text = "HS: 1450"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StartButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 407.0
+offset_top = 430.0
+offset_right = 626.0
+offset_bottom = 518.0
+focus_mode = 0
+text = "COMEÇAR"
