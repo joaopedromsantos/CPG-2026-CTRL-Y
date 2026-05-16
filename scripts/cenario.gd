@@ -29,15 +29,18 @@ func setup() -> void:
 
 func tick(delta: float) -> void:
 	var depth := float(_rows_actual) * floor_tile_size
+	# Só dá wrap quando o tile sai inteiro do campo de visão, não no centro,
+	# senão a borda da frente pisca ao reciclar.
+	var wrap_z := floor_front_z + floor_tile_size
 
 	for tile in _floor_tiles:
 		tile.position.z += world_speed * delta
-		if tile.position.z > floor_front_z:
+		if tile.position.z > wrap_z:
 			tile.position.z -= depth
 
 	for marker in _lane_markers:
 		marker.position.z += world_speed * delta
-		if marker.position.z > floor_front_z:
+		if marker.position.z > wrap_z:
 			marker.position.z -= depth
 
 
@@ -65,7 +68,7 @@ func _build_floor() -> void:
 	floor_mesh.size = Vector3(floor_tile_size, 0.06, floor_tile_size)
 
 	# Compute how many rows are needed to fully cover visible area and have extra for wrapping
-	var visible_depth := floor_front_z - floor_back_z + floor_tile_size
+	var visible_depth := floor_front_z - floor_back_z + floor_tile_size * 2.0
 	var needed_rows := int(ceil(visible_depth / floor_tile_size))
 	_rows_actual = max(floor_rows, needed_rows + 1)
 
