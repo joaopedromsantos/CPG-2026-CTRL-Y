@@ -9,6 +9,11 @@ extends Node2D
 @onready var endgame_overlay: Control = $CanvasLayer/RootControl/EndGameOverlay
 @onready var endgame_score_label: Label = $CanvasLayer/RootControl/EndGameOverlay/Panel/Content/StatsRow/ScoreStat/ScoreContent/ScoreValue
 @onready var endgame_time_label: Label = $CanvasLayer/RootControl/EndGameOverlay/Panel/Content/StatsRow/TimeStat/TimeContent/TimeValue
+@onready var slot_labels: Array[Label] = [
+	$CanvasLayer/RootControl/BottomCenterContainer/SlotsRow/Slot1/ContentLabel,
+	$CanvasLayer/RootControl/BottomCenterContainer/SlotsRow/Slot2/ContentLabel,
+	$CanvasLayer/RootControl/BottomCenterContainer/SlotsRow/Slot3/ContentLabel,
+]
 
 
 signal pause_event
@@ -61,8 +66,27 @@ func on_score_change(score: int) -> void:
 
 func on_lives_change(lives: int) -> void:
 	lives_label.text = "%d" % [lives]
-	
-	
+
+
+func on_power_up_slots_change(slots: Array) -> void:
+	for i in range(slot_labels.size()):
+		var type := ""
+		if i < slots.size():
+			type = String(slots[i])
+		slot_labels[i].text = _power_up_display(type)
+
+
+func _power_up_display(type: String) -> String:
+	match type:
+		"lupa": return "LUPA"
+		"revive": return "REV"
+		"heart": return "HP"
+		"lightning": return "RAIO"
+		"hourglass": return "TIME"
+		"double": return "2x"
+		_: return ""
+
+
 func on_restart_game() -> void:
 	endgame_overlay.visible = false
 	pause_button.visible = true
