@@ -2,7 +2,7 @@ class_name RunnerBlocos
 extends Node3D
 
 var world_speed := 8.0
-var steps_per_spawn := 10
+var steps_per_spawn := 20
 var step_distance := 1.0
 var floor_back_z := -18.0
 var floor_front_z := 11.6
