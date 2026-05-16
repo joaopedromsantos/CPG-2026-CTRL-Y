@@ -13,6 +13,7 @@ extends Node2D
 
 signal pause_event
 signal restart_event
+signal start_screen_event
 signal quit_event
 
 const PLAY_BUTTON_IMAGE = preload("res://assets/hud/play-button.png")
@@ -110,6 +111,10 @@ func _on_pause_button_pressed() -> void:
 
 func _on_restart_button_pressed() -> void:
 	restart_event.emit()
+
+
+func _on_start_screen_button_pressed() -> void:
+	start_screen_event.emit()
 
 
 func _on_quit_button_pressed() -> void:

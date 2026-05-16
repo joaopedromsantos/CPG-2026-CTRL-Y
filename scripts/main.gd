@@ -59,6 +59,7 @@ func _ready() -> void:
 	lives_event.connect(hud.on_lives_change)
 	hud.pause_event.connect(_on_hud_pause_event)
 	hud.restart_event.connect(_restart)
+	hud.start_screen_event.connect(_on_hud_start_screen_event)
 	hud.quit_event.connect(_on_hud_quit_event)
 	_blocos.answer_selected.connect(_on_blocos_answer_selected)
 	_restart()
@@ -236,6 +237,10 @@ func _on_hud_pause_event() -> void:
 
 func _on_hud_quit_event() -> void:
 	get_tree().quit()
+
+
+func _on_hud_start_screen_event() -> void:
+	get_tree().change_scene_to_file("res://scenes/start_screen.tscn")
 
 
 func _pause() -> void:
