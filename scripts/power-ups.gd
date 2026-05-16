@@ -53,6 +53,13 @@ var float_amplitude := 0.28
 var float_speed := 3.6
 var float_rotation_speed := 48.0
 
+# Use effect (played when a power-up is activated)
+const USE_EFFECT_DURATION := 1.0
+const USE_EFFECT_RISE := 3.2
+const USE_EFFECT_SPIN_DEGREES := 720.0
+const USE_EFFECT_START_Y_OFFSET := 1.0
+const USE_EFFECT_POP_SCALE := 1.5
+
 # Each entry: {"type": String, "path": String} — path "" for synthetic types.
 var _spawn_entries: Array = []
 var _powerups: Array = []
@@ -114,6 +121,43 @@ func tick(delta: float, player_pos: Vector3) -> void:
 		if p.position.z > floor_front_z:
 			_powerups.erase(_item)
 			p.queue_free()
+
+func spawn_use_effect(type: String, origin: Vector3) -> void:
+	var path := ""
+	for asset_path in ASSET_TYPES:
+		if ASSET_TYPES[asset_path] == type:
+			path = asset_path
+			break
+	var visual := _make_powerup({"type": type, "path": path})
+	if not visual:
+		return
+	visual.set_meta("type", "")
+
+	var root := Node3D.new()
+	root.name = "PowerUpUseEffect"
+	root.position = origin + Vector3(0, USE_EFFECT_START_Y_OFFSET, 0)
+	add_child(root)
+	root.add_child(visual)
+
+	var initial_scale := visual.scale
+	var rise_target_y := root.position.y + USE_EFFECT_RISE
+	var spin_target_y := visual.rotation_degrees.y + USE_EFFECT_SPIN_DEGREES
+
+	var rise := create_tween()
+	rise.bind_node(root)
+	rise.set_parallel(true)
+	rise.tween_property(root, "position:y", rise_target_y, USE_EFFECT_DURATION) \
+		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	rise.tween_property(visual, "rotation_degrees:y", spin_target_y, USE_EFFECT_DURATION)
+
+	var pop := create_tween()
+	pop.bind_node(root)
+	pop.tween_property(visual, "scale", initial_scale * USE_EFFECT_POP_SCALE, USE_EFFECT_DURATION * 0.3) \
+		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	pop.tween_property(visual, "scale", Vector3.ZERO, USE_EFFECT_DURATION * 0.7) \
+		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	pop.finished.connect(root.queue_free)
+
 
 func _build_spawn_pool() -> void:
 	_spawn_entries.clear()
