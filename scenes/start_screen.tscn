@@ -1,0 +1,291 @@
+[gd_scene format=3 uid="uid://cfjychrxhqmf0"]
+
+[sub_resource type="GDScript" id="GDScript_start_screen"]
+script/source = "extends Control
+
+const GAME_SCENE := \"res://scenes/main.tscn\"
+const FONT_PATH := \"res://assets/fonts/Fredoka-Bold.ttf\"
+
+var _font: Font
+var _art: StartArt
+var _title: Label
+var _highscore_title: Label
+var _highscore_value: Label
+var _start_button: Button
+
+
+class StartArt:
+	extends Control
+
+	var font: Font
+
+	func _ready() -> void:
+		mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+	func _draw() -> void:
+		var s := size
+		var w := s.x
+		var h := s.y
+		var scale := minf(w / 1024.0, h / 580.0)
+		var ox := (w - 1024.0 * scale) * 0.5
+		var oy := (h - 580.0 * scale) * 0.5
+		var xf := func(x: float) -> float: return ox + x * scale
+		var yf := func(y: float) -> float: return oy + y * scale
+		var pf := func(x: float, y: float) -> Vector2: return Vector2(xf.call(x), yf.call(y))
+
+		draw_rect(Rect2(Vector2.ZERO, s), Color(0.11, 0.62, 0.93))
+		_draw_city(xf, yf, pf, scale)
+		_draw_track(xf, yf, pf, scale)
+		draw_rect(Rect2(Vector2(xf.call(830), yf.call(18)), Vector2(180 * scale, 100 * scale)), Color(0.05, 0.08, 0.11, 0.55))
+		_draw_energy(pf, scale)
+		_draw_robot(xf, yf, pf, scale)
+		_draw_number_tile(pf.call(350, 326), \"6\", scale)
+		_draw_number_tile(pf.call(678, 326), \"7\", scale)
+		_draw_trophy(pf.call(966, 82), scale)
+		draw_rect(Rect2(Vector2.ZERO, s), Color(1.0, 1.0, 1.0, 0.10))
+
+	func _draw_city(xf: Callable, yf: Callable, pf: Callable, scale: float) -> void:
+		var blocks := [
+			[15, 0, 88, 183, Color(0.95, 0.41, 0.64)],
+			[85, 0, 78, 130, Color(0.95, 0.62, 0.76)],
+			[165, 95, 87, 180, Color(1.0, 0.64, 0.18)],
+			[245, 182, 95, 215, Color(1.0, 0.76, 0.25)],
+			[90, 177, 112, 228, Color(0.63, 0.76, 0.35)],
+			[0, 182, 112, 335, Color(0.95, 0.23, 0.51)],
+			[725, 24, 70, 156, Color(0.96, 0.44, 0.67)],
+			[817, 0, 89, 225, Color(1.0, 0.61, 0.18)],
+			[715, 170, 118, 260, Color(1.0, 0.70, 0.22)],
+			[653, 116, 82, 245, Color(0.14, 0.56, 0.87)],
+			[905, 184, 134, 390, Color(0.78, 0.18, 0.38)],
+			[832, 262, 86, 324, Color(0.16, 0.55, 0.87)],
+			[95, 255, 176, 350, Color(0.15, 0.56, 0.90)]
+		]
+		for block in blocks:
+			var rect := Rect2(Vector2(xf.call(block[0]), yf.call(block[1])), Vector2(block[2] * scale, block[3] * scale))
+			draw_rect(rect, block[4])
+		draw_rect(Rect2(Vector2.ZERO, size), Color(0.52, 0.89, 1.0, 0.18))
+
+	func _draw_track(xf: Callable, yf: Callable, pf: Callable, scale: float) -> void:
+		draw_colored_polygon([
+			pf.call(373, 235), pf.call(651, 235), pf.call(1010, 580), pf.call(13, 580)
+		], Color(0.98, 0.62, 0.13))
+		draw_colored_polygon([
+			pf.call(406, 236), pf.call(493, 236), pf.call(349, 580), pf.call(117, 580)
+		], Color(0.08, 0.56, 0.91))
+		draw_colored_polygon([
+			pf.call(531, 236), pf.call(620, 236), pf.call(888, 580), pf.call(642, 580)
+		], Color(0.08, 0.55, 0.91))
+		draw_colored_polygon([
+			pf.call(493, 236), pf.call(531, 236), pf.call(642, 580), pf.call(349, 580)
+		], Color(1.0, 0.78, 0.16))
+		draw_colored_polygon([
+			pf.call(333, 231), pf.call(373, 235), pf.call(13, 580), pf.call(-55, 580)
+		], Color(1.0, 0.76, 0.18))
+		draw_colored_polygon([
+			pf.call(651, 235), pf.call(691, 231), pf.call(1080, 580), pf.call(1010, 580)
+		], Color(1.0, 0.76, 0.18))
+
+	func _draw_energy(pf: Callable, scale: float) -> void:
+		for i in 18:
+			var angle := TAU * float(i) / 18.0
+			var start: Vector2 = pf.call(512 + cos(angle) * 63.0, 402 + sin(angle) * 26.0)
+			var end: Vector2 = pf.call(512 + cos(angle) * 150.0, 406 + sin(angle) * 86.0)
+			draw_line(start, end, Color(0.10, 1.0, 0.82, 0.55), 5.0 * scale)
+		draw_circle(pf.call(512, 410), 88.0 * scale, Color(0.24, 1.0, 0.26, 0.45))
+		draw_circle(pf.call(512, 410), 58.0 * scale, Color(0.90, 1.0, 0.30, 0.55))
+
+	func _draw_robot(xf: Callable, yf: Callable, pf: Callable, scale: float) -> void:
+		var yellow := Color(0.98, 0.68, 0.12)
+		var dark := Color(0.20, 0.21, 0.20)
+		var metal := Color(0.84, 0.80, 0.67)
+		draw_circle(pf.call(512, 222), 62.0 * scale, yellow)
+		draw_rect(Rect2(Vector2(xf.call(449), yf.call(207)), Vector2(126 * scale, 43 * scale)), metal)
+		draw_rect(Rect2(Vector2(xf.call(445), yf.call(194)), Vector2(135 * scale, 14 * scale)), Color(0.15, 0.17, 0.16))
+		draw_circle(pf.call(462, 226), 22.0 * scale, dark)
+		draw_circle(pf.call(562, 226), 22.0 * scale, dark)
+		draw_circle(pf.call(462, 226), 15.0 * scale, Color(0.08, 0.09, 0.09))
+		draw_circle(pf.call(562, 226), 15.0 * scale, Color(0.08, 0.09, 0.09))
+		draw_rect(Rect2(Vector2(xf.call(466), yf.call(263)), Vector2(91 * scale, 86 * scale)), yellow)
+		draw_rect(Rect2(Vector2(xf.call(478), yf.call(279)), Vector2(65 * scale, 53 * scale)), Color(0.92, 0.50, 0.08))
+		draw_line(pf.call(469, 293), pf.call(421, 362), Color(0.73, 0.55, 0.27), 7.0 * scale)
+		draw_line(pf.call(555, 292), pf.call(606, 360), Color(0.73, 0.55, 0.27), 7.0 * scale)
+		draw_circle(pf.call(423, 371), 18.0 * scale, Color(0.98, 0.68, 0.12))
+		draw_circle(pf.call(607, 371), 18.0 * scale, Color(0.98, 0.68, 0.12))
+		draw_line(pf.call(485, 346), pf.call(457, 425), Color(0.73, 0.55, 0.27), 7.0 * scale)
+		draw_line(pf.call(538, 346), pf.call(567, 425), Color(0.73, 0.55, 0.27), 7.0 * scale)
+		draw_circle(pf.call(454, 436), 14.0 * scale, Color(0.98, 0.68, 0.12))
+		draw_circle(pf.call(570, 436), 14.0 * scale, Color(0.98, 0.68, 0.12))
+
+	func _draw_number_tile(center: Vector2, text: String, scale: float) -> void:
+		var rect := Rect2(center - Vector2(39, 36) * scale, Vector2(78, 72) * scale)
+		draw_rect(rect.grow(5.0 * scale), Color(0.36, 0.20, 0.08, 0.35))
+		draw_rect(rect, Color(0.94, 0.50, 0.11))
+		draw_rect(Rect2(rect.position, Vector2(rect.size.x, rect.size.y * 0.42)), Color(1.0, 0.68, 0.23, 0.55))
+		if font:
+			draw_string(font, center + Vector2(-16, 20) * scale, text, HORIZONTAL_ALIGNMENT_LEFT, -1, int(58 * scale), Color(1, 1, 1))
+			draw_string(font, center + Vector2(-13, 23) * scale, text, HORIZONTAL_ALIGNMENT_LEFT, -1, int(58 * scale), Color(0.42, 0.25, 0.12, 0.28))
+
+	func _draw_trophy(pos: Vector2, scale: float) -> void:
+		draw_rect(Rect2(pos + Vector2(4, 20) * scale, Vector2(24, 9) * scale), Color(0.72, 0.40, 0.06))
+		draw_rect(Rect2(pos + Vector2(10, 11) * scale, Vector2(12, 12) * scale), Color(0.93, 0.56, 0.05))
+		draw_circle(pos + Vector2(16, 9) * scale, 13.0 * scale, Color(1.0, 0.71, 0.13))
+		draw_arc(pos + Vector2(3, 10) * scale, 10.0 * scale, -1.2, 1.2, 16, Color(1.0, 0.75, 0.18), 4.0 * scale)
+		draw_arc(pos + Vector2(29, 10) * scale, 10.0 * scale, 1.95, 4.35, 16, Color(1.0, 0.75, 0.18), 4.0 * scale)
+
+
+func _ready() -> void:
+	_font = load(FONT_PATH)
+	_build_screen()
+	_layout()
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_RESIZED and is_node_ready():
+		_layout()
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed(\"ui_accept\"):
+		_start_game()
+		return
+
+	if event is InputEventMouseButton:
+		var mouse_event := event as InputEventMouseButton
+		if mouse_event.pressed:
+			_start_game()
+
+
+func _build_screen() -> void:
+	_art = StartArt.new()
+	_art.font = _font
+	_art.set_anchors_preset(Control.PRESET_FULL_RECT)
+	add_child(_art)
+	move_child(_art, 0)
+
+	_title = _make_label(\"MATH RUNNER\", 66, Color.WHITE, 5, Color(0.09, 0.12, 0.16, 0.85))
+	add_child(_title)
+
+	_highscore_title = $HighscoreTitle
+	_apply_label_style(_highscore_title, \"HIGHSCORE\", 30, Color.WHITE, 3, Color(0.07, 0.08, 0.09, 0.85))
+
+	_highscore_value = $HighscoreValue
+	_apply_label_style(_highscore_value, \"HS: 1450\", 31, Color.WHITE, 3, Color(0.09, 0.10, 0.10, 0.90))
+
+	_start_button = $StartButton
+	_start_button.text = \"COMEÇAR\"
+	_start_button.focus_mode = Control.FOCUS_NONE
+	_start_button.add_theme_font_override(\"font\", _font)
+	_start_button.add_theme_font_size_override(\"font_size\", 45)
+	_start_button.add_theme_color_override(\"font_color\", Color.WHITE)
+	_start_button.add_theme_color_override(\"font_hover_color\", Color.WHITE)
+	_start_button.add_theme_color_override(\"font_pressed_color\", Color.WHITE)
+	_start_button.add_theme_constant_override(\"outline_size\", 5)
+	_start_button.add_theme_color_override(\"font_outline_color\", Color(0.05, 0.22, 0.06))
+	_start_button.add_theme_stylebox_override(\"normal\", _button_style(Color(0.20, 0.80, 0.22), Color(0.70, 1.0, 0.34)))
+	_start_button.add_theme_stylebox_override(\"hover\", _button_style(Color(0.24, 0.88, 0.27), Color(0.78, 1.0, 0.40)))
+	_start_button.add_theme_stylebox_override(\"pressed\", _button_style(Color(0.12, 0.64, 0.17), Color(0.55, 0.88, 0.25)))
+	_start_button.pressed.connect(_start_game)
+
+
+func _make_label(text: String, font_size: int, color: Color, outline_size: int, outline_color: Color) -> Label:
+	var label := Label.new()
+	_apply_label_style(label, text, font_size, color, outline_size, outline_color)
+	return label
+
+
+func _apply_label_style(label: Label, text: String, font_size: int, color: Color, outline_size: int, outline_color: Color) -> void:
+	var settings := LabelSettings.new()
+	settings.font = _font
+	settings.font_size = font_size
+	settings.font_color = color
+	settings.outline_size = outline_size
+	settings.outline_color = outline_color
+	label.text = text
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	label.label_settings = settings
+
+
+func _button_style(fill: Color, border: Color) -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = fill
+	style.border_color = border
+	style.border_width_left = 4
+	style.border_width_top = 4
+	style.border_width_right = 4
+	style.border_width_bottom = 4
+	style.corner_radius_top_left = 13
+	style.corner_radius_top_right = 13
+	style.corner_radius_bottom_left = 13
+	style.corner_radius_bottom_right = 13
+	style.shadow_color = Color(0.04, 0.18, 0.04, 0.45)
+	style.shadow_size = 8
+	style.shadow_offset = Vector2(0, 5)
+	return style
+
+
+func _layout() -> void:
+	var s := size
+	var scale := minf(s.x / 1024.0, s.y / 580.0)
+	var ox := (s.x - 1024.0 * scale) * 0.5
+	var oy := (s.y - 580.0 * scale) * 0.5
+	var rect := func(x: float, y: float, w: float, h: float) -> Rect2:
+		return Rect2(Vector2(ox + x * scale, oy + y * scale), Vector2(w * scale, h * scale))
+
+	_title.set_position(rect.call(175, 38, 675, 70).position)
+	_title.set_size(rect.call(175, 38, 675, 70).size)
+	_highscore_title.set_position(rect.call(837, 23, 166, 36).position)
+	_highscore_title.set_size(rect.call(837, 23, 166, 36).size)
+	_highscore_value.set_position(rect.call(848, 72, 118, 39).position)
+	_highscore_value.set_size(rect.call(848, 72, 118, 39).size)
+	_start_button.set_position(rect.call(387, 430, 259, 88).position)
+	_start_button.set_size(rect.call(387, 430, 259, 88).size)
+
+	_start_button.add_theme_font_size_override(\"font_size\", maxi(18, int(45 * scale)))
+	_title.label_settings.font_size = maxi(24, int(66 * scale))
+	_highscore_title.label_settings.font_size = maxi(16, int(30 * scale))
+	_highscore_value.label_settings.font_size = maxi(16, int(31 * scale))
+	_art.queue_redraw()
+
+
+func _start_game() -> void:
+	get_tree().change_scene_to_file(GAME_SCENE)
+"
+
+[node name="StartScreen" type="Control" unique_id=405717112]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = SubResource("GDScript_start_screen")
+
+[node name="HighscoreTitle" type="Label" parent="." unique_id=809046786]
+layout_mode = 0
+offset_left = 839.0
+offset_top = 23.0
+offset_right = 1003.0
+offset_bottom = 59.0
+text = "HIGHSCORE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HighscoreValue" type="Label" parent="." unique_id=644945730]
+layout_mode = 0
+offset_left = 848.0
+offset_top = 72.0
+offset_right = 966.0
+offset_bottom = 111.0
+text = "HS: 1450"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StartButton" type="Button" parent="." unique_id=1332176397]
+layout_mode = 0
+offset_left = 387.0
+offset_top = 430.0
+offset_right = 646.0
+offset_bottom = 518.0
+focus_mode = 0
+text = "COMEÇAR"
