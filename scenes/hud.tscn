@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://b8kt244qmm62l" path="res://assets/hud/pause-button-hud.png" id="1_ahhtf"]
 [ext_resource type="Texture2D" uid="uid://db3ik2gtxxwca" path="res://assets/hud/badge.png" id="3_6fi6k"]
 [ext_resource type="FontFile" uid="uid://cnt7bgrpab5pp" path="res://assets/fonts/fredoka/Fredoka-SemiBold.ttf" id="4_fredoka"]
+[ext_resource type="PackedScene" path="res://scenes/end_game_screen.tscn" id="5_endgame"]
 
 [node name="HUD" type="Node2D" unique_id=1585767812]
 script = ExtResource("1_6fi6k")
@@ -206,4 +207,8 @@ text = "00:42"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="EndGameOverlay" parent="CanvasLayer/RootControl" instance=ExtResource("5_endgame")]
+
 [connection signal="pressed" from="CanvasLayer/RootControl/TopLeftContainer/PauseButton" to="." method="_on_pause_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/RootControl/EndGameOverlay/Panel/Content/ButtonsRow/RestartButton" to="." method="_on_restart_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/RootControl/EndGameOverlay/Panel/Content/ButtonsRow/QuitButton" to="." method="_on_quit_button_pressed"]

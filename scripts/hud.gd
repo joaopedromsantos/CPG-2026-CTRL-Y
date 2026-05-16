@@ -6,9 +6,14 @@ extends Node2D
 @onready var score_label: Label = $CanvasLayer/RootControl/TopRightContainer/Wrapper/ScoreContainer/ScoreLabel
 @onready var lives_label: Label = $CanvasLayer/RootControl/TopRightContainer/Wrapper/LivesContainer/LivesLabel
 @onready var pause_button: TextureButton = $CanvasLayer/RootControl/TopLeftContainer/PauseButton
+@onready var endgame_overlay: Control = $CanvasLayer/RootControl/EndGameOverlay
+@onready var endgame_score_label: Label = $CanvasLayer/RootControl/EndGameOverlay/Panel/Content/StatsRow/ScoreStat/ScoreContent/ScoreValue
+@onready var endgame_time_label: Label = $CanvasLayer/RootControl/EndGameOverlay/Panel/Content/StatsRow/TimeStat/TimeContent/TimeValue
 
 
 signal pause_event
+signal restart_event
+signal quit_event
 
 const PLAY_BUTTON_IMAGE = preload("res://assets/hud/play-button.png")
 const PAUSE_BUTTON_IMAGE = preload("res://assets/hud/pause-button-hud.png")
@@ -29,8 +34,13 @@ func _process(delta: float) -> void:
 	
 	cronometer_label.text = timer.formatted_time()
 	
-func on_game_over() -> void:
+func on_game_over(score: int) -> void:
 	timer.stop_timer()
+	_hide_feedback()
+	endgame_score_label.text = "%d" % [score]
+	endgame_time_label.text = timer.formatted_time()
+	endgame_overlay.visible = true
+	pause_button.visible = false
 
 
 func on_pause() -> void:
@@ -54,6 +64,9 @@ func on_lives_change(lives: int) -> void:
 	
 	
 func on_restart_game() -> void:
+	endgame_overlay.visible = false
+	pause_button.visible = true
+	pause_button.texture_normal = PAUSE_BUTTON_IMAGE
 	timer.reset_timer()
 	timer.start_timer()
 	show_equation({})
@@ -93,6 +106,14 @@ func _hide_feedback() -> void:
 func _on_pause_button_pressed() -> void:
 	pause_event.emit()
 	pause_button.release_focus()
+
+
+func _on_restart_button_pressed() -> void:
+	restart_event.emit()
+
+
+func _on_quit_button_pressed() -> void:
+	quit_event.emit()
 
 
 func show_equation(equation: Dictionary) -> void:
