@@ -4,12 +4,30 @@
 script/source = "extends Control
 
 const GAME_SCENE := \"res://scenes/main.tscn\"
-const FONT_PATH := \"res://assets/fonts/fredoka/Fredoka-Bold.ttf\"
+const FONT_BOLD := \"res://assets/fonts/fredoka/Fredoka-Bold.ttf\"
+const FONT_SEMI := \"res://assets/fonts/fredoka/Fredoka-SemiBold.ttf\"
+const FONT_REGULAR := \"res://assets/fonts/fredoka/Fredoka-Regular.ttf\"
 
-var _font: Font
+const DESIGN_SIZE := Vector2(1024.0, 580.0)
+const NEON_CYAN := Color(0.36, 0.97, 1.0)
+const NEON_CYAN_SOFT := Color(0.36, 0.97, 1.0, 0.55)
+const NEON_CYAN_DIM := Color(0.36, 0.97, 1.0, 0.18)
+const BG_TOP := Color(0.03, 0.05, 0.13)
+const BG_BOTTOM := Color(0.06, 0.10, 0.22)
+const FLOOR_DARK := Color(0.04, 0.07, 0.16)
+const WINDOW_YELLOW := Color(1.0, 0.85, 0.30, 0.95)
+const TILE_ORANGE := Color(1.0, 0.62, 0.13)
+const TILE_ORANGE_LIGHT := Color(1.0, 0.78, 0.30)
+const TILE_ORANGE_DARK := Color(0.78, 0.39, 0.05)
+
+var _font_bold: Font
+var _font_semi: Font
+var _font_regular: Font
+
 var _art: StartArt
 var _title: Label
-var _highscore_title: Label
+var _subtitle: Label
+var _highscore_tag: Label
 var _highscore_value: Label
 var _start_button: Button
 var _menu_audio: AudioStreamPlayer
@@ -18,124 +36,301 @@ var _menu_audio: AudioStreamPlayer
 class StartArt:
 	extends Control
 
-	var font: Font
+	var font_bold: Font
+	var font_semi: Font
+	var stars: Array = []
+	var _stars_built := false
 
 	func _ready() -> void:
 		mouse_filter = Control.MOUSE_FILTER_IGNORE
 
+	func _build_stars() -> void:
+		var rng := RandomNumberGenerator.new()
+		rng.seed = 1337
+		stars.clear()
+		for i in 90:
+			stars.append({
+				\"pos\": Vector2(rng.randf() * 1024.0, rng.randf() * 320.0),
+				\"r\": rng.randf_range(0.6, 1.8),
+				\"a\": rng.randf_range(0.35, 0.95),
+			})
+		_stars_built = true
+
 	func _draw() -> void:
+		if not _stars_built:
+			_build_stars()
 		var s := size
-		var w := s.x
-		var h := s.y
-		var scale := minf(w / 1024.0, h / 580.0)
-		var ox := (w - 1024.0 * scale) * 0.5
-		var oy := (h - 580.0 * scale) * 0.5
-		var xf := func(x: float) -> float: return ox + x * scale
-		var yf := func(y: float) -> float: return oy + y * scale
-		var pf := func(x: float, y: float) -> Vector2: return Vector2(xf.call(x), yf.call(y))
+		var scale := minf(s.x / DESIGN_SIZE.x, s.y / DESIGN_SIZE.y)
+		var ox := (s.x - DESIGN_SIZE.x * scale) * 0.5
+		var oy := (s.y - DESIGN_SIZE.y * scale) * 0.5
+		var pf := func(x: float, y: float) -> Vector2: return Vector2(ox + x * scale, oy + y * scale)
 
-		draw_rect(Rect2(Vector2.ZERO, s), Color(0.11, 0.62, 0.93))
-		_draw_city(xf, yf, pf, scale)
-		_draw_track(xf, yf, pf, scale)
-		draw_rect(Rect2(Vector2(xf.call(830), yf.call(18)), Vector2(180 * scale, 100 * scale)), Color(0.05, 0.08, 0.11, 0.55))
-		_draw_energy(pf, scale)
-		_draw_robot(xf, yf, pf, scale)
-		_draw_number_tile(pf.call(350, 326), \"6\", scale)
-		_draw_number_tile(pf.call(678, 326), \"7\", scale)
-		_draw_trophy(pf.call(966, 82), scale)
-		draw_rect(Rect2(Vector2.ZERO, s), Color(1.0, 1.0, 1.0, 0.10))
+		_draw_sky(s)
+		_draw_stars(pf, scale)
+		_draw_city(pf, scale)
+		_draw_floor(pf, scale)
+		_draw_highscore_frame(pf, scale)
+		_draw_pause_button(pf, scale)
+		_draw_equation(pf, scale)
+		_draw_robot(pf, scale)
+		_draw_side_tile(pf.call(335, 445), \"6\", scale)
+		_draw_side_tile(pf.call(689, 445), \"7\", scale)
+		_draw_subtitle_brackets(pf, scale)
 
-	func _draw_city(xf: Callable, yf: Callable, pf: Callable, scale: float) -> void:
-		var blocks := [
-			[15, 0, 88, 183, Color(0.95, 0.41, 0.64)],
-			[85, 0, 78, 130, Color(0.95, 0.62, 0.76)],
-			[165, 95, 87, 180, Color(1.0, 0.64, 0.18)],
-			[245, 182, 95, 215, Color(1.0, 0.76, 0.25)],
-			[90, 177, 112, 228, Color(0.63, 0.76, 0.35)],
-			[0, 182, 112, 335, Color(0.95, 0.23, 0.51)],
-			[725, 24, 70, 156, Color(0.96, 0.44, 0.67)],
-			[817, 0, 89, 225, Color(1.0, 0.61, 0.18)],
-			[715, 170, 118, 260, Color(1.0, 0.70, 0.22)],
-			[653, 116, 82, 245, Color(0.14, 0.56, 0.87)],
-			[905, 184, 134, 390, Color(0.78, 0.18, 0.38)],
-			[832, 262, 86, 324, Color(0.16, 0.55, 0.87)],
-			[95, 255, 176, 350, Color(0.15, 0.56, 0.90)]
+	func _draw_sky(s: Vector2) -> void:
+		var steps := 32
+		for i in steps:
+			var t := float(i) / float(steps - 1)
+			var col := BG_TOP.lerp(BG_BOTTOM, t)
+			var y := s.y * (float(i) / float(steps))
+			var h := s.y / float(steps) + 1.0
+			draw_rect(Rect2(Vector2(0.0, y), Vector2(s.x, h)), col)
+
+	func _draw_stars(pf: Callable, scale: float) -> void:
+		for star in stars:
+			var p: Vector2 = pf.call(star[\"pos\"].x, star[\"pos\"].y)
+			draw_circle(p, star[\"r\"] * scale, Color(1.0, 1.0, 1.0, star[\"a\"]))
+
+	func _draw_city(pf: Callable, scale: float) -> void:
+		var buildings := [
+			[0, 240, 70, 130],
+			[60, 215, 90, 155],
+			[140, 250, 60, 120],
+			[195, 200, 110, 170],
+			[295, 235, 70, 135],
+			[710, 210, 90, 160],
+			[795, 245, 70, 125],
+			[855, 215, 120, 155],
+			[965, 240, 70, 130]
 		]
-		for block in blocks:
-			var rect := Rect2(Vector2(xf.call(block[0]), yf.call(block[1])), Vector2(block[2] * scale, block[3] * scale))
-			draw_rect(rect, block[4])
-		draw_rect(Rect2(Vector2.ZERO, size), Color(0.52, 0.89, 1.0, 0.18))
+		for b in buildings:
+			var top_left: Vector2 = pf.call(b[0], b[1])
+			var bottom_right: Vector2 = pf.call(b[0] + b[2], b[1] + b[3])
+			var rect := Rect2(top_left, bottom_right - top_left)
+			draw_rect(rect, FLOOR_DARK)
+			draw_line(Vector2(rect.position.x, rect.position.y), Vector2(rect.position.x + rect.size.x, rect.position.y), NEON_CYAN_SOFT, 1.0)
+			_draw_windows(rect, scale)
 
-	func _draw_track(xf: Callable, yf: Callable, pf: Callable, scale: float) -> void:
-		draw_colored_polygon([
-			pf.call(373, 235), pf.call(651, 235), pf.call(1010, 580), pf.call(13, 580)
-		], Color(0.98, 0.62, 0.13))
-		draw_colored_polygon([
-			pf.call(406, 236), pf.call(493, 236), pf.call(349, 580), pf.call(117, 580)
-		], Color(0.08, 0.56, 0.91))
-		draw_colored_polygon([
-			pf.call(531, 236), pf.call(620, 236), pf.call(888, 580), pf.call(642, 580)
-		], Color(0.08, 0.55, 0.91))
-		draw_colored_polygon([
-			pf.call(493, 236), pf.call(531, 236), pf.call(642, 580), pf.call(349, 580)
-		], Color(1.0, 0.78, 0.16))
-		draw_colored_polygon([
-			pf.call(333, 231), pf.call(373, 235), pf.call(13, 580), pf.call(-55, 580)
-		], Color(1.0, 0.76, 0.18))
-		draw_colored_polygon([
-			pf.call(651, 235), pf.call(691, 231), pf.call(1080, 580), pf.call(1010, 580)
-		], Color(1.0, 0.76, 0.18))
+	func _draw_windows(rect: Rect2, scale: float) -> void:
+		var cols := int(rect.size.x / (6.0 * scale))
+		var rows := int(rect.size.y / (8.0 * scale))
+		cols = clampi(cols, 3, 9)
+		rows = clampi(rows, 4, 14)
+		var pad_x := rect.size.x / float(cols + 1)
+		var pad_y := rect.size.y / float(rows + 1)
+		var dot_size := maxf(1.4 * scale, 1.2)
+		for r in range(rows):
+			for c in range(cols):
+				if (r * 7 + c * 3) % 5 == 0:
+					continue
+				var p := rect.position + Vector2(pad_x * float(c + 1), pad_y * float(r + 1))
+				draw_rect(Rect2(p - Vector2(dot_size, dot_size) * 0.5, Vector2(dot_size, dot_size) * 1.4), WINDOW_YELLOW)
 
-	func _draw_energy(pf: Callable, scale: float) -> void:
-		for i in 18:
-			var angle := TAU * float(i) / 18.0
-			var start: Vector2 = pf.call(512 + cos(angle) * 63.0, 402 + sin(angle) * 26.0)
-			var end: Vector2 = pf.call(512 + cos(angle) * 150.0, 406 + sin(angle) * 86.0)
-			draw_line(start, end, Color(0.10, 1.0, 0.82, 0.55), 5.0 * scale)
-		draw_circle(pf.call(512, 410), 88.0 * scale, Color(0.24, 1.0, 0.26, 0.45))
-		draw_circle(pf.call(512, 410), 58.0 * scale, Color(0.90, 1.0, 0.30, 0.55))
+	func _draw_floor(pf: Callable, scale: float) -> void:
+		var horizon_y := 370.0
+		var floor_top_left: Vector2 = pf.call(0, horizon_y)
+		var floor_top_right: Vector2 = pf.call(1024, horizon_y)
+		var floor_bottom_right: Vector2 = pf.call(1024, 580)
+		var floor_bottom_left: Vector2 = pf.call(0, 580)
+		draw_colored_polygon(
+			[floor_top_left, floor_top_right, floor_bottom_right, floor_bottom_left],
+			Color(0.02, 0.06, 0.14)
+		)
+		var vanish: Vector2 = pf.call(512, horizon_y)
+		var bottom_y: float = floor_bottom_left.y
+		var top_y: float = floor_top_left.y
+		var spacing_x := 60.0
+		var x := -1024.0
+		while x <= 2048.0:
+			var bottom: Vector2 = pf.call(x, 580)
+			draw_line(vanish, bottom, NEON_CYAN_DIM, 1.2)
+			x += spacing_x
+		var rows := 9
+		for i in range(1, rows + 1):
+			var t: float = pow(float(i) / float(rows), 2.1)
+			var y: float = lerp(top_y, bottom_y, t)
+			var alpha: float = lerp(0.05, 0.35, t)
+			draw_line(Vector2(0.0, y), Vector2(size.x, y), Color(NEON_CYAN.r, NEON_CYAN.g, NEON_CYAN.b, alpha), 1.2)
+		draw_line(floor_top_left, floor_top_right, NEON_CYAN_SOFT, 1.4)
 
-	func _draw_robot(xf: Callable, yf: Callable, pf: Callable, scale: float) -> void:
-		var yellow := Color(0.98, 0.68, 0.12)
-		var dark := Color(0.20, 0.21, 0.20)
-		var metal := Color(0.84, 0.80, 0.67)
-		draw_circle(pf.call(512, 222), 62.0 * scale, yellow)
-		draw_rect(Rect2(Vector2(xf.call(449), yf.call(207)), Vector2(126 * scale, 43 * scale)), metal)
-		draw_rect(Rect2(Vector2(xf.call(445), yf.call(194)), Vector2(135 * scale, 14 * scale)), Color(0.15, 0.17, 0.16))
-		draw_circle(pf.call(462, 226), 22.0 * scale, dark)
-		draw_circle(pf.call(562, 226), 22.0 * scale, dark)
-		draw_circle(pf.call(462, 226), 15.0 * scale, Color(0.08, 0.09, 0.09))
-		draw_circle(pf.call(562, 226), 15.0 * scale, Color(0.08, 0.09, 0.09))
-		draw_rect(Rect2(Vector2(xf.call(466), yf.call(263)), Vector2(91 * scale, 86 * scale)), yellow)
-		draw_rect(Rect2(Vector2(xf.call(478), yf.call(279)), Vector2(65 * scale, 53 * scale)), Color(0.92, 0.50, 0.08))
-		draw_line(pf.call(469, 293), pf.call(421, 362), Color(0.73, 0.55, 0.27), 7.0 * scale)
-		draw_line(pf.call(555, 292), pf.call(606, 360), Color(0.73, 0.55, 0.27), 7.0 * scale)
-		draw_circle(pf.call(423, 371), 18.0 * scale, Color(0.98, 0.68, 0.12))
-		draw_circle(pf.call(607, 371), 18.0 * scale, Color(0.98, 0.68, 0.12))
-		draw_line(pf.call(485, 346), pf.call(457, 425), Color(0.73, 0.55, 0.27), 7.0 * scale)
-		draw_line(pf.call(538, 346), pf.call(567, 425), Color(0.73, 0.55, 0.27), 7.0 * scale)
-		draw_circle(pf.call(454, 436), 14.0 * scale, Color(0.98, 0.68, 0.12))
-		draw_circle(pf.call(570, 436), 14.0 * scale, Color(0.98, 0.68, 0.12))
+	func _draw_highscore_frame(pf: Callable, scale: float) -> void:
+		var top_left: Vector2 = pf.call(820, 18)
+		var bottom_right: Vector2 = pf.call(1004, 100)
+		var rect := Rect2(top_left, bottom_right - top_left)
+		_draw_neon_panel(rect, scale)
 
-	func _draw_number_tile(center: Vector2, text: String, scale: float) -> void:
-		var rect := Rect2(center - Vector2(39, 36) * scale, Vector2(78, 72) * scale)
-		draw_rect(rect.grow(5.0 * scale), Color(0.36, 0.20, 0.08, 0.35))
-		draw_rect(rect, Color(0.94, 0.50, 0.11))
-		draw_rect(Rect2(rect.position, Vector2(rect.size.x, rect.size.y * 0.42)), Color(1.0, 0.68, 0.23, 0.55))
-		if font:
-			draw_string(font, center + Vector2(-16, 20) * scale, text, HORIZONTAL_ALIGNMENT_LEFT, -1, int(58 * scale), Color(1, 1, 1))
-			draw_string(font, center + Vector2(-13, 23) * scale, text, HORIZONTAL_ALIGNMENT_LEFT, -1, int(58 * scale), Color(0.42, 0.25, 0.12, 0.28))
+	func _draw_pause_button(pf: Callable, scale: float) -> void:
+		var top_left: Vector2 = pf.call(20, 18)
+		var bottom_right: Vector2 = pf.call(78, 76)
+		var rect := Rect2(top_left, bottom_right - top_left)
+		_draw_neon_panel(rect, scale)
+		var bar_w := rect.size.x * 0.16
+		var bar_h := rect.size.y * 0.45
+		var center := rect.get_center()
+		var gap := rect.size.x * 0.10
+		draw_rect(Rect2(center - Vector2(bar_w + gap * 0.5, bar_h * 0.5), Vector2(bar_w, bar_h)), NEON_CYAN)
+		draw_rect(Rect2(center - Vector2(-gap * 0.5, bar_h * 0.5), Vector2(bar_w, bar_h)), NEON_CYAN)
 
-	func _draw_trophy(pos: Vector2, scale: float) -> void:
-		draw_rect(Rect2(pos + Vector2(4, 20) * scale, Vector2(24, 9) * scale), Color(0.72, 0.40, 0.06))
-		draw_rect(Rect2(pos + Vector2(10, 11) * scale, Vector2(12, 12) * scale), Color(0.93, 0.56, 0.05))
-		draw_circle(pos + Vector2(16, 9) * scale, 13.0 * scale, Color(1.0, 0.71, 0.13))
-		draw_arc(pos + Vector2(3, 10) * scale, 10.0 * scale, -1.2, 1.2, 16, Color(1.0, 0.75, 0.18), 4.0 * scale)
-		draw_arc(pos + Vector2(29, 10) * scale, 10.0 * scale, 1.95, 4.35, 16, Color(1.0, 0.75, 0.18), 4.0 * scale)
+	func _draw_neon_panel(rect: Rect2, scale: float) -> void:
+		draw_rect(rect, Color(0.04, 0.08, 0.18, 0.55))
+		_draw_neon_corners(rect, scale)
+
+	func _draw_neon_corners(rect: Rect2, scale: float) -> void:
+		var len_v := minf(rect.size.x, rect.size.y) * 0.28
+		var width := 2.0 * scale
+		var tl := rect.position
+		var tr := rect.position + Vector2(rect.size.x, 0)
+		var bl := rect.position + Vector2(0, rect.size.y)
+		var br := rect.position + rect.size
+		draw_line(tl, tl + Vector2(len_v, 0), NEON_CYAN, width)
+		draw_line(tl, tl + Vector2(0, len_v), NEON_CYAN, width)
+		draw_line(tr, tr + Vector2(-len_v, 0), NEON_CYAN, width)
+		draw_line(tr, tr + Vector2(0, len_v), NEON_CYAN, width)
+		draw_line(bl, bl + Vector2(len_v, 0), NEON_CYAN, width)
+		draw_line(bl, bl + Vector2(0, -len_v), NEON_CYAN, width)
+		draw_line(br, br + Vector2(-len_v, 0), NEON_CYAN, width)
+		draw_line(br, br + Vector2(0, -len_v), NEON_CYAN, width)
+
+	func _draw_equation(pf: Callable, scale: float) -> void:
+		var y := 200.0
+		_draw_eq_tile(pf.call(395, y), \"?\", scale, true)
+		_draw_eq_op(pf.call(467, y), \"+\", scale)
+		_draw_eq_tile(pf.call(540, y), \"6\", scale, false)
+		_draw_eq_op(pf.call(612, y), \"=\", scale)
+		_draw_eq_tile(pf.call(685, y), \"7\", scale, false)
+
+	func _draw_eq_tile(center: Vector2, text: String, scale: float, hollow: bool) -> void:
+		var size_v := Vector2(60, 60) * scale
+		var rect := Rect2(center - size_v * 0.5, size_v)
+		var bg_col: Color
+		if hollow:
+			bg_col = Color(0.04, 0.08, 0.18, 0.75)
+		else:
+			bg_col = TILE_ORANGE
+			draw_rect(rect.grow(3.0 * scale), Color(0.0, 0.0, 0.0, 0.35))
+		draw_rect(rect, bg_col)
+		if not hollow:
+			draw_rect(Rect2(rect.position, Vector2(rect.size.x, rect.size.y * 0.42)), Color(1.0, 0.83, 0.40, 0.55))
+		var border_col := NEON_CYAN if hollow else TILE_ORANGE_DARK
+		var border_w := 2.0 * scale
+		draw_rect(rect, border_col, false, border_w)
+		if font_bold:
+			var fsize := int(40 * scale)
+			var width := rect.size.x
+			var txt_color := NEON_CYAN if hollow else Color.WHITE
+			draw_string(
+				font_bold,
+				Vector2(rect.position.x, rect.position.y + rect.size.y * 0.78),
+				text,
+				HORIZONTAL_ALIGNMENT_CENTER,
+				width,
+				fsize,
+				txt_color
+			)
+
+	func _draw_eq_op(center: Vector2, text: String, scale: float) -> void:
+		if font_bold:
+			var fsize := int(40 * scale)
+			draw_string(
+				font_bold,
+				Vector2(center.x - 20.0 * scale, center.y + 16.0 * scale),
+				text,
+				HORIZONTAL_ALIGNMENT_CENTER,
+				40.0 * scale,
+				fsize,
+				NEON_CYAN
+			)
+
+	func _draw_subtitle_brackets(pf: Callable, scale: float) -> void:
+		# subtle cyan glow band under MATH RUNNER
+		var top_left: Vector2 = pf.call(160, 105)
+		var bottom_right: Vector2 = pf.call(870, 137)
+		var rect := Rect2(top_left, bottom_right - top_left)
+		draw_rect(rect, Color(0.36, 0.97, 1.0, 0.04))
+
+	func _draw_robot(pf: Callable, scale: float) -> void:
+		var yellow := Color(0.98, 0.66, 0.13)
+		var yellow_dark := Color(0.85, 0.50, 0.08)
+		var metal := Color(0.78, 0.78, 0.80)
+		var dark := Color(0.10, 0.11, 0.13)
+
+		# Antenna
+		draw_line(pf.call(512, 245), pf.call(512, 270), metal, 3.0 * scale)
+		draw_circle(pf.call(512, 245), 5.0 * scale, NEON_CYAN)
+
+		# Head
+		var head_top_left: Vector2 = pf.call(465, 270)
+		var head_size: Vector2 = Vector2(94, 70) * scale
+		var head_rect := Rect2(head_top_left, head_size)
+		_draw_rounded_rect(head_rect, 12.0 * scale, yellow)
+		# Visor band
+		var visor := Rect2(head_top_left + Vector2(4, 18) * scale, Vector2(86, 28) * scale)
+		_draw_rounded_rect(visor, 6.0 * scale, dark)
+		# Eyes
+		draw_circle(pf.call(486, 305), 7.5 * scale, Color(0.10, 0.85, 1.0))
+		draw_circle(pf.call(486, 305), 4.0 * scale, Color(0.05, 0.05, 0.07))
+		draw_circle(pf.call(538, 305), 7.5 * scale, Color(0.10, 0.85, 1.0))
+		draw_circle(pf.call(538, 305), 4.0 * scale, Color(0.05, 0.05, 0.07))
+		# Ear bolts
+		draw_circle(pf.call(462, 305), 4.0 * scale, metal)
+		draw_circle(pf.call(562, 305), 4.0 * scale, metal)
+
+		# Neck
+		draw_rect(Rect2(pf.call(498, 340), Vector2(28, 8) * scale), metal)
+
+		# Torso
+		var torso_top_left: Vector2 = pf.call(462, 348)
+		var torso_size: Vector2 = Vector2(100, 78) * scale
+		var torso_rect := Rect2(torso_top_left, torso_size)
+		_draw_rounded_rect(torso_rect, 10.0 * scale, yellow)
+		_draw_rounded_rect(Rect2(torso_top_left + Vector2(14, 12) * scale, Vector2(72, 54) * scale), 6.0 * scale, yellow_dark)
+		# chest light
+		draw_circle(pf.call(512, 388), 6.0 * scale, NEON_CYAN)
+
+		# Arms
+		draw_line(pf.call(468, 364), pf.call(430, 412), metal, 6.0 * scale)
+		draw_line(pf.call(556, 364), pf.call(594, 412), metal, 6.0 * scale)
+		draw_circle(pf.call(428, 418), 10.0 * scale, yellow)
+		draw_circle(pf.call(596, 418), 10.0 * scale, yellow)
+
+		# Legs (short, peeking)
+		draw_rect(Rect2(pf.call(478, 426), Vector2(16, 14) * scale), metal)
+		draw_rect(Rect2(pf.call(530, 426), Vector2(16, 14) * scale), metal)
+
+	func _draw_rounded_rect(rect: Rect2, radius: float, color: Color) -> void:
+		radius = clampf(radius, 0.0, minf(rect.size.x, rect.size.y) * 0.5)
+		var inner := rect.grow(-radius)
+		draw_rect(Rect2(Vector2(inner.position.x, rect.position.y), Vector2(inner.size.x, rect.size.y)), color)
+		draw_rect(Rect2(Vector2(rect.position.x, inner.position.y), Vector2(rect.size.x, inner.size.y)), color)
+		draw_circle(inner.position, radius, color)
+		draw_circle(Vector2(inner.position.x + inner.size.x, inner.position.y), radius, color)
+		draw_circle(Vector2(inner.position.x, inner.position.y + inner.size.y), radius, color)
+		draw_circle(inner.position + inner.size, radius, color)
+
+	func _draw_side_tile(center: Vector2, text: String, scale: float) -> void:
+		var size_v := Vector2(74, 74) * scale
+		var rect := Rect2(center - size_v * 0.5, size_v)
+		draw_rect(rect.grow(4.0 * scale), Color(0.0, 0.0, 0.0, 0.40))
+		draw_rect(rect, TILE_ORANGE)
+		draw_rect(Rect2(rect.position, Vector2(rect.size.x, rect.size.y * 0.45)), Color(1.0, 0.83, 0.40, 0.55))
+		draw_rect(rect, TILE_ORANGE_DARK, false, 2.0 * scale)
+		if font_bold:
+			var fsize := int(50 * scale)
+			draw_string(
+				font_bold,
+				Vector2(rect.position.x, rect.position.y + rect.size.y * 0.78),
+				text,
+				HORIZONTAL_ALIGNMENT_CENTER,
+				rect.size.x,
+				fsize,
+				Color.WHITE
+			)
 
 
 func _ready() -> void:
-	_font = load(FONT_PATH)
+	_font_bold = load(FONT_BOLD)
+	_font_semi = load(FONT_SEMI)
+	_font_regular = load(FONT_REGULAR)
 	_build_screen()
 	_layout()
 	_play_menu_music()
@@ -158,7 +353,6 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed(\"ui_accept\"):
 		_start_game()
 		return
-
 	if event is InputEventMouseButton:
 		var mouse_event := event as InputEventMouseButton
 		if mouse_event.pressed:
@@ -167,49 +361,58 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _build_screen() -> void:
 	_art = StartArt.new()
-	_art.font = _font
+	_art.font_bold = _font_bold
+	_art.font_semi = _font_semi
 	_art.set_anchors_preset(Control.PRESET_FULL_RECT)
 	add_child(_art)
 	move_child(_art, 0)
 
-	_title = _make_label(\"MATH RUNNER\", 66, Color.WHITE, 5, Color(0.09, 0.12, 0.16, 0.85))
+	_title = _make_label(\"MATH RUNNER\", _font_bold, 72, NEON_CYAN, 0, Color(0, 0, 0, 0))
 	add_child(_title)
 
-	_highscore_title = $HighscoreTitle
-	_apply_label_style(_highscore_title, \"HIGHSCORE\", 30, Color.WHITE, 3, Color(0.07, 0.08, 0.09, 0.85))
+	_subtitle = _make_label(\"> SISTEMA v2.0   //   ONLINE\", _font_semi, 18, Color(0.55, 0.92, 1.0, 0.85), 0, Color(0, 0, 0, 0))
+	add_child(_subtitle)
+
+	_highscore_tag = $HighscoreTag
+	_apply_label_style(_highscore_tag, \"// HIGHSCORE\", _font_semi, 14, Color(0.55, 0.92, 1.0, 0.85), 0, Color(0, 0, 0, 0))
+	_highscore_tag.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 
 	_highscore_value = $HighscoreValue
-	_apply_label_style(_highscore_value, \"HS: 1450\", 31, Color.WHITE, 3, Color(0.09, 0.10, 0.10, 0.90))
+	_apply_label_style(_highscore_value, \"1450\", _font_bold, 30, NEON_CYAN, 0, Color(0, 0, 0, 0))
+	_highscore_value.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 
 	_start_button = $StartButton
 	_start_button.text = \"COMEÇAR\"
 	_start_button.focus_mode = Control.FOCUS_NONE
-	_start_button.add_theme_font_override(\"font\", _font)
-	_start_button.add_theme_font_size_override(\"font_size\", 45)
+	_start_button.add_theme_font_override(\"font\", _font_bold)
+	_start_button.add_theme_font_size_override(\"font_size\", 36)
 	_start_button.add_theme_color_override(\"font_color\", Color.WHITE)
 	_start_button.add_theme_color_override(\"font_hover_color\", Color.WHITE)
 	_start_button.add_theme_color_override(\"font_pressed_color\", Color.WHITE)
-	_start_button.add_theme_constant_override(\"outline_size\", 5)
-	_start_button.add_theme_color_override(\"font_outline_color\", Color(0.05, 0.22, 0.06))
-	_start_button.add_theme_stylebox_override(\"normal\", _button_style(Color(0.20, 0.80, 0.22), Color(0.70, 1.0, 0.34)))
-	_start_button.add_theme_stylebox_override(\"hover\", _button_style(Color(0.24, 0.88, 0.27), Color(0.78, 1.0, 0.40)))
-	_start_button.add_theme_stylebox_override(\"pressed\", _button_style(Color(0.12, 0.64, 0.17), Color(0.55, 0.88, 0.25)))
+	_start_button.add_theme_constant_override(\"outline_size\", 4)
+	_start_button.add_theme_color_override(\"font_outline_color\", Color(0.04, 0.20, 0.07))
+	_start_button.add_theme_stylebox_override(\"normal\", _button_style(Color(0.18, 0.78, 0.36), Color(0.58, 1.0, 0.66)))
+	_start_button.add_theme_stylebox_override(\"hover\", _button_style(Color(0.22, 0.88, 0.42), Color(0.66, 1.0, 0.72)))
+	_start_button.add_theme_stylebox_override(\"pressed\", _button_style(Color(0.12, 0.62, 0.26), Color(0.46, 0.86, 0.52)))
 	_start_button.pressed.connect(_start_game)
 
 
-func _make_label(text: String, font_size: int, color: Color, outline_size: int, outline_color: Color) -> Label:
+func _make_label(text: String, font: Font, font_size: int, color: Color, outline_size: int, outline_color: Color) -> Label:
 	var label := Label.new()
-	_apply_label_style(label, text, font_size, color, outline_size, outline_color)
+	_apply_label_style(label, text, font, font_size, color, outline_size, outline_color)
 	return label
 
 
-func _apply_label_style(label: Label, text: String, font_size: int, color: Color, outline_size: int, outline_color: Color) -> void:
+func _apply_label_style(label: Label, text: String, font: Font, font_size: int, color: Color, outline_size: int, outline_color: Color) -> void:
 	var settings := LabelSettings.new()
-	settings.font = _font
+	settings.font = font
 	settings.font_size = font_size
 	settings.font_color = color
 	settings.outline_size = outline_size
 	settings.outline_color = outline_color
+	settings.shadow_color = Color(NEON_CYAN.r, NEON_CYAN.g, NEON_CYAN.b, 0.45)
+	settings.shadow_size = 0
+	settings.shadow_offset = Vector2.ZERO
 	label.text = text
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
@@ -220,41 +423,53 @@ func _button_style(fill: Color, border: Color) -> StyleBoxFlat:
 	var style := StyleBoxFlat.new()
 	style.bg_color = fill
 	style.border_color = border
-	style.border_width_left = 4
-	style.border_width_top = 4
-	style.border_width_right = 4
-	style.border_width_bottom = 4
-	style.corner_radius_top_left = 13
-	style.corner_radius_top_right = 13
-	style.corner_radius_bottom_left = 13
-	style.corner_radius_bottom_right = 13
-	style.shadow_color = Color(0.04, 0.18, 0.04, 0.45)
-	style.shadow_size = 8
-	style.shadow_offset = Vector2(0, 5)
+	style.border_width_left = 3
+	style.border_width_top = 3
+	style.border_width_right = 3
+	style.border_width_bottom = 3
+	style.corner_radius_top_left = 12
+	style.corner_radius_top_right = 12
+	style.corner_radius_bottom_left = 12
+	style.corner_radius_bottom_right = 12
+	style.shadow_color = Color(0.04, 0.16, 0.06, 0.55)
+	style.shadow_size = 10
+	style.shadow_offset = Vector2(0, 6)
 	return style
 
 
 func _layout() -> void:
 	var s := size
-	var scale := minf(s.x / 1024.0, s.y / 580.0)
-	var ox := (s.x - 1024.0 * scale) * 0.5
-	var oy := (s.y - 580.0 * scale) * 0.5
+	var scale := minf(s.x / DESIGN_SIZE.x, s.y / DESIGN_SIZE.y)
+	var ox := (s.x - DESIGN_SIZE.x * scale) * 0.5
+	var oy := (s.y - DESIGN_SIZE.y * scale) * 0.5
 	var rect := func(x: float, y: float, w: float, h: float) -> Rect2:
 		return Rect2(Vector2(ox + x * scale, oy + y * scale), Vector2(w * scale, h * scale))
 
-	_title.set_position(rect.call(175, 38, 675, 70).position)
-	_title.set_size(rect.call(175, 38, 675, 70).size)
-	_highscore_title.set_position(rect.call(837, 23, 166, 36).position)
-	_highscore_title.set_size(rect.call(837, 23, 166, 36).size)
-	_highscore_value.set_position(rect.call(848, 72, 118, 39).position)
-	_highscore_value.set_size(rect.call(848, 72, 118, 39).size)
-	_start_button.set_position(rect.call(387, 430, 259, 88).position)
-	_start_button.set_size(rect.call(387, 430, 259, 88).size)
+	var title_rect: Rect2 = rect.call(160, 38, 710, 76)
+	_title.set_position(title_rect.position)
+	_title.set_size(title_rect.size)
 
-	_start_button.add_theme_font_size_override(\"font_size\", maxi(18, int(45 * scale)))
-	_title.label_settings.font_size = maxi(24, int(66 * scale))
-	_highscore_title.label_settings.font_size = maxi(16, int(30 * scale))
-	_highscore_value.label_settings.font_size = maxi(16, int(31 * scale))
+	var sub_rect: Rect2 = rect.call(220, 108, 590, 30)
+	_subtitle.set_position(sub_rect.position)
+	_subtitle.set_size(sub_rect.size)
+
+	var hs_tag_rect: Rect2 = rect.call(832, 28, 160, 22)
+	_highscore_tag.set_position(hs_tag_rect.position)
+	_highscore_tag.set_size(hs_tag_rect.size)
+
+	var hs_val_rect: Rect2 = rect.call(832, 54, 160, 42)
+	_highscore_value.set_position(hs_val_rect.position)
+	_highscore_value.set_size(hs_val_rect.size)
+
+	var btn_rect: Rect2 = rect.call(386, 425, 252, 64)
+	_start_button.set_position(btn_rect.position)
+	_start_button.set_size(btn_rect.size)
+
+	_start_button.add_theme_font_size_override(\"font_size\", maxi(18, int(34 * scale)))
+	_title.label_settings.font_size = maxi(28, int(72 * scale))
+	_subtitle.label_settings.font_size = maxi(12, int(18 * scale))
+	_highscore_tag.label_settings.font_size = maxi(10, int(14 * scale))
+	_highscore_value.label_settings.font_size = maxi(16, int(30 * scale))
 	_art.queue_redraw()
 
 
@@ -273,31 +488,31 @@ grow_horizontal = 2
 grow_vertical = 2
 script = SubResource("GDScript_start_screen")
 
-[node name="HighscoreTitle" type="Label" parent="." unique_id=809046786]
+[node name="HighscoreTag" type="Label" parent="." unique_id=809046786]
 layout_mode = 0
-offset_left = 839.0
-offset_top = 23.0
-offset_right = 1003.0
-offset_bottom = 59.0
-text = "HIGHSCORE"
-horizontal_alignment = 1
+offset_left = 832.0
+offset_top = 28.0
+offset_right = 992.0
+offset_bottom = 50.0
+text = "// HIGHSCORE"
+horizontal_alignment = 2
 vertical_alignment = 1
 
 [node name="HighscoreValue" type="Label" parent="." unique_id=644945730]
 layout_mode = 0
-offset_left = 848.0
-offset_top = 72.0
-offset_right = 966.0
-offset_bottom = 111.0
-text = "HS: 1450"
-horizontal_alignment = 1
+offset_left = 832.0
+offset_top = 54.0
+offset_right = 992.0
+offset_bottom = 96.0
+text = "1450"
+horizontal_alignment = 2
 vertical_alignment = 1
 
 [node name="StartButton" type="Button" parent="." unique_id=1332176397]
 layout_mode = 0
-offset_left = 387.0
-offset_top = 430.0
-offset_right = 646.0
-offset_bottom = 518.0
+offset_left = 386.0
+offset_top = 425.0
+offset_right = 638.0
+offset_bottom = 489.0
 focus_mode = 0
 text = "COMEÇAR"
