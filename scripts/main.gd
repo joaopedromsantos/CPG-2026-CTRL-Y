@@ -101,7 +101,6 @@ func _build_blocos() -> void:
 	_blocos.world_speed = WORLD_SPEED
 	_blocos.floor_back_z = FLOOR_BACK_Z
 	_blocos.floor_front_z = FLOOR_FRONT_Z
-	_blocos.player_hit.connect(_end_game)
 	add_child(_blocos)
 	_blocos.setup(_lane_positions)
 
