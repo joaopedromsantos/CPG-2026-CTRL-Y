@@ -18,7 +18,7 @@ var _mat_block_side: StandardMaterial3D
 var _mat_number: StandardMaterial3D
 var _block_mesh: ArrayMesh
 var _current_options: Array = []
-var _current_answer := 0
+var _current_correct_answers: Array = []
 
 
 func setup(lane_positions: Array[float]) -> void:
@@ -38,14 +38,14 @@ func reset() -> void:
 	_distance_since_spawn = 0.0
 
 
-func set_equation_options(options: Array, answer: int) -> void:
+func set_equation_options(options: Array, correct_answers: Array) -> void:
 	_current_options = options.duplicate()
-	_current_answer = answer
+	_current_correct_answers = correct_answers.duplicate()
 
 
 func set_equation(equation: Dictionary) -> void:
 	_current_options = equation.get("queued_options", equation.get("options", [])).duplicate()
-	_current_answer = int(equation.get("answer", 0))
+	_current_correct_answers = equation.get("correctAnswers", []).duplicate()
 
 
 func tick(delta: float, player_position: Vector3) -> void:
@@ -72,15 +72,22 @@ func _spawn_block_row() -> bool:
 	row.name = "LinhaBlocos"
 	row.position.z = floor_back_z
 	row.set_meta("resolved", false)
-	row.set_meta("correct_answer", _current_answer)
+	row.set_meta("correct_answers", _current_correct_answers)
 	add_child(row)
 	_block_rows.append(row)
 
 	var options := _options_for_row()
+	if options.size() < _lane_positions.size():
+		_block_rows.erase(row)
+		row.queue_free()
+		return false
+
 	for lane_index in _lane_positions.size():
-		var option_value := int(options[lane_index])
+		var option := options[lane_index] as Dictionary
+		var option_value := int(option.get("value", 0))
 		var block := _make_number_block(str(option_value))
 		block.set_meta("answer_value", option_value)
+		block.set_meta("answer_is_correct", bool(option.get("isCorrect", false)))
 		block.position = Vector3(_lane_positions[lane_index], 1.2, 0.0)
 		row.add_child(block)
 
@@ -108,10 +115,19 @@ func _resolve_row(row: Node3D, player_position: Vector3) -> void:
 
 	var block := row.get_child(lane_index)
 	var selected_answer := int(block.get_meta("answer_value", 0))
-	var correct_answer := int(row.get_meta("correct_answer", _current_answer))
-	answer_selected.emit(selected_answer == correct_answer, selected_answer)
+	var option_is_correct := bool(block.get_meta("answer_is_correct", false))
+	var correct_answers := row.get_meta("correct_answers", _current_correct_answers) as Array
+	answer_selected.emit(option_is_correct or _contains_correct_answer(correct_answers, selected_answer), selected_answer)
 	_block_rows.erase(row)
 	row.queue_free()
+
+
+func _contains_correct_answer(correct_answers: Array, selected_answer: int) -> bool:
+	for answer in correct_answers:
+		if int(answer) == selected_answer:
+			return true
+
+	return false
 
 
 func _closest_lane_index(x_position: float) -> int:
