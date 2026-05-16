@@ -11,12 +11,15 @@ var _lane_positions: Array[float] = []
 var _distance_since_spawn := 0.0
 var _number_rows: Array[Node3D] = []
 var _rng := RandomNumberGenerator.new()
+var _mat_number: StandardMaterial3D
+var _mat_number_side: StandardMaterial3D
 
 
 func setup(lane_positions: Array[float]) -> void:
 	name = "Numeros"
 	_lane_positions = lane_positions
 	_rng.randomize()
+	_build_materials()
 	reset()
 
 
@@ -63,14 +66,27 @@ func _spawn_number_row() -> void:
 			row.add_child(separator_label)
 
 
-func _make_number_label(text: String) -> Label3D:
-	var label := Label3D.new()
-	label.text = text
-	label.font_size = 96
-	label.pixel_size = 0.013
-	label.modulate = Color.WHITE
-	label.outline_size = 10
-	label.outline_modulate = Color.BLACK
-	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	return label
+func _build_materials() -> void:
+	_mat_number = StandardMaterial3D.new()
+	_mat_number.albedo_color = Color.WHITE
+	_mat_number.roughness = 0.32
+
+	_mat_number_side = StandardMaterial3D.new()
+	_mat_number_side.albedo_color = Color(0.04, 0.04, 0.05)
+	_mat_number_side.roughness = 0.45
+
+
+func _make_number_label(text: String) -> MeshInstance3D:
+	var text_mesh := TextMesh.new()
+	text_mesh.text = text
+	text_mesh.font_size = 96
+	text_mesh.pixel_size = 0.013
+	text_mesh.depth = 0.18
+	text_mesh.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	text_mesh.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+
+	var mesh := MeshInstance3D.new()
+	mesh.mesh = text_mesh
+	mesh.set_surface_override_material(0, _mat_number)
+	mesh.set_surface_override_material(1, _mat_number_side)
+	return mesh
