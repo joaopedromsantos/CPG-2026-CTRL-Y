@@ -29,6 +29,8 @@ var _blocos: RunnerBlocos
 var _snd_game: AudioStreamPlayer
 var _snd_lose: AudioStreamPlayer
 var _snd_punch: AudioStreamPlayer
+var _snd_correct: AudioStreamPlayer
+var _snd_wrong: AudioStreamPlayer
 var _equation_sequence = EQUATION_SEQUENCE_SCRIPT.new()
 
 
@@ -138,6 +140,14 @@ func _build_audio() -> void:
 	_snd_punch.stream = load("res://assets/sounds/punch_sound.wav")
 	add_child(_snd_punch)
 
+	_snd_correct = AudioStreamPlayer.new()
+	_snd_correct.stream = load("res://assets/sounds/bonus_sound.wav")
+	add_child(_snd_correct)
+
+	_snd_wrong = AudioStreamPlayer.new()
+	_snd_wrong.stream = load("res://assets/sounds/punch_sound.wav")
+	add_child(_snd_wrong)
+
 
 func _restart() -> void:
 	_score = 0.0
@@ -193,7 +203,11 @@ func _on_blocos_answer_selected(is_correct: bool, _selected_answer: int) -> void
 	if is_correct:
 		_score += 1
 		score_event.emit(int(_score))
+		_snd_correct.play()
+	else:
+		_snd_wrong.play()
 
+	hud.show_feedback(is_correct)
 	_set_active_equation(_equation_sequence.advance())
 
 
