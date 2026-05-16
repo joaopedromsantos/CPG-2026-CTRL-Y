@@ -4,7 +4,7 @@
 script/source = "extends Control
 
 const GAME_SCENE := \"res://scenes/main.tscn\"
-const FONT_PATH := \"res://assets/fonts/Fredoka-Bold.ttf\"
+const FONT_PATH := \"res://assets/fonts/fredoka/Fredoka-Bold.ttf\"
 
 var _font: Font
 var _art: StartArt

@@ -1,6 +1,8 @@
 class_name RunnerBlocos
 extends Node3D
 
+signal answer_selected(is_correct: bool, selected_answer: int)
+
 var world_speed := 8.0
 var steps_per_spawn := 20
 var step_distance := 1.0
@@ -15,6 +17,8 @@ var _mat_block: StandardMaterial3D
 var _mat_block_side: StandardMaterial3D
 var _mat_number: StandardMaterial3D
 var _block_mesh: ArrayMesh
+var _current_options: Array = []
+var _current_answer := 0
 
 
 func setup(lane_positions: Array[float]) -> void:
@@ -34,30 +38,89 @@ func reset() -> void:
 	_distance_since_spawn = 0.0
 
 
-func tick(delta: float, _player_position: Vector3) -> void:
+func set_equation_options(options: Array, answer: int) -> void:
+	_current_options = options.duplicate()
+	_current_answer = answer
+
+
+func tick(delta: float, player_position: Vector3) -> void:
 	_distance_since_spawn += world_speed * delta
 	if _distance_since_spawn >= float(steps_per_spawn) * step_distance:
-		_spawn_block_row()
-		_distance_since_spawn = 0.0
+		if _spawn_block_row():
+			_distance_since_spawn = 0.0
 
 	for row in _block_rows.duplicate():
 		row.position.z += world_speed * delta
+		if row.position.z >= player_position.z and not bool(row.get_meta("resolved", false)):
+			_resolve_row(row, player_position)
+			continue
 		if row.position.z > floor_front_z:
 			_block_rows.erase(row)
 			row.queue_free()
 
 
-func _spawn_block_row() -> void:
+func _spawn_block_row() -> bool:
+	if _current_options.is_empty() or _has_unresolved_row():
+		return false
+
 	var row := Node3D.new()
 	row.name = "LinhaBlocos"
 	row.position.z = floor_back_z
+	row.set_meta("resolved", false)
+	row.set_meta("correct_answer", _current_answer)
 	add_child(row)
 	_block_rows.append(row)
 
+	var options := _options_for_row()
 	for lane_index in _lane_positions.size():
-		var block := _make_number_block(str(_rng.randi_range(0, 9)))
+		var option_value := int(options[lane_index])
+		var block := _make_number_block(str(option_value))
+		block.set_meta("answer_value", option_value)
 		block.position = Vector3(_lane_positions[lane_index], 1.2, 0.0)
 		row.add_child(block)
+
+	return true
+
+
+func _has_unresolved_row() -> bool:
+	for row in _block_rows:
+		if not bool(row.get_meta("resolved", false)):
+			return true
+
+	return false
+
+
+func _options_for_row() -> Array:
+	var options := _current_options.duplicate()
+	options.shuffle()
+
+	return options.slice(0, _lane_positions.size())
+
+
+func _resolve_row(row: Node3D, player_position: Vector3) -> void:
+	row.set_meta("resolved", true)
+	var lane_index := _closest_lane_index(player_position.x)
+	if lane_index < 0 or lane_index >= row.get_child_count():
+		return
+
+	var block := row.get_child(lane_index)
+	var selected_answer := int(block.get_meta("answer_value", 0))
+	var correct_answer := int(row.get_meta("correct_answer", _current_answer))
+	answer_selected.emit(selected_answer == correct_answer, selected_answer)
+	_block_rows.erase(row)
+	row.queue_free()
+
+
+func _closest_lane_index(x_position: float) -> int:
+	var closest_index := 0
+	var closest_distance := INF
+	for lane_index in _lane_positions.size():
+		var distance := absf(_lane_positions[lane_index] - x_position)
+		if distance < closest_distance:
+			closest_distance = distance
+			closest_index = lane_index
+
+	return closest_index
 
 
 func _build_materials() -> void:
