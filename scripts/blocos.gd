@@ -79,10 +79,8 @@ func _make_number_block(text: String) -> Node3D:
 
 	var block := MeshInstance3D.new()
 	block.name = "Bloco"
-	block.mesh = _make_rounded_box_mesh(Vector3(1.15, 1.35, 0.62), 0.18, 6)
+	block.mesh = _make_rounded_box_mesh(Vector3(1.15, 1.35, 0.62), 0.18, 8)
 	block.set_surface_override_material(0, _mat_block)
-	block.set_surface_override_material(1, _mat_block)
-	block.set_surface_override_material(2, _mat_block_side)
 	root.add_child(block)
 
 	var number := _make_text_mesh(text)
@@ -110,74 +108,103 @@ func _make_text_mesh(text: String) -> MeshInstance3D:
 
 
 func _make_rounded_box_mesh(size: Vector3, radius: float, segments: int) -> ArrayMesh:
-	var half_width := size.x * 0.5
-	var half_height := size.y * 0.5
-	var half_depth := size.z * 0.5
-	var rounded_radius := minf(radius, minf(half_width, half_height) - 0.01)
-	var points := _make_rounded_rect_points(half_width, half_height, rounded_radius, segments)
-	var triangles := Geometry2D.triangulate_polygon(points)
+	var half_size := size * 0.5
+	var rounded_radius := minf(radius, minf(minf(half_size.x, half_size.y), half_size.z) - 0.01)
+	var inner_size := half_size - Vector3.ONE * rounded_radius
 	var mesh := ArrayMesh.new()
+	var vertices := PackedVector3Array()
+	var normals := PackedVector3Array()
+	var indices := PackedInt32Array()
 
-	var front_vertices := PackedVector3Array()
-	var front_normals := PackedVector3Array()
-	var front_indices := PackedInt32Array()
-	for point in points:
-		front_vertices.append(Vector3(point.x, point.y, half_depth))
-		front_normals.append(Vector3.BACK)
-	for index in triangles:
-		front_indices.append(index)
-	_add_surface(mesh, front_vertices, front_normals, front_indices)
+	_add_rounded_face(vertices, normals, indices, half_size, inner_size, rounded_radius, segments, Vector3.RIGHT)
+	_add_rounded_face(vertices, normals, indices, half_size, inner_size, rounded_radius, segments, Vector3.LEFT)
+	_add_rounded_face(vertices, normals, indices, half_size, inner_size, rounded_radius, segments, Vector3.UP)
+	_add_rounded_face(vertices, normals, indices, half_size, inner_size, rounded_radius, segments, Vector3.DOWN)
+	_add_rounded_face(vertices, normals, indices, half_size, inner_size, rounded_radius, segments, Vector3.BACK)
+	_add_rounded_face(vertices, normals, indices, half_size, inner_size, rounded_radius, segments, Vector3.FORWARD)
 
-	var back_vertices := PackedVector3Array()
-	var back_normals := PackedVector3Array()
-	var back_indices := PackedInt32Array()
-	for point in points:
-		back_vertices.append(Vector3(point.x, point.y, -half_depth))
-		back_normals.append(Vector3.FORWARD)
-	for triangle_index in range(triangles.size() - 1, -1, -1):
-		back_indices.append(triangles[triangle_index])
-	_add_surface(mesh, back_vertices, back_normals, back_indices)
-
-	var side_vertices := PackedVector3Array()
-	var side_normals := PackedVector3Array()
-	var side_indices := PackedInt32Array()
-	for index in points.size():
-		var next_index := (index + 1) % points.size()
-		var current := points[index]
-		var next := points[next_index]
-		var start := side_vertices.size()
-		var normal := Vector3(next.y - current.y, current.x - next.x, 0.0).normalized()
-
-		side_vertices.append(Vector3(current.x, current.y, half_depth))
-		side_vertices.append(Vector3(next.x, next.y, half_depth))
-		side_vertices.append(Vector3(next.x, next.y, -half_depth))
-		side_vertices.append(Vector3(current.x, current.y, -half_depth))
-
-		for vertex in 4:
-			side_normals.append(normal)
-
-		side_indices.append_array(PackedInt32Array([start, start + 1, start + 2, start, start + 2, start + 3]))
-	_add_surface(mesh, side_vertices, side_normals, side_indices)
+	_add_surface(mesh, vertices, normals, indices)
 
 	return mesh
 
 
-func _make_rounded_rect_points(half_width: float, half_height: float, radius: float, segments: int) -> PackedVector2Array:
-	var points := PackedVector2Array()
-	var centers := [
-		Vector2(half_width - radius, half_height - radius),
-		Vector2(-half_width + radius, half_height - radius),
-		Vector2(-half_width + radius, -half_height + radius),
-		Vector2(half_width - radius, -half_height + radius),
-	]
-	var angle_starts: Array[float] = [0.0, PI * 0.5, PI, PI * 1.5]
+func _add_rounded_face(
+	vertices: PackedVector3Array,
+	normals: PackedVector3Array,
+	indices: PackedInt32Array,
+	half_size: Vector3,
+	inner_size: Vector3,
+	radius: float,
+	segments: int,
+	face_normal: Vector3
+) -> void:
+	var start_index := vertices.size()
+	var axis := _dominant_axis(face_normal)
 
-	for corner in 4:
-		for segment in segments + 1:
-			var angle := angle_starts[corner] + (float(segment) / float(segments)) * PI * 0.5
-			points.append(centers[corner] + Vector2(cos(angle), sin(angle)) * radius)
+	for row in segments + 1:
+		for col in segments + 1:
+			var u := -1.0 + 2.0 * float(col) / float(segments)
+			var v := -1.0 + 2.0 * float(row) / float(segments)
+			var box_point := _face_point(axis, face_normal, u, v, half_size)
+			var rounded_point := _round_box_point(box_point, inner_size, radius)
+			vertices.append(rounded_point)
+			normals.append(_round_box_normal(box_point, inner_size, face_normal))
 
-	return points
+	for row in segments:
+		for col in segments:
+			var a := start_index + row * (segments + 1) + col
+			var b := a + 1
+			var c := a + segments + 1
+			var d := c + 1
+
+			if face_normal.x + face_normal.y + face_normal.z > 0.0:
+				indices.append_array(PackedInt32Array([a, c, b, b, c, d]))
+			else:
+				indices.append_array(PackedInt32Array([a, b, c, b, d, c]))
+
+
+func _dominant_axis(normal: Vector3) -> int:
+	if absf(normal.x) > 0.5:
+		return 0
+	if absf(normal.y) > 0.5:
+		return 1
+	return 2
+
+
+func _face_point(axis: int, normal: Vector3, u: float, v: float, half_size: Vector3) -> Vector3:
+	match axis:
+		0:
+			return Vector3(normal.x * half_size.x, u * half_size.y, v * half_size.z)
+		1:
+			return Vector3(u * half_size.x, normal.y * half_size.y, v * half_size.z)
+		_:
+			return Vector3(u * half_size.x, v * half_size.y, normal.z * half_size.z)
+
+
+func _round_box_point(point: Vector3, inner_size: Vector3, radius: float) -> Vector3:
+	var closest := Vector3(
+		clampf(point.x, -inner_size.x, inner_size.x),
+		clampf(point.y, -inner_size.y, inner_size.y),
+		clampf(point.z, -inner_size.z, inner_size.z)
+	)
+	var offset := point - closest
+	if offset.length_squared() == 0.0:
+		return point
+
+	return closest + offset.normalized() * radius
+
+
+func _round_box_normal(point: Vector3, inner_size: Vector3, fallback: Vector3) -> Vector3:
+	var closest := Vector3(
+		clampf(point.x, -inner_size.x, inner_size.x),
+		clampf(point.y, -inner_size.y, inner_size.y),
+		clampf(point.z, -inner_size.z, inner_size.z)
+	)
+	var offset := point - closest
+	if offset.length_squared() == 0.0:
+		return fallback
+
+	return offset.normalized()
 
 
 func _add_surface(mesh: ArrayMesh, vertices: PackedVector3Array, normals: PackedVector3Array, indices: PackedInt32Array) -> void:
