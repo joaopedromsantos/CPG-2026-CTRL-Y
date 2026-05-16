@@ -1,4 +1,5 @@
 extends Node2D
+
 @onready var cronometer_label: Label = $CanvasLayer/RootControl/TopRightContainer/Wrapper/CronometerContainer/CronometerLabel
 @onready var score_label: Label = $CanvasLayer/RootControl/TopRightContainer/Wrapper/ScoreContainer/ScoreLabel
 @onready var pause_button: TextureButton = $CanvasLayer/RootControl/TopLeftContainer/PauseButton

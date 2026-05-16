@@ -3,6 +3,7 @@ extends Node3D
 
 signal game_over
 signal restart_game
+signal score_event
 
 const LANE_WIDTH := 2.8
 const WORLD_SPEED := 8.0
@@ -35,6 +36,7 @@ func _ready() -> void:
 	
 	game_over.connect(hud.on_game_over)
 	restart_game.connect(hud.on_restart_game)
+	score_event.connect(hud.on_score_change)
 	hud.pause_event.connect(_on_hud_pause_event)
 
 
@@ -156,5 +158,5 @@ func _resume() -> void:
 
 
 func _update_score(delta: float) -> void:
-	_score += delta * 10.0
-	# _hud.update_score(int(_score))
+	_score += delta * (WORLD_SPEED * 0.05)
+	score_event.emit(_score)
