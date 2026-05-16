@@ -143,7 +143,7 @@ func _build_blocos() -> void:
 
 func _build_loupes() -> void:
 	_loup = preload("res://scripts/loup.gd").new()
-	_loup.world_speed = WORLD_SPEED
+	_loup.world_speed = BASE_WORLD_SPEED
 	_loup.floor_back_z = FLOOR_BACK_Z
 	_loup.floor_front_z = FLOOR_FRONT_Z
 	add_child(_loup)
