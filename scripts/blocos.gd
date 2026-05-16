@@ -14,6 +14,7 @@ var _rng := RandomNumberGenerator.new()
 var _mat_block: StandardMaterial3D
 var _mat_block_side: StandardMaterial3D
 var _mat_number: StandardMaterial3D
+var _block_mesh: ArrayMesh
 
 
 func setup(lane_positions: Array[float]) -> void:
@@ -21,6 +22,7 @@ func setup(lane_positions: Array[float]) -> void:
 	_lane_positions = lane_positions
 	_rng.randomize()
 	_build_materials()
+	_block_mesh = _make_rounded_box_mesh(Vector3(1.8, 2.0, 1.0), 0.25, 4)
 	reset()
 
 
@@ -79,32 +81,25 @@ func _make_number_block(text: String) -> Node3D:
 
 	var block := MeshInstance3D.new()
 	block.name = "Bloco"
-	block.mesh = _make_rounded_box_mesh(Vector3(1.15, 1.35, 0.62), 0.18, 8)
+	block.mesh = _block_mesh
 	block.set_surface_override_material(0, _mat_block)
 	root.add_child(block)
 
 	var number := _make_text_mesh(text)
 	number.name = "Numero"
-	number.position = Vector3(0.0, 0.0, 0.39)
-	number.set_surface_override_material(0, _mat_number)
-	number.set_surface_override_material(1, _mat_number)
+	number.position = Vector3(0.0, 0.0, 0.55)
 	root.add_child(number)
 
 	return root
 
 
-func _make_text_mesh(text: String) -> MeshInstance3D:
-	var text_mesh := TextMesh.new()
-	text_mesh.text = text
-	text_mesh.font_size = 96
-	text_mesh.pixel_size = 0.011
-	text_mesh.depth = 0.035
-	text_mesh.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	text_mesh.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-
-	var mesh := MeshInstance3D.new()
-	mesh.mesh = text_mesh
-	return mesh
+func _make_text_mesh(text: String) -> Label3D:
+	var label := Label3D.new()
+	label.text = text
+	label.font_size = 300
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	return label
 
 
 func _make_rounded_box_mesh(size: Vector3, radius: float, segments: int) -> ArrayMesh:
