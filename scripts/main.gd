@@ -14,7 +14,7 @@ const FLOOR_FRONT_Z := 11.6
 const BASE_WORLD_SPEED := 8.0
 const WORLD_SPEED_PER_SCORE := 0.2
 const EQUATION_QUEUE_SIZE := 3
-const MAX_LIVES := 90
+const MAX_LIVES := 3
 const POWER_UP_SLOT_COUNT := 3
 const EQUATION_SEQUENCE_SCRIPT = preload("res://scripts/equation_sequence.gd")
 

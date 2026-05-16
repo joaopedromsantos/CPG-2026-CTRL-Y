@@ -66,6 +66,25 @@ content_margin_top = 6
 content_margin_right = 14
 content_margin_bottom = 6
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_slot_panel"]
+bg_color = Color(1, 0.96, 0.86, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 0.65, 0.05, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+shadow_color = Color(0, 0, 0, 0.3)
+shadow_size = 6
+shadow_offset = Vector2(0, 3)
+content_margin_left = 10
+content_margin_top = 6
+content_margin_right = 10
+content_margin_bottom = 6
+
 [node name="HUD" type="Node2D" unique_id=1585767812]
 script = ExtResource("1_6fi6k")
 
@@ -289,19 +308,10 @@ grow_vertical = 2
 theme_override_constants/separation = 20
 alignment = 1
 
-[node name="Slot1" type="Control" parent="CanvasLayer/RootControl/BottomCenterContainer/SlotsRow"]
+[node name="Slot1" type="Panel" parent="CanvasLayer/RootControl/BottomCenterContainer/SlotsRow"]
 custom_minimum_size = Vector2(150, 100)
 layout_mode = 2
-
-[node name="Background" type="TextureRect" parent="CanvasLayer/RootControl/BottomCenterContainer/SlotsRow/Slot1"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("3_6fi6k")
-expand_mode = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_slot_panel")
 
 [node name="KeyLabel" type="Label" parent="CanvasLayer/RootControl/BottomCenterContainer/SlotsRow/Slot1"]
 layout_mode = 1
@@ -334,19 +344,10 @@ text = ""
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Slot2" type="Control" parent="CanvasLayer/RootControl/BottomCenterContainer/SlotsRow"]
+[node name="Slot2" type="Panel" parent="CanvasLayer/RootControl/BottomCenterContainer/SlotsRow"]
 custom_minimum_size = Vector2(150, 100)
 layout_mode = 2
-
-[node name="Background" type="TextureRect" parent="CanvasLayer/RootControl/BottomCenterContainer/SlotsRow/Slot2"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("3_6fi6k")
-expand_mode = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_slot_panel")
 
 [node name="KeyLabel" type="Label" parent="CanvasLayer/RootControl/BottomCenterContainer/SlotsRow/Slot2"]
 layout_mode = 1
@@ -379,19 +380,10 @@ text = ""
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Slot3" type="Control" parent="CanvasLayer/RootControl/BottomCenterContainer/SlotsRow"]
+[node name="Slot3" type="Panel" parent="CanvasLayer/RootControl/BottomCenterContainer/SlotsRow"]
 custom_minimum_size = Vector2(150, 100)
 layout_mode = 2
-
-[node name="Background" type="TextureRect" parent="CanvasLayer/RootControl/BottomCenterContainer/SlotsRow/Slot3"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("3_6fi6k")
-expand_mode = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_slot_panel")
 
 [node name="KeyLabel" type="Label" parent="CanvasLayer/RootControl/BottomCenterContainer/SlotsRow/Slot3"]
 layout_mode = 1
