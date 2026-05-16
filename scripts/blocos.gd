@@ -1,72 +1,76 @@
 class_name RunnerBlocos
 extends Node3D
 
-signal player_hit
-
 var world_speed := 8.0
-var spawn_time := 1.05
+var steps_per_spawn := 10
+var step_distance := 1.0
 var floor_back_z := -18.0
 var floor_front_z := 11.6
 
 var _lane_positions: Array[float] = []
-var _spawn_timer := 0.0
-var _obstacles: Array[MeshInstance3D] = []
+var _distance_since_spawn := 0.0
+var _number_rows: Array[Node3D] = []
 var _rng := RandomNumberGenerator.new()
-var _mat_obstacle: StandardMaterial3D
 
 
 func setup(lane_positions: Array[float]) -> void:
-	name = "Blocos"
+	name = "Numeros"
 	_lane_positions = lane_positions
 	_rng.randomize()
-	_build_material()
 	reset()
 
 
 func reset() -> void:
-	for obstacle in _obstacles:
-		obstacle.queue_free()
+	for row in _number_rows:
+		row.queue_free()
 
-	_obstacles.clear()
-	_spawn_timer = 0.35
-
-
-func tick(delta: float, player_position: Vector3) -> void:
-	_spawn_timer -= delta
-	if _spawn_timer <= 0.0:
-		_spawn_obstacle()
-		_spawn_timer = spawn_time
-
-	for obstacle in _obstacles.duplicate():
-		obstacle.position.z += world_speed * delta
-		if obstacle.position.z > floor_front_z:
-			_obstacles.erase(obstacle)
-			obstacle.queue_free()
-		elif _collides_with_player(obstacle, player_position):
-			player_hit.emit()
+	_number_rows.clear()
+	_distance_since_spawn = 0.0
 
 
-func _build_material() -> void:
-	_mat_obstacle = StandardMaterial3D.new()
-	_mat_obstacle.albedo_color = Color(0.9, 0.12, 0.08)
-	_mat_obstacle.roughness = 0.35
+func tick(delta: float, _player_position: Vector3) -> void:
+	_distance_since_spawn += world_speed * delta
+	if _distance_since_spawn >= float(steps_per_spawn) * step_distance:
+		_spawn_number_row()
+		_distance_since_spawn = 0.0
+
+	for row in _number_rows.duplicate():
+		row.position.z += world_speed * delta
+		if row.position.z > floor_front_z:
+			_number_rows.erase(row)
+			row.queue_free()
 
 
-func _spawn_obstacle() -> void:
-	var lane := _rng.randi_range(0, _lane_positions.size() - 1)
-	var mesh := BoxMesh.new()
-	mesh.size = Vector3(1.15, 1.15, 1.15)
+func _spawn_number_row() -> void:
+	var row := Node3D.new()
+	row.name = "LinhaNumeros"
+	row.position.z = floor_back_z
+	add_child(row)
+	_number_rows.append(row)
 
-	var obstacle := MeshInstance3D.new()
-	obstacle.name = "Obstacle"
-	obstacle.mesh = mesh
-	obstacle.material_override = _mat_obstacle
-	obstacle.position = Vector3(_lane_positions[lane], 0.58, floor_back_z)
-	add_child(obstacle)
-	_obstacles.append(obstacle)
+	for lane_index in _lane_positions.size():
+		var number_label := _make_number_label(str(_rng.randi_range(0, 9)))
+		number_label.position = Vector3(_lane_positions[lane_index], 0.85, 0.0)
+		row.add_child(number_label)
+
+		if lane_index < _lane_positions.size() - 1:
+			var separator_label := _make_number_label("|")
+			separator_label.position = Vector3(
+				(_lane_positions[lane_index] + _lane_positions[lane_index + 1]) * 0.5,
+				0.85,
+				0.0
+			)
+			row.add_child(separator_label)
 
 
-func _collides_with_player(obstacle: MeshInstance3D, player_position: Vector3) -> bool:
-	var x_close := absf(obstacle.position.x - player_position.x) < 0.95
-	var z_close := absf(obstacle.position.z - player_position.z) < 0.95
-	return x_close and z_close
+func _make_number_label(text: String) -> Label3D:
+	var label := Label3D.new()
+	label.text = text
+	label.font_size = 96
+	label.pixel_size = 0.013
+	label.modulate = Color.WHITE
+	label.outline_size = 10
+	label.outline_modulate = Color.BLACK
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	return label
