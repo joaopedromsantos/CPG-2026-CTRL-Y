@@ -7,7 +7,7 @@ var world_speed := 8.0
 var floor_back_z := -18.0
 var floor_front_z := 11.6
 var spawn_interval := 1.2
-var spawn_chance := 0.9
+var spawn_chance := 0.4
 
 var _cones: Array[Node3D] = []
 var _rng := RandomNumberGenerator.new()
@@ -61,6 +61,6 @@ func _try_spawn_cone() -> void:
 func _make_cone() -> Node3D:
 	var cone := CONE_SCENE.instantiate() as Node3D
 	cone.name = "Cone"
-	cone.scale = Vector3.ONE * 0.85
+	cone.scale = Vector3.ONE * 12.1
 	cone.rotation_degrees = Vector3(0.0, 0.0, 0.0)
 	return cone
