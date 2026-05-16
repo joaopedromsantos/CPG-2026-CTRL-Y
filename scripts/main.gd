@@ -23,6 +23,7 @@ var _player: RunnerPlayer
 # var _hud: RunnerHud
 var _cenario: RunnerScenario
 var _blocos: RunnerBlocos
+var _loup: RunnerLoup
 var _snd_game: AudioStreamPlayer
 var _snd_lose: AudioStreamPlayer
 
@@ -31,6 +32,7 @@ func _ready() -> void:
 	_build_cenario()
 	_build_player()
 	_build_blocos()
+	_build_loupes()
 	# _build_hud()
 	_setup_camera()
 	_build_audio()
@@ -56,6 +58,7 @@ func _process(delta: float) -> void:
 	_player.tick(delta)
 	_cenario.tick(delta)
 	_blocos.tick(delta, _player.get_runner_position())
+	_loup.tick(delta, _player.get_runner_position())
 	_update_score(delta)
 
 
@@ -111,6 +114,15 @@ func _build_blocos() -> void:
 	_blocos.setup(_lane_positions)
 
 
+func _build_loupes() -> void:
+	_loup = preload("res://scripts/loup.gd").new()
+	_loup.world_speed = WORLD_SPEED
+	_loup.floor_back_z = FLOOR_BACK_Z
+	_loup.floor_front_z = FLOOR_FRONT_Z
+	add_child(_loup)
+	_loup.setup(_lane_positions)
+
+
 # func _build_hud() -> void:
 # 	_hud = RunnerHud.new()
 # 	add_child(_hud)
@@ -135,6 +147,7 @@ func _restart() -> void:
 		_resume()
 	_player.reset(1)
 	_blocos.reset()
+	_loup.reset()
 	# _hud.hide_game_over()
 	# _hud.update_score(0)
 	if _snd_lose:
