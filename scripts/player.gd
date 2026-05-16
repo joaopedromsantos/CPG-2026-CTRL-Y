@@ -7,6 +7,7 @@ extends CharacterBody3D
 
 		
 var _anim: AnimationPlayer
+var _snd_jump: AudioStreamPlayer
 
 var _lane_positions: Array[float] = []
 var _current_lane := 1
@@ -29,6 +30,9 @@ func setup(lane_positions: Array[float], start_lane: int) -> void:
 	_lane_positions = lane_positions
 	_current_lane = clampi(start_lane, 0, _lane_positions.size() - 1)
 	_target_x = _lane_positions[_current_lane]
+	_snd_jump = AudioStreamPlayer.new()
+	_snd_jump.stream = load("res://assets/sounds/jump_sound.wav")
+	add_child(_snd_jump)
 	reset(_current_lane)
 
 
@@ -58,6 +62,7 @@ func jump() -> void:
 	_vertical_velocity = _jump_force
 	_is_jumping = true
 	_can_change_lane = false
+	_snd_jump.play()
 
 
 func die() -> void:

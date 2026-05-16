@@ -24,6 +24,8 @@ var _player: RunnerPlayer
 # var _hud: RunnerHud
 var _cenario: RunnerScenario
 var _blocos: RunnerBlocos
+var _snd_game: AudioStreamPlayer
+var _snd_lose: AudioStreamPlayer
 
 
 func _ready() -> void:
@@ -32,6 +34,7 @@ func _ready() -> void:
 	_build_blocos()
 	# _build_hud()
 	_setup_camera()
+	_build_audio()
 	_restart()
 	
 	game_over.connect(hud.on_game_over)
@@ -116,6 +119,17 @@ func _build_blocos() -> void:
 # 	_hud.setup(hud_sentences)
 
 
+func _build_audio() -> void:
+	_snd_game = AudioStreamPlayer.new()
+	_snd_game.stream = load("res://assets/sounds/game_sound.wav")
+	add_child(_snd_game)
+	_snd_game.finished.connect(_snd_game.play)
+
+	_snd_lose = AudioStreamPlayer.new()
+	_snd_lose.stream = load("res://assets/sounds/losing_sound.wav")
+	add_child(_snd_lose)
+
+
 func _restart() -> void:
 	_score = 0.0
 	_is_game_over = false
@@ -125,6 +139,10 @@ func _restart() -> void:
 	_blocos.reset()
 	# _hud.hide_game_over()
 	# _hud.update_score(0)
+	if _snd_lose:
+		_snd_lose.stop()
+	if _snd_game:
+		_snd_game.play()
 	
 	restart_game.emit()
 
@@ -155,6 +173,8 @@ func _pause() -> void:
 func _resume() -> void:
 	_is_paused = false
 	hud.on_resume()
+	_snd_game.stop()
+	_snd_lose.play()
 
 
 func _update_score(delta: float) -> void:

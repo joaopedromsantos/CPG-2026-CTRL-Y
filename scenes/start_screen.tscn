@@ -12,6 +12,7 @@ var _title: Label
 var _highscore_title: Label
 var _highscore_value: Label
 var _start_button: Button
+var _menu_audio: AudioStreamPlayer
 
 
 class StartArt:
@@ -137,6 +138,15 @@ func _ready() -> void:
 	_font = load(FONT_PATH)
 	_build_screen()
 	_layout()
+	_play_menu_music()
+
+
+func _play_menu_music() -> void:
+	_menu_audio = AudioStreamPlayer.new()
+	_menu_audio.stream = load(\"res://assets/sounds/menu_sound.wav\")
+	add_child(_menu_audio)
+	_menu_audio.finished.connect(_menu_audio.play)
+	_menu_audio.play()
 
 
 func _notification(what: int) -> void:
@@ -249,6 +259,8 @@ func _layout() -> void:
 
 
 func _start_game() -> void:
+	if _menu_audio:
+		_menu_audio.stop()
 	get_tree().change_scene_to_file(GAME_SCENE)
 "
 
