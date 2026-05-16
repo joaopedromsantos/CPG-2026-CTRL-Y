@@ -28,6 +28,7 @@ var _cenario: RunnerScenario
 var _blocos: RunnerBlocos
 var _snd_game: AudioStreamPlayer
 var _snd_lose: AudioStreamPlayer
+var _snd_punch: AudioStreamPlayer
 var _equation_sequence = EQUATION_SEQUENCE_SCRIPT.new()
 
 
@@ -83,7 +84,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				_player.change_lane(1)
 				get_tree().root.set_input_as_handled()
 		KEY_SPACE:
-			if not _is_game_over:
+			if not _is_game_over and not _is_paused:
 				_player.jump()
 				get_tree().root.set_input_as_handled()
 		KEY_R:
@@ -133,6 +134,10 @@ func _build_audio() -> void:
 	_snd_lose.stream = load("res://assets/sounds/losing_sound.wav")
 	add_child(_snd_lose)
 
+	_snd_punch = AudioStreamPlayer.new()
+	_snd_punch.stream = load("res://assets/sounds/punch_sound.wav")
+	add_child(_snd_punch)
+
 
 func _restart() -> void:
 	_score = 0.0
@@ -173,13 +178,15 @@ func _on_hud_pause_event() -> void:
 func _pause() -> void:
 	_is_paused = true
 	hud.on_pause()
+	_snd_game.stop()
+	_snd_punch.play()
 
 
 func _resume() -> void:
 	_is_paused = false
 	hud.on_resume()
-	_snd_game.stop()
-	_snd_lose.play()
+	_snd_lose.stop()
+	_snd_game.play()
 
 
 func _on_blocos_answer_selected(is_correct: bool, _selected_answer: int) -> void:
