@@ -1,6 +1,12 @@
 {
   "version": 1,
   "skills": {
+    "godot-asset-generator": {
+      "source": "jwynia/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/tech/game-development/godot/godot-asset-generator/SKILL.md",
+      "computedHash": "0b07b3ad870b6413ff2749c22281b09d7e5187c9ea57d9d3090a0bc4b9f69a6d"
+    },
     "godot-gdscript-patterns": {
       "source": "wshobson/agents",
       "sourceType": "github",
