@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://nyhyv0asq27m"]
+
+[ext_resource type="Script" uid="uid://bg8gw6yjpxxly" path="res://scripts/player.gd" id="2_g2els"]
+[ext_resource type="PackedScene" uid="uid://cofypyl68ho7i" path="res://assets/player/Robot.fbx" id="2_qhqgy"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_g2els"]
+radius = 0.3
+
+[node name="RunnerPlayer" type="CharacterBody3D" unique_id=1431524170]
+script = ExtResource("2_g2els")
+metadata/_custom_type_script = "uid://bg8gw6yjpxxly"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=2083886718]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0351684, 0.028467894)
+shape = SubResource("CapsuleShape3D_g2els")
+
+[node name="Robot" parent="." unique_id=1183690155 instance=ExtResource("2_qhqgy")]
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 0, 0)

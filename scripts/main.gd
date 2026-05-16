@@ -31,7 +31,16 @@ func _ready() -> void:
 	_build_player()
 	_build_blocos()
 	_build_hud()
+	_setup_camera()
 	_restart()
+
+
+func _setup_camera() -> void:
+	var camera = Camera3D.new()
+	camera.position = Vector3(0, 4.0, 15.0)
+	camera.look_at(Vector3(0, 1.5, 0), Vector3.UP)
+	add_child(camera)
+	camera.current = true
 
 
 func _process(delta: float) -> void:
@@ -56,9 +65,15 @@ func _unhandled_input(event: InputEvent) -> void:
 		KEY_LEFT, KEY_A:
 			if not _is_game_over:
 				_player.change_lane(-1)
+				get_tree().root.set_input_as_handled()
 		KEY_RIGHT, KEY_D:
 			if not _is_game_over:
 				_player.change_lane(1)
+				get_tree().root.set_input_as_handled()
+		KEY_SPACE:
+			if not _is_game_over:
+				_player.jump()
+				get_tree().root.set_input_as_handled()
 		KEY_R:
 			if _is_game_over:
 				_restart()
@@ -75,8 +90,8 @@ func _build_cenario() -> void:
 
 
 func _build_player() -> void:
-	_player = RunnerPlayer.new()
-	_player.player_z = 5.8
+	_player = preload("res://scenes/player.tscn").instantiate()
+	_player.player_z = 8.5
 	add_child(_player)
 	_player.setup(_lane_positions, 1)
 
@@ -108,6 +123,7 @@ func _restart() -> void:
 
 func _end_game() -> void:
 	_is_game_over = true
+	_player.die()
 	_hud.show_game_over()
 
 
