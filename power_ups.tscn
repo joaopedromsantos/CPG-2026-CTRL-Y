@@ -1,10 +1,30 @@
 [gd_scene format=3 uid="uid://bplx01h40baru"]
 
 [ext_resource type="PackedScene" uid="uid://ddhqhjs0vvh8k" path="res://assets/power-ups/magnifying_glass.glb" id="1_3l4cx"]
-[ext_resource type="Script" uid="uid://d28t031h6j4o4" path="res://scripts/loup.gd" id="2_cb5l4"]
+[ext_resource type="Script" uid="uid://dhdag8p81bh4e" path="res://scripts/power-ups.gd" id="2_2hs6n"]
+[ext_resource type="PackedScene" uid="uid://dbyep73ee0hjs" path="res://assets/power-ups/cutscene_model.glb" id="3_a4etu"]
+[ext_resource type="PackedScene" uid="uid://bsiauqpys6w86" path="res://assets/power-ups/transparent_glass_hourglass.glb" id="3_cb5l4"]
+[ext_resource type="PackedScene" uid="uid://p2wdsjxcevku" path="res://assets/power-ups/heart_emoji.glb" id="4_wqfci"]
+[ext_resource type="PackedScene" uid="uid://b7parpex5dyub" path="res://assets/power-ups/Lightning Bolt.glb" id="7_kculv"]
 
 [node name="Power-ups" type="Node3D" unique_id=1343308291]
 
 [node name="loup" parent="." unique_id=1913424500 instance=ExtResource("1_3l4cx")]
 transform = Transform3D(0.1, 0, 0, 0, 0.099566646, -0.00929962, 0, 0.00929962, 0.099566646, -0.44443715, 0, -0.50380445)
-script = ExtResource("2_cb5l4")
+script = ExtResource("2_2hs6n")
+
+[node name="revive" parent="." unique_id=686596758 instance=ExtResource("3_a4etu")]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0.41416788, 0, -0.062479258)
+script = ExtResource("2_2hs6n")
+
+[node name="heart" parent="." unique_id=1663643549 instance=ExtResource("4_wqfci")]
+transform = Transform3D(0.009876747, 0.0015652064, 0, -0.0015652064, 0.009876747, 0, 0, 0, 0.01, -12.2493725, -7.611025, -2.8078995)
+script = ExtResource("2_2hs6n")
+
+[node name="lightning Bolt" parent="." unique_id=412393993 instance=ExtResource("7_kculv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2771318, 0, 2.149981)
+script = ExtResource("2_2hs6n")
+
+[node name="hourglass" parent="." unique_id=1555374513 instance=ExtResource("3_cb5l4")]
+transform = Transform3D(0.02, 0, 0, 0, 0.02, 0, 0, 0, 0.02, -2.5044777, 0, -0.12332499)
+script = ExtResource("2_2hs6n")

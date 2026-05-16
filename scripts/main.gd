@@ -5,6 +5,8 @@ signal game_over(score: int)
 signal restart_game
 signal score_event
 signal lives_event
+signal power_up_slots_event(slots: Array)
+signal power_up_used(type: String, slot: int)
 
 const LANE_WIDTH := 2.8
 const FLOOR_BACK_Z := -18.0
@@ -13,6 +15,7 @@ const BASE_WORLD_SPEED := 8.0
 const WORLD_SPEED_PER_SCORE := 0.2
 const EQUATION_QUEUE_SIZE := 3
 const MAX_LIVES := 3
+const POWER_UP_SLOT_COUNT := 3
 const EQUATION_SEQUENCE_SCRIPT = preload("res://scripts/equation_sequence.gd")
 
 var _lane_positions: Array[float] = [
@@ -26,12 +29,13 @@ var _lives := MAX_LIVES
 var _is_game_over := false
 var _is_paused := false
 var world_speed := BASE_WORLD_SPEED
+var _power_up_slots: Array[String] = ["", "", ""]
 
 var _player: RunnerPlayer
 # var _hud: RunnerHud
 var _cenario: RunnerScenario
 var _blocos: RunnerBlocos
-var _loup: RunnerLoup
+var _power_ups: RunnerPowerUps
 var _snd_game: AudioStreamPlayer
 var _snd_lose: AudioStreamPlayer
 var _snd_punch: AudioStreamPlayer
@@ -48,7 +52,7 @@ func _ready() -> void:
 	_build_cenario()
 	_build_player()
 	_build_blocos()
-	_build_loupes()
+	_build_power_ups()
 	# _build_hud()
 	_setup_camera()
 	_build_audio()
@@ -62,6 +66,8 @@ func _ready() -> void:
 	hud.start_screen_event.connect(_on_hud_start_screen_event)
 	hud.quit_event.connect(_on_hud_quit_event)
 	_blocos.answer_selected.connect(_on_blocos_answer_selected)
+	_power_ups.power_up_collected.connect(_on_power_up_collected)
+	power_up_slots_event.connect(hud.on_power_up_slots_change)
 	_restart()
 
 
@@ -80,7 +86,7 @@ func _process(delta: float) -> void:
 	_player.tick(delta)
 	_cenario.tick(delta)
 	_blocos.tick(delta, _player.get_runner_position())
-	_loup.tick(delta, _player.get_runner_position())
+	_power_ups.tick(delta, _player.get_runner_position())
 	_update_world_speed(delta)
 
 
@@ -115,6 +121,18 @@ func _unhandled_input(event: InputEvent) -> void:
 			if not _is_game_over and not _is_paused:
 				_player.jump()
 				get_tree().root.set_input_as_handled()
+		KEY_1:
+			if not _is_game_over and not _is_paused:
+				_use_power_up_slot(0)
+				get_tree().root.set_input_as_handled()
+		KEY_2:
+			if not _is_game_over and not _is_paused:
+				_use_power_up_slot(1)
+				get_tree().root.set_input_as_handled()
+		KEY_3:
+			if not _is_game_over and not _is_paused:
+				_use_power_up_slot(2)
+				get_tree().root.set_input_as_handled()
 		KEY_R:
 			if _is_game_over:
 				_restart()
@@ -146,13 +164,13 @@ func _build_blocos() -> void:
 	_blocos.setup(_lane_positions)
 
 
-func _build_loupes() -> void:
-	_loup = preload("res://scripts/loup.gd").new()
-	_loup.world_speed = BASE_WORLD_SPEED
-	_loup.floor_back_z = FLOOR_BACK_Z
-	_loup.floor_front_z = FLOOR_FRONT_Z
-	add_child(_loup)
-	_loup.setup(_lane_positions)
+func _build_power_ups() -> void:
+	_power_ups = RunnerPowerUps.new()
+	_power_ups.world_speed = BASE_WORLD_SPEED
+	_power_ups.floor_back_z = FLOOR_BACK_Z
+	_power_ups.floor_front_z = FLOOR_FRONT_Z
+	add_child(_power_ups)
+	_power_ups.setup(_lane_positions)
 
 
 # func _build_hud() -> void:
@@ -195,7 +213,10 @@ func _restart() -> void:
 		_resume()
 	_player.reset(1)
 	_blocos.reset()
-	_loup.reset()
+	_power_ups.reset()
+	for i in range(POWER_UP_SLOT_COUNT):
+		_power_up_slots[i] = ""
+	power_up_slots_event.emit(_power_up_slots.duplicate())
 	# _hud.hide_game_over()
 	# _hud.update_score(0)
 	if _snd_lose:
@@ -276,3 +297,26 @@ func _on_blocos_answer_selected(is_correct: bool, _selected_answer: int) -> void
 func _set_active_equation(equation: Dictionary) -> void:
 	hud.show_equation(equation)
 	_blocos.set_equation(equation)
+
+
+func _on_power_up_collected(type: String) -> void:
+	var empty_idx := _power_up_slots.find("")
+	if empty_idx >= 0:
+		_power_up_slots[empty_idx] = type
+	else:
+		# Queue is full: oldest slot exits, everyone shifts left, new one enters at the end.
+		for i in range(POWER_UP_SLOT_COUNT - 1):
+			_power_up_slots[i] = _power_up_slots[i + 1]
+		_power_up_slots[POWER_UP_SLOT_COUNT - 1] = type
+	power_up_slots_event.emit(_power_up_slots.duplicate())
+
+
+func _use_power_up_slot(slot: int) -> void:
+	if slot < 0 or slot >= POWER_UP_SLOT_COUNT:
+		return
+	var type := _power_up_slots[slot]
+	if type == "":
+		return
+	_power_up_slots[slot] = ""
+	power_up_used.emit(type, slot)
+	power_up_slots_event.emit(_power_up_slots.duplicate())
