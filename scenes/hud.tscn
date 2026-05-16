@@ -2,9 +2,69 @@
 
 [ext_resource type="Script" uid="uid://cfl2kba1vabjm" path="res://scripts/hud.gd" id="1_6fi6k"]
 [ext_resource type="Texture2D" uid="uid://b8kt244qmm62l" path="res://assets/hud/pause-button-hud.png" id="1_ahhtf"]
-[ext_resource type="Texture2D" uid="uid://db3ik2gtxxwca" path="res://assets/hud/badge.png" id="3_6fi6k"]
 [ext_resource type="FontFile" uid="uid://cnt7bgrpab5pp" path="res://assets/fonts/fredoka/Fredoka-SemiBold.ttf" id="4_fredoka"]
+[ext_resource type="Texture2D" path="res://assets/hud/star.svg" id="6_star"]
+[ext_resource type="Texture2D" path="res://assets/hud/heart_full.svg" id="7_heart_full"]
+[ext_resource type="Texture2D" path="res://assets/hud/heart_empty.svg" id="8_heart_empty"]
+[ext_resource type="Texture2D" path="res://assets/hud/clock.svg" id="9_clock"]
 [ext_resource type="PackedScene" path="res://scenes/end_game_screen.tscn" id="5_endgame"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_score_panel"]
+bg_color = Color(1, 0.94, 0.72, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(1, 0.72, 0.22, 1)
+corner_radius_top_left = 22
+corner_radius_top_right = 22
+corner_radius_bottom_right = 22
+corner_radius_bottom_left = 22
+shadow_color = Color(0, 0, 0, 0.35)
+shadow_size = 10
+shadow_offset = Vector2(0, 4)
+content_margin_left = 18
+content_margin_top = 8
+content_margin_right = 18
+content_margin_bottom = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lives_panel"]
+bg_color = Color(0.99, 0.92, 0.92, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.92, 0.32, 0.45, 1)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+shadow_color = Color(0, 0, 0, 0.3)
+shadow_size = 8
+shadow_offset = Vector2(0, 3)
+content_margin_left = 14
+content_margin_top = 6
+content_margin_right = 14
+content_margin_bottom = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_time_panel"]
+bg_color = Color(0.9, 0.95, 1, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.18, 0.55, 0.85, 1)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+shadow_color = Color(0, 0, 0, 0.3)
+shadow_size = 8
+shadow_offset = Vector2(0, 3)
+content_margin_left = 14
+content_margin_top = 6
+content_margin_right = 14
+content_margin_bottom = 6
 
 [node name="HUD" type="Node2D" unique_id=1585767812]
 script = ExtResource("1_6fi6k")
@@ -93,117 +153,115 @@ layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -277.0
+offset_left = -310.0
 offset_top = 25.0
-offset_right = -33.0
-offset_bottom = 161.0
+offset_right = -25.0
+offset_bottom = 280.0
 grow_horizontal = 0
 
 [node name="Wrapper" type="VBoxContainer" parent="CanvasLayer/RootControl/TopRightContainer" unique_id=1560139957]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 136.0
+offset_bottom = 260.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_constants/separation = -24
+theme_override_constants/separation = 10
 
-[node name="ScoreContainer" type="Control" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper" unique_id=1070437582]
-custom_minimum_size = Vector2(240, 80)
+[node name="ScoreContainer" type="PanelContainer" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper" unique_id=1070437582]
+custom_minimum_size = Vector2(285, 92)
 layout_mode = 2
 size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_score_panel")
 
-[node name="Background" type="TextureRect" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper/ScoreContainer" unique_id=1610831951]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("3_6fi6k")
+[node name="Row" type="HBoxContainer" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper/ScoreContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="StarIcon" type="TextureRect" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper/ScoreContainer/Row"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("6_star")
 expand_mode = 1
+stretch_mode = 5
 
-[node name="ScoreLabel" type="Label" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper/ScoreContainer" unique_id=2111862356]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 64.0
-offset_top = 2.0
-offset_right = -10.0
-offset_bottom = -2.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.1, 0.1, 0.1, 1)
+[node name="ScoreLabel" type="Label" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper/ScoreContainer/Row" unique_id=2111862356]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_colors/font_color = Color(0.12, 0.28, 0.55, 1)
+theme_override_colors/font_outline_color = Color(1, 0.86, 0.4, 1)
+theme_override_constants/outline_size = 6
 theme_override_fonts/font = ExtResource("4_fredoka")
-theme_override_font_sizes/font_size = 28
-text = "000"
+theme_override_font_sizes/font_size = 52
+text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="LivesContainer" type="Control" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper"]
-custom_minimum_size = Vector2(240, 80)
+[node name="LivesContainer" type="PanelContainer" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper"]
+custom_minimum_size = Vector2(285, 72)
 layout_mode = 2
 size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_lives_panel")
 
-[node name="Background" type="TextureRect" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper/LivesContainer"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("3_6fi6k")
+[node name="HeartsRow" type="HBoxContainer" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper/LivesContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="Heart1" type="TextureRect" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper/LivesContainer/HeartsRow"]
+custom_minimum_size = Vector2(52, 52)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("7_heart_full")
 expand_mode = 1
+stretch_mode = 5
 
-[node name="LivesLabel" type="Label" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper/LivesContainer"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 64.0
-offset_top = 2.0
-offset_right = -10.0
-offset_bottom = -2.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.1, 0.1, 0.1, 1)
-theme_override_fonts/font = ExtResource("4_fredoka")
-theme_override_font_sizes/font_size = 28
-text = "3"
-horizontal_alignment = 1
-vertical_alignment = 1
+[node name="Heart2" type="TextureRect" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper/LivesContainer/HeartsRow"]
+custom_minimum_size = Vector2(52, 52)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("7_heart_full")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="CronometerContainer" type="Control" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper" unique_id=1445436165]
-custom_minimum_size = Vector2(240, 80)
+[node name="Heart3" type="TextureRect" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper/LivesContainer/HeartsRow"]
+custom_minimum_size = Vector2(52, 52)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("7_heart_full")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CronometerContainer" type="PanelContainer" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper" unique_id=1445436165]
+custom_minimum_size = Vector2(285, 68)
 layout_mode = 2
 size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_time_panel")
 
-[node name="Background" type="TextureRect" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper/CronometerContainer" unique_id=740325955]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("3_6fi6k")
+[node name="Row" type="HBoxContainer" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper/CronometerContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="ClockIcon" type="TextureRect" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper/CronometerContainer/Row"]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("9_clock")
 expand_mode = 1
+stretch_mode = 5
 
-[node name="CronometerLabel" type="Label" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper/CronometerContainer" unique_id=1471621642]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 64.0
-offset_top = 2.0
-offset_right = -10.0
-offset_bottom = -2.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.1, 0.1, 0.1, 1)
+[node name="CronometerLabel" type="Label" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper/CronometerContainer/Row" unique_id=1471621642]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_colors/font_color = Color(0.08, 0.22, 0.45, 1)
 theme_override_fonts/font = ExtResource("4_fredoka")
-theme_override_font_sizes/font_size = 28
-text = "00:42"
+theme_override_font_sizes/font_size = 32
+text = "00:00"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -370,4 +428,5 @@ vertical_alignment = 1
 
 [connection signal="pressed" from="CanvasLayer/RootControl/TopLeftContainer/PauseButton" to="." method="_on_pause_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/RootControl/EndGameOverlay/Panel/Content/ButtonsRow/RestartButton" to="." method="_on_restart_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/RootControl/EndGameOverlay/Panel/Content/ButtonsRow/StartScreenButton" to="." method="_on_start_screen_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/RootControl/EndGameOverlay/Panel/Content/ButtonsRow/QuitButton" to="." method="_on_quit_button_pressed"]

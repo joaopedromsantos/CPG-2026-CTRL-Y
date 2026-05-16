@@ -46,6 +46,9 @@ var _equation_sequence = EQUATION_SEQUENCE_SCRIPT.new()
 
 func _ready() -> void:
 	_equation_sequence.load_from_file()
+	var game_settings := get_node_or_null("/root/GameSettings")
+	if game_settings:
+		_equation_sequence.set_difficulty(String(game_settings.get("selected_difficulty")))
 	_build_cenario()
 	_build_player()
 	_build_blocos()
@@ -60,6 +63,7 @@ func _ready() -> void:
 	lives_event.connect(hud.on_lives_change)
 	hud.pause_event.connect(_on_hud_pause_event)
 	hud.restart_event.connect(_restart)
+	hud.start_screen_event.connect(_on_hud_start_screen_event)
 	hud.quit_event.connect(_on_hud_quit_event)
 	_blocos.answer_selected.connect(_on_blocos_answer_selected)
 	_power_ups.power_up_collected.connect(_on_power_up_collected)
@@ -230,7 +234,9 @@ func _end_game() -> void:
 	if _is_paused:
 		_resume()
 	_is_game_over = true
-	PlayerRecord.update_high_score(int(_score))
+	var player_record := get_node_or_null("/root/PlayerRecord")
+	if player_record:
+		player_record.call("update_high_score", int(_score))
 	_snd_game.stop()
 	_snd_punch.stop()
 	_snd_correct.stop()
@@ -252,6 +258,10 @@ func _on_hud_pause_event() -> void:
 
 func _on_hud_quit_event() -> void:
 	get_tree().quit()
+
+
+func _on_hud_start_screen_event() -> void:
+	get_tree().change_scene_to_file("res://scenes/start_screen.tscn")
 
 
 func _pause() -> void:
