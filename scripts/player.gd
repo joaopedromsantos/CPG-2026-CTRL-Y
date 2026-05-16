@@ -5,7 +5,6 @@ extends CharacterBody3D
 @export var player_y := 0.0
 @export var player_z := 8.5
 
-		
 var _anim: AnimationPlayer
 var _snd_jump: AudioStreamPlayer
 

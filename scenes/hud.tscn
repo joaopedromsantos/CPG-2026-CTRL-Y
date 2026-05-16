@@ -85,6 +85,25 @@ content_margin_top = 6
 content_margin_right = 10
 content_margin_bottom = 6
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_reserve_slot_panel"]
+bg_color = Color(1, 0.96, 0.86, 0.92)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.65, 0.05, 0.65)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color(0, 0, 0, 0.2)
+shadow_size = 3
+shadow_offset = Vector2(0, 2)
+content_margin_left = 4
+content_margin_top = 3
+content_margin_right = 4
+content_margin_bottom = 3
+
 [node name="HUD" type="Node2D" unique_id=1585767812]
 script = ExtResource("1_6fi6k")
 
@@ -403,6 +422,54 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="ContentLabel" type="Label" parent="CanvasLayer/RootControl/BottomCenterContainer/SlotsRow/Slot3"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.1, 0.1, 0.1, 1)
+theme_override_fonts/font = ExtResource("4_fredoka")
+theme_override_font_sizes/font_size = 26
+text = ""
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Slot4" type="Panel" parent="CanvasLayer/RootControl/BottomCenterContainer/SlotsRow/Slot3"]
+z_index = 20
+custom_minimum_size = Vector2(58, 42)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -54.0
+offset_top = -38.0
+offset_right = 16.0
+offset_bottom = 14.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_reserve_slot_panel")
+
+[node name="KeyLabel" type="Label" parent="CanvasLayer/RootControl/BottomCenterContainer/SlotsRow/Slot3/Slot4"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -20.0
+offset_top = 1.0
+offset_right = -3.0
+offset_bottom = 17.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(0.45, 0.45, 0.45, 1)
+theme_override_fonts/font = ExtResource("4_fredoka")
+theme_override_font_sizes/font_size = 12
+text = "4"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ContentLabel" type="Label" parent="CanvasLayer/RootControl/BottomCenterContainer/SlotsRow/Slot3/Slot4"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

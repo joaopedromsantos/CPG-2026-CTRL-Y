@@ -15,8 +15,11 @@ const BASE_WORLD_SPEED := 8.0
 const WORLD_SPEED_PER_SCORE := 0.2
 const EQUATION_QUEUE_SIZE := 3
 const MAX_LIVES := 3
-const POWER_UP_SLOT_COUNT := 3
+const POWER_UP_SLOT_COUNT := 4
+const ACTIVATABLE_POWER_UP_SLOT_COUNT := 3
+const RESERVE_POWER_UP_SLOT := 3
 const EQUATION_SEQUENCE_SCRIPT = preload("res://scripts/equation_sequence.gd")
+const POWER_UP_CONFIG = preload("res://assets/power-ups/power_up_config.tres")
 
 var _lane_positions: Array[float] = [
 	-LANE_WIDTH,
@@ -29,13 +32,14 @@ var _lives := MAX_LIVES
 var _is_game_over := false
 var _is_paused := false
 var world_speed := BASE_WORLD_SPEED
-var _power_up_slots: Array[String] = ["", "", ""]
+var _power_up_slots: Array[String] = ["", "", "", ""]
 
 var _player: RunnerPlayer
 # var _hud: RunnerHud
 var _cenario: RunnerScenario
 var _blocos: RunnerBlocos
 var _power_ups: RunnerPowerUps
+var _power_up_effects: RunnerPowerUpEffectController
 var _snd_game: AudioStreamPlayer
 var _snd_lose: AudioStreamPlayer
 var _snd_punch: AudioStreamPlayer
@@ -53,6 +57,7 @@ func _ready() -> void:
 	_build_player()
 	_build_blocos()
 	_build_power_ups()
+	_build_power_up_effect_controller()
 	# _build_hud()
 	_setup_camera()
 	_build_audio()
@@ -84,6 +89,7 @@ func _process(delta: float) -> void:
 		return
 
 	_player.tick(delta)
+	_power_up_effects.tick(delta)
 	_cenario.tick(delta)
 	_blocos.tick(delta, _player.get_runner_position())
 	_power_ups.tick(delta, _player.get_runner_position())
@@ -91,13 +97,17 @@ func _process(delta: float) -> void:
 
 
 func _update_world_speed(_delta: float) -> void:
-	var target_speed := BASE_WORLD_SPEED + _score * WORLD_SPEED_PER_SCORE
+	var speed_multiplier := 1.0
+	if _power_up_effects:
+		speed_multiplier = _power_up_effects.get_world_speed_multiplier()
+	var target_speed := (BASE_WORLD_SPEED + _score * WORLD_SPEED_PER_SCORE) * speed_multiplier
 	if is_equal_approx(world_speed, target_speed):
 		return
 
 	world_speed = target_speed
 	_cenario.world_speed = world_speed
 	_blocos.world_speed = world_speed
+	_power_ups.world_speed = world_speed
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -173,6 +183,15 @@ func _build_power_ups() -> void:
 	_power_ups.setup(_lane_positions)
 
 
+func _build_power_up_effect_controller() -> void:
+	_power_up_effects = RunnerPowerUpEffectController.new()
+	add_child(_power_up_effects)
+	_power_up_effects.setup(_player, _blocos, POWER_UP_CONFIG, MAX_LIVES, _lives)
+	_power_up_effects.lives_changed.connect(_on_power_up_lives_changed)
+	_power_up_effects.power_up_slot_changed.connect(_on_power_up_slot_changed)
+	_power_up_effects.power_up_slot_changed.connect(hud.on_power_up_slot_active_changed)
+
+
 # func _build_hud() -> void:
 # 	_hud = RunnerHud.new()
 # 	add_child(_hud)
@@ -207,6 +226,7 @@ func _restart() -> void:
 	world_speed = BASE_WORLD_SPEED
 	_cenario.world_speed = world_speed
 	_blocos.world_speed = world_speed
+	_power_ups.world_speed = world_speed
 	_lives = MAX_LIVES
 	_is_game_over = false
 	if _is_paused:
@@ -214,6 +234,7 @@ func _restart() -> void:
 	_player.reset(1)
 	_blocos.reset()
 	_power_ups.reset()
+	_power_up_effects.reset(_lives)
 	for i in range(POWER_UP_SLOT_COUNT):
 		_power_up_slots[i] = ""
 	power_up_slots_event.emit(_power_up_slots.duplicate())
@@ -280,11 +301,15 @@ func _resume() -> void:
 
 func _on_blocos_answer_selected(is_correct: bool, _selected_answer: int) -> void:
 	if is_correct:
-		_score += 1
+		_score += _power_up_effects.get_score_multiplier()
 		score_event.emit(int(_score))
 		_snd_correct.play()
 	else:
 		_lives = maxi(_lives - 1, 0)
+		_power_up_effects.set_current_lives(_lives)
+		if _lives <= 0 and _power_up_effects.consume_revive_if_available(_lives):
+			_lives = 1
+			_power_up_effects.set_current_lives(_lives)
 		lives_event.emit(_lives)
 		if _lives <= 0:
 			_end_game()
@@ -304,19 +329,33 @@ func _on_power_up_collected(type: String) -> void:
 	if empty_idx >= 0:
 		_power_up_slots[empty_idx] = type
 	else:
-		# Queue is full: oldest slot exits, everyone shifts left, new one enters at the end.
-		for i in range(POWER_UP_SLOT_COUNT - 1):
-			_power_up_slots[i] = _power_up_slots[i + 1]
-		_power_up_slots[POWER_UP_SLOT_COUNT - 1] = type
+		_power_up_slots[RESERVE_POWER_UP_SLOT] = type
 	power_up_slots_event.emit(_power_up_slots.duplicate())
 
 
+func _on_power_up_lives_changed(lives: int) -> void:
+	_lives = clampi(lives, 0, MAX_LIVES)
+	lives_event.emit(_lives)
+
+
 func _use_power_up_slot(slot: int) -> void:
-	if slot < 0 or slot >= POWER_UP_SLOT_COUNT:
+	if slot < 0 or slot >= ACTIVATABLE_POWER_UP_SLOT_COUNT:
+		return
+	if _power_up_effects.is_slot_active(slot):
 		return
 	var type := _power_up_slots[slot]
 	if type == "":
 		return
-	_power_up_slots[slot] = ""
+	if not _power_up_effects.activate(type, slot, _lives):
+		return
 	power_up_used.emit(type, slot)
+
+
+func _on_power_up_slot_changed(slot: int, _type: String, _remaining: float, _duration: float, active: bool) -> void:
+	if active:
+		return
+	if slot < 0 or slot >= ACTIVATABLE_POWER_UP_SLOT_COUNT:
+		return
+	_power_up_slots[slot] = _power_up_slots[RESERVE_POWER_UP_SLOT]
+	_power_up_slots[RESERVE_POWER_UP_SLOT] = ""
 	power_up_slots_event.emit(_power_up_slots.duplicate())
