@@ -41,7 +41,7 @@ class StartArt:
 		_draw_robot(xf, yf, pf, scale)
 		_draw_number_tile(pf.call(350, 326), \"7\", scale)
 		_draw_number_tile(pf.call(678, 326), \"5\", scale)
-		_draw_trophy(pf.call(966, 92), scale)
+		_draw_trophy(pf.call(966, 82), scale)
 		draw_rect(Rect2(Vector2.ZERO, s), Color(1.0, 1.0, 1.0, 0.10))
 
 	func _draw_city(xf: Callable, yf: Callable, pf: Callable, scale: float) -> void:
@@ -166,10 +166,10 @@ func _build_screen() -> void:
 	add_child(_title)
 
 	_highscore_title = $HighscoreTitle
-	_apply_label_style(_highscore_title, \"HIGHSCORE\", 34, Color.WHITE, 3, Color(0.07, 0.08, 0.09, 0.85))
+	_apply_label_style(_highscore_title, \"HIGHSCORE\", 30, Color.WHITE, 3, Color(0.07, 0.08, 0.09, 0.85))
 
 	_highscore_value = $HighscoreValue
-	_apply_label_style(_highscore_value, \"HS: 1450\", 35, Color.WHITE, 3, Color(0.09, 0.10, 0.10, 0.90))
+	_apply_label_style(_highscore_value, \"HS: 1450\", 31, Color.WHITE, 3, Color(0.09, 0.10, 0.10, 0.90))
 
 	_start_button = $StartButton
 	_start_button.text = \"COMEÇAR\"
@@ -234,17 +234,17 @@ func _layout() -> void:
 
 	_title.set_position(rect.call(175, 38, 675, 70).position)
 	_title.set_size(rect.call(175, 38, 675, 70).size)
-	_highscore_title.set_position(rect.call(839, 18, 168, 45).position)
-	_highscore_title.set_size(rect.call(839, 18, 168, 45).size)
-	_highscore_value.set_position(rect.call(839, 70, 150, 45).position)
-	_highscore_value.set_size(rect.call(839, 70, 150, 45).size)
+	_highscore_title.set_position(rect.call(837, 23, 166, 36).position)
+	_highscore_title.set_size(rect.call(837, 23, 166, 36).size)
+	_highscore_value.set_position(rect.call(848, 72, 118, 39).position)
+	_highscore_value.set_size(rect.call(848, 72, 118, 39).size)
 	_start_button.set_position(rect.call(407, 430, 219, 88).position)
 	_start_button.set_size(rect.call(407, 430, 219, 88).size)
 
 	_start_button.add_theme_font_size_override(\"font_size\", maxi(18, int(45 * scale)))
 	_title.label_settings.font_size = maxi(24, int(66 * scale))
-	_highscore_title.label_settings.font_size = maxi(16, int(34 * scale))
-	_highscore_value.label_settings.font_size = maxi(16, int(35 * scale))
+	_highscore_title.label_settings.font_size = maxi(16, int(30 * scale))
+	_highscore_value.label_settings.font_size = maxi(16, int(31 * scale))
 	_art.queue_redraw()
 
 
@@ -264,19 +264,19 @@ script = SubResource("GDScript_start_screen")
 [node name="HighscoreTitle" type="Label" parent="." unique_id=809046786]
 layout_mode = 0
 offset_left = 839.0
-offset_top = 18.0
-offset_right = 1007.0
-offset_bottom = 63.0
+offset_top = 23.0
+offset_right = 1003.0
+offset_bottom = 59.0
 text = "HIGHSCORE"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="HighscoreValue" type="Label" parent="." unique_id=644945730]
 layout_mode = 0
-offset_left = 839.0
-offset_top = 70.0
-offset_right = 989.0
-offset_bottom = 115.0
+offset_left = 848.0
+offset_top = 72.0
+offset_right = 966.0
+offset_bottom = 111.0
 text = "HS: 1450"
 horizontal_alignment = 1
 vertical_alignment = 1
