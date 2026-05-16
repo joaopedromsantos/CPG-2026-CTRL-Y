@@ -22,7 +22,7 @@ func setup(lane_positions: Array[float]) -> void:
 	_lane_positions = lane_positions
 	_rng.randomize()
 	_build_materials()
-	_block_mesh = _make_rounded_box_mesh(Vector3(2.3, 2.4, 1.0), 0.25, 4)
+	_block_mesh = _make_rounded_box_mesh(Vector3(2.3, 2.4, 1.0), 0.6, 4)
 	reset()
 
 
