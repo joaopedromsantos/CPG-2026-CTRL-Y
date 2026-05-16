@@ -12,7 +12,7 @@ const FLOOR_FRONT_Z := 11.6
 const BASE_WORLD_SPEED := 8.0
 const WORLD_SPEED_PER_SCORE := 0.2
 const EQUATION_QUEUE_SIZE := 3
-const MAX_LIVES := 3
+const MAX_LIVES := 90
 const EQUATION_SEQUENCE_SCRIPT = preload("res://scripts/equation_sequence.gd")
 
 var _lane_positions: Array[float] = [
@@ -31,7 +31,7 @@ var _player: RunnerPlayer
 # var _hud: RunnerHud
 var _cenario: RunnerScenario
 var _blocos: RunnerBlocos
-var _loup: RunnerLoup
+var _power_ups: RunnerPowerUps
 var _snd_game: AudioStreamPlayer
 var _snd_lose: AudioStreamPlayer
 var _snd_punch: AudioStreamPlayer
@@ -45,7 +45,7 @@ func _ready() -> void:
 	_build_cenario()
 	_build_player()
 	_build_blocos()
-	_build_loupes()
+	_build_power_ups()
 	# _build_hud()
 	_setup_camera()
 	_build_audio()
@@ -76,7 +76,7 @@ func _process(delta: float) -> void:
 	_player.tick(delta)
 	_cenario.tick(delta)
 	_blocos.tick(delta, _player.get_runner_position())
-	_loup.tick(delta, _player.get_runner_position())
+	_power_ups.tick(delta, _player.get_runner_position())
 	_update_world_speed(delta)
 
 
@@ -142,13 +142,13 @@ func _build_blocos() -> void:
 	_blocos.setup(_lane_positions)
 
 
-func _build_loupes() -> void:
-	_loup = preload("res://scripts/loup.gd").new()
-	_loup.world_speed = BASE_WORLD_SPEED
-	_loup.floor_back_z = FLOOR_BACK_Z
-	_loup.floor_front_z = FLOOR_FRONT_Z
-	add_child(_loup)
-	_loup.setup(_lane_positions)
+func _build_power_ups() -> void:
+	_power_ups = RunnerPowerUps.new()
+	_power_ups.world_speed = BASE_WORLD_SPEED
+	_power_ups.floor_back_z = FLOOR_BACK_Z
+	_power_ups.floor_front_z = FLOOR_FRONT_Z
+	add_child(_power_ups)
+	_power_ups.setup(_lane_positions)
 
 
 # func _build_hud() -> void:
@@ -191,7 +191,7 @@ func _restart() -> void:
 		_resume()
 	_player.reset(1)
 	_blocos.reset()
-	_loup.reset()
+	_power_ups.reset()
 	# _hud.hide_game_over()
 	# _hud.update_score(0)
 	if _snd_lose:
