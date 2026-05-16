@@ -9,6 +9,8 @@ const LANE_WIDTH := 2.8
 const WORLD_SPEED := 8.0
 const FLOOR_BACK_Z := -18.0
 const FLOOR_FRONT_Z := 11.6
+const EQUATION_QUEUE_SIZE := 3
+const EQUATION_SEQUENCE_SCRIPT = preload("res://scripts/equation_sequence.gd")
 
 var _lane_positions: Array[float] = [
 	-LANE_WIDTH,
@@ -26,9 +28,11 @@ var _cenario: RunnerScenario
 var _blocos: RunnerBlocos
 var _snd_game: AudioStreamPlayer
 var _snd_lose: AudioStreamPlayer
+var _equation_sequence = EQUATION_SEQUENCE_SCRIPT.new()
 
 
 func _ready() -> void:
+	_equation_sequence.load_from_file()
 	_build_cenario()
 	_build_player()
 	_build_blocos()
@@ -146,7 +150,7 @@ func _restart() -> void:
 		_snd_game.play()
 	
 	restart_game.emit()
-	_sync_block_options_from_hud()
+	_set_active_equation(_equation_sequence.start(EQUATION_QUEUE_SIZE))
 
 
 func _end_game() -> void:
@@ -185,9 +189,9 @@ func _update_score(delta: float) -> void:
 
 
 func _on_blocos_answer_selected(_is_correct: bool, _selected_answer: int) -> void:
-	hud.show_next_equation()
-	_sync_block_options_from_hud()
+	_set_active_equation(_equation_sequence.advance())
 
 
-func _sync_block_options_from_hud() -> void:
-	_blocos.set_equation_options(hud.get_current_options(), hud.get_current_answer())
+func _set_active_equation(equation: Dictionary) -> void:
+	hud.show_equation(equation)
+	_blocos.set_equation(equation)

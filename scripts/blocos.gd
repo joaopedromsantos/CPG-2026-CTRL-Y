@@ -43,6 +43,11 @@ func set_equation_options(options: Array, answer: int) -> void:
 	_current_answer = answer
 
 
+func set_equation(equation: Dictionary) -> void:
+	_current_options = equation.get("queued_options", equation.get("options", [])).duplicate()
+	_current_answer = int(equation.get("answer", 0))
+
+
 func tick(delta: float, player_position: Vector3) -> void:
 	_distance_since_spawn += world_speed * delta
 	if _distance_since_spawn >= float(steps_per_spawn) * step_distance:
@@ -92,8 +97,6 @@ func _has_unresolved_row() -> bool:
 
 func _options_for_row() -> Array:
 	var options := _current_options.duplicate()
-	options.shuffle()
-
 	return options.slice(0, _lane_positions.size())
 
 

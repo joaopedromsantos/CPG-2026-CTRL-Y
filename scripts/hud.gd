@@ -10,17 +10,13 @@ signal pause_event
 
 const PLAY_BUTTON_IMAGE = preload("res://assets/hud/play-button.png")
 const PAUSE_BUTTON_IMAGE = preload("res://assets/hud/pause-button-hud.png")
-const EQUATION_SEQUENCE_SCRIPT = preload("res://scripts/equation_sequence.gd")
 
 var timer := GameTimer.new()
-var _equation_sequence = EQUATION_SEQUENCE_SCRIPT.new()
 var _current_equation: Dictionary = {}
 
 
 func _ready() -> void:
 	timer.start_timer()
-	if _equation_sequence.load_from_file():
-		show_next_equation()
 
 
 func _process(delta: float) -> void:
@@ -51,16 +47,15 @@ func on_score_change(score: int) -> void:
 func on_restart_game() -> void:
 	timer.reset_timer()
 	timer.start_timer()
-	_equation_sequence.reset()
-	show_next_equation()
+	show_equation({})
 
 
 func _on_pause_button_pressed() -> void:
 	pause_event.emit()
 
 
-func show_next_equation() -> void:
-	_current_equation = _equation_sequence.next_equation()
+func show_equation(equation: Dictionary) -> void:
+	_current_equation = equation
 	if _current_equation.is_empty():
 		equation_label.text = ""
 		return
@@ -73,7 +68,7 @@ func get_current_equation() -> Dictionary:
 
 
 func get_current_options() -> Array:
-	return _current_equation.get("options", [])
+	return _current_equation.get("queued_options", _current_equation.get("options", []))
 
 
 func get_current_answer() -> int:
