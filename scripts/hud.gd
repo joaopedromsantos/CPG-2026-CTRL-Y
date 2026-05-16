@@ -48,3 +48,4 @@ func on_restart_game() -> void:
 
 func _on_pause_button_pressed() -> void:
 	pause_event.emit()
+	pause_button.release_focus()
