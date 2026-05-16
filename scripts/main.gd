@@ -77,7 +77,6 @@ func _process(delta: float) -> void:
 	_cenario.tick(delta)
 	_blocos.tick(delta, _player.get_runner_position())
 	_loup.tick(delta, _player.get_runner_position())
-	_update_score(delta)
 	_update_world_speed(delta)
 
 
@@ -263,11 +262,6 @@ func _on_blocos_answer_selected(is_correct: bool, _selected_answer: int) -> void
 
 	hud.show_feedback(is_correct)
 	_set_active_equation(_equation_sequence.advance())
-
-func _update_score(delta: float) -> void:
-	_score += delta * (world_speed * 0.05)
-	score_event.emit(int(_score))
-
 
 func _set_active_equation(equation: Dictionary) -> void:
 	hud.show_equation(equation)
