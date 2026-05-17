@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" path="res://assets/hud/heart_empty.svg" id="8_heart_empty"]
 [ext_resource type="Texture2D" path="res://assets/hud/clock.svg" id="9_clock"]
 [ext_resource type="PackedScene" path="res://scenes/end_game_screen.tscn" id="5_endgame"]
+[ext_resource type="PackedScene" path="res://scenes/pause_screen.tscn" id="10_pause"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_score_panel"]
 bg_color = Color(1, 0.94, 0.72, 1)
@@ -484,6 +485,9 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="EndGameOverlay" parent="CanvasLayer/RootControl" instance=ExtResource("5_endgame")]
+
+[node name="PauseScreen" parent="CanvasLayer/RootControl" instance=ExtResource("10_pause")]
+z_index = 100
 
 [connection signal="pressed" from="CanvasLayer/RootControl/TopLeftContainer/PauseButton" to="." method="_on_pause_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/RootControl/EndGameOverlay/Panel/Content/ButtonsRow/RestartButton" to="." method="_on_restart_button_pressed"]

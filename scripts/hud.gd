@@ -6,6 +6,7 @@ extends Node2D
 @onready var score_label: Label = $CanvasLayer/RootControl/TopRightContainer/Wrapper/ScoreContainer/Row/ScoreLabel
 @onready var hearts_row: HBoxContainer = $CanvasLayer/RootControl/TopRightContainer/Wrapper/LivesContainer/HeartsRow
 @onready var pause_button: TextureButton = $CanvasLayer/RootControl/TopLeftContainer/PauseButton
+@onready var pause_screen: PauseScreen = $CanvasLayer/RootControl/PauseScreen
 @onready var endgame_overlay: Control = $CanvasLayer/RootControl/EndGameOverlay
 @onready var endgame_score_label: Label = $CanvasLayer/RootControl/EndGameOverlay/Panel/Content/StatsRow/ScoreStat/ScoreContent/ScoreValue
 @onready var endgame_time_label: Label = $CanvasLayer/RootControl/EndGameOverlay/Panel/Content/StatsRow/TimeStat/TimeContent/TimeValue
@@ -63,7 +64,9 @@ const RESERVE_SLOT_INDEX := 3
 var timer := GameTimer.new()
 var _current_equation: Dictionary = {}
 var _feedback_tween: Tween
+var _last_score := 0
 var _last_lives := -1
+var _last_power_up_slots: Array = []
 var _slot_icon_rects: Array[TextureRect] = []
 var _slot_panels: Array[Panel] = []
 var _slot_default_styles: Array[StyleBox] = []
@@ -73,6 +76,8 @@ var _slot_countdown_labels: Array[Label] = []
 
 func _ready() -> void:
 	_setup_power_up_slot_icons()
+	pause_screen.resume_requested.connect(_on_pause_screen_resume_requested)
+	pause_screen.start_screen_requested.connect(_on_pause_screen_start_screen_requested)
 	timer.start_timer()
 
 
@@ -80,9 +85,12 @@ func _process(delta: float) -> void:
 	timer.tick(delta)
 	
 	cronometer_label.text = timer.formatted_time()
+	if Input.is_action_just_pressed("pause"):
+		pause_event.emit()
 	
 func on_game_over(score: int) -> void:
 	timer.stop_timer()
+	pause_screen.hide_pause()
 	_hide_feedback()
 	endgame_score_label.text = "%d" % [score]
 	endgame_time_label.text = timer.formatted_time()
@@ -92,17 +100,18 @@ func on_game_over(score: int) -> void:
 
 func on_pause() -> void:
 	timer.stop_timer()
-	
 	pause_button.texture_normal = PLAY_BUTTON_IMAGE
+	pause_screen.show_pause(_last_score, timer.formatted_time(), maxi(_last_lives, 0), _last_power_up_slots)
 
 
 func on_resume() -> void:
 	timer.start_timer()
-	
 	pause_button.texture_normal = PAUSE_BUTTON_IMAGE
+	pause_screen.hide_pause()
 
 
 func on_score_change(score: int) -> void:
+	_last_score = score
 	score_label.text = "%d" % [score]
 	if score <= 0:
 		return
@@ -193,6 +202,7 @@ func _setup_power_up_slot_icons() -> void:
 
 
 func on_power_up_slots_change(slots: Array) -> void:
+	_last_power_up_slots = slots.duplicate()
 	for i in range(_slot_icon_rects.size()):
 		var type := ""
 		if i < slots.size():
@@ -237,11 +247,14 @@ func _make_active_slot_style(base_style: StyleBox) -> StyleBoxFlat:
 
 func on_restart_game() -> void:
 	endgame_overlay.visible = false
+	pause_screen.hide_pause()
 	pause_button.visible = true
 	pause_button.texture_normal = PAUSE_BUTTON_IMAGE
 	timer.reset_timer()
 	timer.start_timer()
+	_last_score = 0
 	_last_lives = -1
+	_last_power_up_slots = []
 	show_equation({})
 	_hide_feedback()
 
@@ -279,6 +292,14 @@ func _hide_feedback() -> void:
 func _on_pause_button_pressed() -> void:
 	pause_event.emit()
 	pause_button.release_focus()
+
+
+func _on_pause_screen_resume_requested() -> void:
+	pause_event.emit()
+
+
+func _on_pause_screen_start_screen_requested() -> void:
+	start_screen_event.emit()
 
 
 func _on_restart_button_pressed() -> void:
