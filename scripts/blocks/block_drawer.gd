@@ -10,11 +10,16 @@ const BLOCK_FLOAT_AMPLITUDE := 0.22
 const BLOCK_FLOAT_SPEED := 2.6
 const BLOCK_TILT_DEGREES := 20.0
 const BLOCK_TILT_SPEED := 2.4
+const BLOCK_DESTROYED_PULSE_SPEED := 4.0
+const BLOCK_DESTROYED_EMISSION_MIN := 0.25
+const BLOCK_DESTROYED_EMISSION_MAX := 0.95
+const BLOCK_DESTROYED_NUMBER_ALPHA := 0.35
 
 var _rng := RandomNumberGenerator.new()
 var _mat_block: StandardMaterial3D
 var _mat_block_correct: StandardMaterial3D
 var _mat_block_side: StandardMaterial3D
+var _mat_block_destroyed: StandardMaterial3D
 var _mat_number: StandardMaterial3D
 var _block_mesh: Mesh
 
@@ -49,6 +54,9 @@ func apply_block_highlight(block: Node3D, is_correct: bool, highlight_correct_an
 	if block == null:
 		return
 
+	if bool(block.get_meta("is_destroyed", false)):
+		return
+
 	var mesh_instance := block.get_node_or_null("Bloco") as MeshInstance3D
 	if mesh_instance == null:
 		return
@@ -57,6 +65,24 @@ func apply_block_highlight(block: Node3D, is_correct: bool, highlight_correct_an
 		mesh_instance.set_surface_override_material(0, _mat_block_correct)
 	else:
 		mesh_instance.set_surface_override_material(0, _mat_block)
+
+
+func apply_block_destroyed_visual(block: Node3D) -> void:
+	if block == null:
+		return
+
+	var mesh_instance := block.get_node_or_null("Bloco") as MeshInstance3D
+	if mesh_instance != null:
+		mesh_instance.set_surface_override_material(0, _mat_block_destroyed.duplicate())
+
+	var number := block.get_node_or_null("Numero") as Label3D
+	if number != null:
+		number.modulate = Color(1.0, 0.7, 0.7, BLOCK_DESTROYED_NUMBER_ALPHA)
+		number.outline_modulate = Color(0.18, 0.02, 0.02, 0.6)
+
+	block.set_meta("is_destroyed", true)
+	block.set_meta("pulse_phase", _rng.randf() * TAU)
+	_spawn_lightning_strike(block)
 
 
 func animate_block(block: Node3D, delta: float) -> void:
@@ -71,6 +97,81 @@ func animate_block(block: Node3D, delta: float) -> void:
 	block.set_meta("tilt_phase", tilt_phase)
 	block.position.y = base_y + sin(float_phase) * BLOCK_FLOAT_AMPLITUDE
 	block.rotation.y = deg_to_rad(sin(tilt_phase) * BLOCK_TILT_DEGREES)
+
+	if bool(block.get_meta("is_destroyed", false)):
+		_animate_destroyed_pulse(block, delta)
+
+
+func _spawn_lightning_strike(block: Node3D) -> void:
+	var strike_root := Node3D.new()
+	strike_root.name = "RaioStrike"
+	block.add_child(strike_root)
+
+	var bolt_mat := StandardMaterial3D.new()
+	bolt_mat.albedo_color = Color(1.0, 0.95, 0.35, 1.0)
+	bolt_mat.emission_enabled = true
+	bolt_mat.emission = Color(1.0, 0.9, 0.2)
+	bolt_mat.emission_energy_multiplier = 10.0
+	bolt_mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	bolt_mat.cull_mode = BaseMaterial3D.CULL_DISABLED
+
+	var main_mesh := _make_bolt_segment(0.06, 3.2, bolt_mat)
+	main_mesh.position = Vector3(0.0, 4.5, 0.0)
+	strike_root.add_child(main_mesh)
+
+	var fork_angle := _rng.randf_range(18.0, 36.0) * (1 if _rng.randi_range(0, 1) == 0 else -1)
+	var fork_mat := bolt_mat.duplicate() as StandardMaterial3D
+	fork_mat.albedo_color = Color(1.0, 0.85, 0.3, 0.75)
+	fork_mat.emission_energy_multiplier = 6.0
+	var fork_mesh := _make_bolt_segment(0.035, 1.8, fork_mat)
+	fork_mesh.position = Vector3(0.0, 3.2, 0.0)
+	fork_mesh.rotation_degrees.z = fork_angle
+	strike_root.add_child(fork_mesh)
+
+	var tween := block.create_tween()
+	tween.set_parallel(true)
+
+	tween.tween_property(main_mesh, "position:y", 0.0, 0.22)
+	tween.tween_property(fork_mesh, "position:y", 0.6, 0.22)
+	tween.tween_property(bolt_mat, "albedo_color", Color(1.0, 0.95, 0.35, 0.0), 0.25).set_delay(0.18)
+	tween.tween_property(bolt_mat, "emission_energy_multiplier", 0.0, 0.25).set_delay(0.18)
+	tween.tween_property(fork_mat, "albedo_color", Color(1.0, 0.85, 0.3, 0.0), 0.2).set_delay(0.2)
+	tween.tween_property(fork_mat, "emission_energy_multiplier", 0.0, 0.2).set_delay(0.2)
+	tween.chain().tween_callback(strike_root.queue_free)
+
+	var flash_mat := (block.get_node_or_null("Bloco") as MeshInstance3D)
+	if flash_mat:
+		var block_mat := flash_mat.get_surface_override_material(0) as StandardMaterial3D
+		if block_mat:
+			var flash := block.create_tween()
+			flash.tween_property(block_mat, "emission_energy_multiplier", BLOCK_DESTROYED_EMISSION_MAX * 4.0, 0.06).set_delay(0.18)
+			flash.tween_property(block_mat, "emission_energy_multiplier", BLOCK_DESTROYED_EMISSION_MIN, 0.2)
+
+
+func _make_bolt_segment(radius: float, height: float, mat: StandardMaterial3D) -> MeshInstance3D:
+	var mi := MeshInstance3D.new()
+	var cyl := CylinderMesh.new()
+	cyl.top_radius = radius
+	cyl.bottom_radius = radius * 0.3
+	cyl.height = height
+	mi.mesh = cyl
+	mi.set_surface_override_material(0, mat)
+	return mi
+
+
+func _animate_destroyed_pulse(block: Node3D, delta: float) -> void:
+	var mesh_instance := block.get_node_or_null("Bloco") as MeshInstance3D
+	if mesh_instance == null:
+		return
+
+	var material := mesh_instance.get_surface_override_material(0) as StandardMaterial3D
+	if material == null:
+		return
+
+	var pulse_phase := float(block.get_meta("pulse_phase", 0.0)) + BLOCK_DESTROYED_PULSE_SPEED * delta
+	block.set_meta("pulse_phase", pulse_phase)
+	var t := 0.5 + 0.5 * sin(pulse_phase)
+	material.emission_energy_multiplier = lerp(BLOCK_DESTROYED_EMISSION_MIN, BLOCK_DESTROYED_EMISSION_MAX, t)
 
 
 func _build_materials() -> void:
@@ -91,6 +192,14 @@ func _build_materials() -> void:
 	_mat_block_side.albedo_color = Color(0.95, 0.48, 0.12)
 	_mat_block_side.roughness = 0.5
 	_mat_block_side.cull_mode = BaseMaterial3D.CULL_DISABLED
+
+	_mat_block_destroyed = StandardMaterial3D.new()
+	_mat_block_destroyed.albedo_color = Color(0.22, 0.18, 0.18)
+	_mat_block_destroyed.emission_enabled = true
+	_mat_block_destroyed.emission = Color(0.85, 0.12, 0.12)
+	_mat_block_destroyed.emission_energy_multiplier = BLOCK_DESTROYED_EMISSION_MIN
+	_mat_block_destroyed.roughness = 0.55
+	_mat_block_destroyed.cull_mode = BaseMaterial3D.CULL_DISABLED
 
 	_mat_number = StandardMaterial3D.new()
 	_mat_number.albedo_color = Color.WHITE
