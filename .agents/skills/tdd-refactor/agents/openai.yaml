@@ -1,0 +1,4 @@
+interface:
+  display_name: "TDD Refactor"
+  short_description: "Refatoração segura guiada por testes"
+  default_prompt: "Use $tdd-refactor to refactor this module safely with tests first."

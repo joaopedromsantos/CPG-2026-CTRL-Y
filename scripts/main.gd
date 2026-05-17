@@ -47,7 +47,7 @@ var _power_up_slots: Array[String] = ["", "", "", ""]
 var _player: RunnerPlayer
 # var _hud: RunnerHud
 var _cenario: RunnerScenario
-var _blocos: RunnerBlocos
+var _blocks: RunnerBlocks
 var _power_ups: RunnerPowerUps
 var _cones: RunnerCones
 var _power_up_effects: PowerUpEffectController
@@ -72,7 +72,7 @@ func _ready() -> void:
 		_equation_sequence.set_difficulty(String(game_settings.get("selected_difficulty")))
 	_build_cenario()
 	_build_player()
-	_build_blocos()
+	_build_blocks()
 	_build_power_ups()
 	_build_cones()
 	_build_power_up_effect_controller()
@@ -88,7 +88,7 @@ func _ready() -> void:
 	hud.restart_event.connect(_restart)
 	hud.start_screen_event.connect(_on_hud_start_screen_event)
 	hud.quit_event.connect(_on_hud_quit_event)
-	_blocos.answer_selected.connect(_on_blocos_answer_selected)
+	_blocks.answer_selected.connect(_on_blocks_answer_selected)
 	_power_ups.power_up_collected.connect(_on_power_up_collected)
 	_cones.cone_hit.connect(_on_cone_hit)
 	power_up_slots_event.connect(hud.on_power_up_slots_change)
@@ -111,13 +111,13 @@ func _process(delta: float) -> void:
 	_player.tick(delta)
 	_power_up_effects.tick(delta)
 	_cenario.tick(delta)
-	_blocos.tick(delta, _player.get_runner_position())
+	_blocks.tick(delta, _player.get_runner_position())
 	_power_ups.tick(delta, _player.get_runner_position())
 	_cones.tick(
 		delta,
 		_player.get_runner_position(),
-		_blocos.get_active_row_z_positions(),
-		_blocos.get_distance_to_next_spawn()
+		_blocks.get_active_row_z_positions(),
+		_blocks.get_distance_to_next_spawn()
 	)
 	_update_world_speed(delta)
 	_update_camera_shake(delta)
@@ -133,7 +133,7 @@ func _update_world_speed(_delta: float) -> void:
 
 	world_speed = target_speed
 	_cenario.world_speed = world_speed
-	_blocos.world_speed = world_speed
+	_blocks.world_speed = world_speed
 	_power_ups.world_speed = world_speed
 	_cones.world_speed = world_speed
 
@@ -193,13 +193,13 @@ func _build_player() -> void:
 	_player.setup(_lane_positions, 1)
 
 
-func _build_blocos() -> void:
-	_blocos = RunnerBlocos.new()
-	_blocos.world_speed = world_speed
-	_blocos.floor_back_z = FLOOR_BACK_Z
-	_blocos.floor_front_z = FLOOR_FRONT_Z
-	add_child(_blocos)
-	_blocos.setup(_lane_positions)
+func _build_blocks() -> void:
+	_blocks = RunnerBlocks.new()
+	_blocks.world_speed = world_speed
+	_blocks.floor_back_z = FLOOR_BACK_Z
+	_blocks.floor_front_z = FLOOR_FRONT_Z
+	add_child(_blocks)
+	_blocks.setup(_lane_positions)
 
 
 func _build_power_ups() -> void:
@@ -223,8 +223,8 @@ func _build_cones() -> void:
 func _build_power_up_effect_controller() -> void:
 	_power_up_effects = PowerUpEffectController.new()
 	add_child(_power_up_effects)
-	_power_up_effects.setup(_player, _blocos, POWER_UP_CONFIG, _max_lives, _lives)
-	_power_up_effects.setup(_player, _blocos, POWER_UP_CONFIG, _max_lives, _lives)
+	_power_up_effects.setup(_player, _blocks, POWER_UP_CONFIG, _max_lives, _lives)
+	_power_up_effects.setup(_player, _blocks, POWER_UP_CONFIG, _max_lives, _lives)
 	_power_up_effects.lives_changed.connect(_on_power_up_lives_changed)
 	_power_up_effects.power_up_slot_changed.connect(_on_power_up_slot_changed)
 	_power_up_effects.power_up_slot_changed.connect(hud.on_power_up_slot_active_changed)
@@ -273,7 +273,7 @@ func _restart() -> void:
 	_max_lives = DifficultySettings.get_max_lives(_resolve_current_difficulty())
 	world_speed = BASE_WORLD_SPEED
 	_cenario.world_speed = world_speed
-	_blocos.world_speed = world_speed
+	_blocks.world_speed = world_speed
 	_power_ups.world_speed = world_speed
 	_cones.world_speed = world_speed
 	_shake_time_left = 0.0
@@ -289,7 +289,7 @@ func _restart() -> void:
 	if _is_paused:
 		_resume()
 	_player.reset(1)
-	_blocos.reset()
+	_blocks.reset()
 	_power_ups.reset()
 	_cones.reset()
 	_power_up_effects.max_lives = _max_lives
@@ -385,7 +385,7 @@ func _resume() -> void:
 	_snd_game.play()
 
 
-func _on_blocos_answer_selected(is_correct: bool, _selected_answer: int) -> void:
+func _on_blocks_answer_selected(is_correct: bool, _selected_answer: int) -> void:
 	if is_correct:
 		_score += _power_up_effects.get_score_multiplier()
 		score_event.emit(int(_score))
@@ -399,7 +399,7 @@ func _on_blocos_answer_selected(is_correct: bool, _selected_answer: int) -> void
 
 func _set_active_equation(equation: Dictionary) -> void:
 	hud.show_equation(equation)
-	_blocos.set_equation(equation)
+	_blocks.set_equation(equation)
 
 
 func _on_power_up_collected(type: String) -> void:
