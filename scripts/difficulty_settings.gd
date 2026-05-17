@@ -13,6 +13,12 @@ const LABELS := {
 	DIFFICULTY_HARD: "Difícil",
 	DIFFICULTY_IMPOSSIBLE: "Impossível",
 }
+const MAX_LIVES := {
+	DIFFICULTY_EASY: 6,
+	DIFFICULTY_MEDIUM: 5,
+	DIFFICULTY_HARD: 4,
+	DIFFICULTY_IMPOSSIBLE: 3,
+}
 
 
 static func normalize_difficulty(difficulty: String) -> String:
@@ -25,6 +31,10 @@ static func normalize_difficulty(difficulty: String) -> String:
 
 static func get_label(difficulty: String) -> String:
 	return String(LABELS.get(normalize_difficulty(difficulty), LABELS[DEFAULT_DIFFICULTY]))
+
+
+static func get_max_lives(difficulty: String) -> int:
+	return int(MAX_LIVES.get(normalize_difficulty(difficulty), MAX_LIVES[DEFAULT_DIFFICULTY]))
 
 
 static func get_difficulty_for_index(index: int) -> String:

@@ -14,7 +14,6 @@ const FLOOR_FRONT_Z := 11.6
 const BASE_WORLD_SPEED := 8.0
 const WORLD_SPEED_PER_SCORE := 0.2
 const EQUATION_QUEUE_SIZE := 3
-const MAX_LIVES := 3
 const POWER_UP_SLOT_COUNT := 4
 const ACTIVATABLE_POWER_UP_SLOT_COUNT := 3
 const RESERVE_POWER_UP_SLOT := 3
@@ -29,7 +28,8 @@ var _lane_positions: Array[float] = [
 ]
 
 var _score := 0.0
-var _lives := MAX_LIVES
+var _max_lives := DifficultySettings.get_max_lives(DifficultySettings.DEFAULT_DIFFICULTY)
+var _lives := 0
 var _is_game_over := false
 var _is_paused := false
 var world_speed := BASE_WORLD_SPEED
@@ -210,7 +210,7 @@ func _build_cones() -> void:
 func _build_power_up_effect_controller() -> void:
 	_power_up_effects = PowerUpEffectController.new()
 	add_child(_power_up_effects)
-	_power_up_effects.setup(_player, _blocos, POWER_UP_CONFIG, MAX_LIVES, _lives)
+	_power_up_effects.setup(_player, _blocos, POWER_UP_CONFIG, _max_lives, _lives)
 	_power_up_effects.lives_changed.connect(_on_power_up_lives_changed)
 	_power_up_effects.power_up_slot_changed.connect(_on_power_up_slot_changed)
 	_power_up_effects.power_up_slot_changed.connect(hud.on_power_up_slot_active_changed)
@@ -250,6 +250,7 @@ func _build_audio() -> void:
 func _restart() -> void:
 	_game_over_sequence_id += 1
 	_score = 0.0
+	_max_lives = DifficultySettings.get_max_lives(_resolve_current_difficulty())
 	world_speed = BASE_WORLD_SPEED
 	_cenario.world_speed = world_speed
 	_blocos.world_speed = world_speed
@@ -258,7 +259,7 @@ func _restart() -> void:
 	_shake_time_left = 0.0
 	if _camera:
 		_camera.position = _camera_base_position
-	_lives = MAX_LIVES
+	_lives = _max_lives
 	_is_game_over = false
 	if _is_paused:
 		_resume()
@@ -266,7 +267,9 @@ func _restart() -> void:
 	_blocos.reset()
 	_power_ups.reset()
 	_cones.reset()
+	_power_up_effects.max_lives = _max_lives
 	_power_up_effects.reset(_lives)
+	hud.set_max_lives(_max_lives)
 	for i in range(POWER_UP_SLOT_COUNT):
 		_power_up_slots[i] = ""
 	power_up_slots_event.emit(_power_up_slots.duplicate())
@@ -411,7 +414,7 @@ func _update_camera_shake(delta: float) -> void:
 
 
 func _on_power_up_lives_changed(lives: int) -> void:
-	_lives = clampi(lives, 0, MAX_LIVES)
+	_lives = clampi(lives, 0, _max_lives)
 	lives_event.emit(_lives)
 
 
