@@ -11,7 +11,12 @@ const ASSET_SCALES := {
 	"res://assets/power-ups/transparent_glass_hourglass.glb": 0.03,
 }
 
+const ASSET_BASE_Y := {
+	"res://assets/power-ups/transparent_glass_hourglass.glb": 1.05,
+}
+
 const DEFAULT_SCALE := 0.1
+const DEFAULT_BASE_Y := 0.5
 const DOUBLE_COLOR := Color(1.0, 0.65, 0.05)
 const DOUBLE_OUTLINE_COLOR := Color(0.3, 0.12, 0.0)
 
@@ -45,7 +50,7 @@ func make_power_up(entry: Dictionary) -> Node3D:
 
 	node.name = "PowerUp"
 	node.set_meta("type", type)
-	_init_power_up_meta(node)
+	_init_power_up_meta(node, path)
 	return node
 
 
@@ -80,9 +85,9 @@ func _make_fallback_sphere() -> Node3D:
 	return root
 
 
-func _init_power_up_meta(node: Node3D) -> void:
+func _init_power_up_meta(node: Node3D, path: String) -> void:
 	node.set_meta("float_phase", rng.randf() * TAU)
-	node.set_meta("base_y", 0.5)
+	node.set_meta("base_y", ASSET_BASE_Y.get(path, DEFAULT_BASE_Y))
 	var direction_x := 1.0 if rng.randi_range(0, 1) == 1 else -1.0
 	var direction_y := 1.0 if rng.randi_range(0, 1) == 1 else -1.0
 	var direction_z := 1.0 if rng.randi_range(0, 1) == 1 else -1.0
