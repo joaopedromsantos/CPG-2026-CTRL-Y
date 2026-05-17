@@ -1,0 +1,28 @@
+name: GUT Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  gut-tests:
+    name: Run GUT tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run GUT tests
+        uses: jamie-pate/run-gut-tests-action@v2.0.3
+        with:
+          directory: .
+          godotFlags: --headless
+          gutConfigPath: .gutconfig.json
