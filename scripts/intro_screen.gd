@@ -11,12 +11,13 @@ const ROBOT_IDLE_ANIMATION := "RobotArmature|Robot_Idle"
 const ROBOT_IDLE_SWAY_SPEED := 1.8
 const ROBOT_IDLE_SWAY_ANGLE := 0.035
 const ROBOT_IDLE_BOB_HEIGHT := 0.035
-const PANEL_STAGGER := 0.38
+const PANEL_STAGGER := 0.62
 const PANEL_ENTER_DURATION := 0.36
 const PANEL_SLIDE_DISTANCE := 42.0
 const TYPEWRITER_SPEED := 38.0
 const TYPEWRITER_DELAY := 0.20
 const ORANGE_GLITCH_DURATION := 0.85
+const MONITOR_GLOW_SPEED := 3.0
 
 const CYAN := Color(0.11, 0.91, 0.98)
 const CYAN_SOFT := Color(0.11, 0.91, 0.98, 0.55)
@@ -420,17 +421,38 @@ func _draw_continue_box() -> void:
 
 
 func _draw_monitor() -> void:
+	var pulse: float = 0.5 + sin(_intro_elapsed() * MONITOR_GLOW_SPEED) * 0.5
+	var blue_glow_alpha: float = lerpf(0.18, 0.52, pulse)
 	var screen := PackedVector2Array([
 		Vector2(1010, 220), Vector2(1266, 181), Vector2(1291, 352), Vector2(995, 374)
 	])
 	draw_colored_polygon(screen, Color(0.02, 0.09, 0.18))
+	for width in [24.0, 16.0, 9.0]:
+		var width_float: float = width
+		draw_polyline(_closed(screen), Color(CYAN.r, CYAN.g, CYAN.b, blue_glow_alpha * (width_float / 24.0) * 0.32), width_float)
 	draw_polyline(_closed(screen), Color(0.03, 0.28, 0.52), 12)
 	var inner := PackedVector2Array([
 		Vector2(1049, 259), Vector2(1242, 237), Vector2(1255, 332), Vector2(1041, 344)
 	])
 	draw_colored_polygon(inner, Color(0.02, 0.03, 0.05))
-	_draw_text("ERRO DE", Vector2(1087, 289), 29, ORANGE, _font_bold)
-	_draw_text("PROGRAMAÇÃO", Vector2(1055, 333), 29, ORANGE, _font_bold)
+	for width in [10.0, 6.0]:
+		var width_float: float = width
+		draw_polyline(_closed(inner), Color(CYAN.r, CYAN.g, CYAN.b, blue_glow_alpha * (width_float / 10.0) * 0.22), width_float)
+	_draw_glowing_monitor_text("ERRO DE", Vector2(1087, 289), 29)
+	_draw_glowing_monitor_text("PROGRAMAÇÃO", Vector2(1055, 333), 29)
+
+
+func _draw_glowing_monitor_text(text: String, pos: Vector2, font_size: int) -> void:
+	var pulse: float = 0.5 + sin(_intro_elapsed() * MONITOR_GLOW_SPEED) * 0.5
+	var glow_alpha: float = lerpf(0.24, 0.72, pulse)
+	for radius in [8.0, 5.0, 3.0]:
+		var radius_float: float = radius
+		var alpha: float = glow_alpha * (radius_float / 8.0) * 0.45
+		_draw_text_alpha(text, pos + Vector2(-radius, 0), font_size, Color(ORANGE.r, ORANGE.g, ORANGE.b, alpha), _font_bold)
+		_draw_text_alpha(text, pos + Vector2(radius, 0), font_size, Color(ORANGE.r, ORANGE.g, ORANGE.b, alpha), _font_bold)
+		_draw_text_alpha(text, pos + Vector2(0, -radius), font_size, Color(ORANGE.r, ORANGE.g, ORANGE.b, alpha), _font_bold)
+		_draw_text_alpha(text, pos + Vector2(0, radius), font_size, Color(ORANGE.r, ORANGE.g, ORANGE.b, alpha), _font_bold)
+	_draw_text_alpha(text, pos, font_size, Color(1.0, 0.74, 0.24, 1.0), _font_bold)
 
 
 func _draw_platform() -> void:
