@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://cofypyl68ho7i" path="res://assets/player/Robot.fbx" id="1_tx5wa"]
 [ext_resource type="Script" path="res://scripts/start_help_button.gd" id="2_help_button"]
+[ext_resource type="Script" path="res://scripts/start_about_button.gd" id="3_about_button"]
 [ext_resource type="Texture2D" path="res://assets/hud/cog.svg" id="2_cog"]
 [ext_resource type="Texture2D" uid="uid://w6jaoweuw1am" path="res://assets/background/background.png" id="3_background"]
 
@@ -45,6 +46,7 @@ var _selected_difficulty := DifficultySettings.DEFAULT_DIFFICULTY
 var _player_name_label: Label
 var _change_name_button: Button
 var _ranking_button: Button
+var _about_button: Button
 var _ranking_loading_label: Label
 var _ranking_request_pending := false
 
@@ -113,6 +115,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 	if _help_button and _help_button.has_method(\"is_help_visible\") and _help_button.call(\"is_help_visible\"):
 		return
+	if _about_button and _about_button.has_method(\"is_about_visible\") and _about_button.call(\"is_about_visible\"):
+		return
 	if event.is_action_pressed(\"ui_accept\"):
 		_start_game()
 		return
@@ -179,6 +183,10 @@ func _build_screen() -> void:
 	_ranking_button.add_theme_stylebox_override(\"hover\", _button_style(Color(0.06, 0.22, 0.40), Color(0.52, 1.0, 1.0)))
 	_ranking_button.add_theme_stylebox_override(\"pressed\", _button_style(Color(0.03, 0.12, 0.24), Color(0.30, 0.82, 0.92)))
 	_ranking_button.pressed.connect(_on_ranking_pressed)
+
+	_about_button = $AboutButton
+	_about_button.text = \"i\"
+	_setup_icon_button(_about_button, 28)
 
 	_player_name_label = $PlayerNameLabel
 	_apply_label_style(_player_name_label, \"\", _font_semi, 13, NEON_CYAN, 0, Color(0, 0, 0, 0))
@@ -341,6 +349,10 @@ func _layout() -> void:
 	_ranking_button.set_position(ranking_rect.position)
 	_ranking_button.set_size(ranking_rect.size)
 
+	var about_rect: Rect2 = rect.call(20, 186, 46, 46)
+	_about_button.set_position(about_rect.position)
+	_about_button.set_size(about_rect.size)
+
 	var player_name_rect: Rect2 = rect.call(832, 28, 160, 24)
 	_player_name_label.set_position(player_name_rect.position)
 	_player_name_label.set_size(player_name_rect.size)
@@ -369,6 +381,7 @@ func _layout() -> void:
 	_settings_button.add_theme_font_size_override(\"font_size\", maxi(16, int(28 * scale)))
 	_help_button.add_theme_font_size_override(\"font_size\", maxi(16, int(28 * scale)))
 	_ranking_button.add_theme_font_size_override(\"font_size\", maxi(14, int(26 * scale)))
+	_about_button.add_theme_font_size_override(\"font_size\", maxi(16, int(28 * scale)))
 	if _player_name_label and _player_name_label.label_settings:
 		_player_name_label.label_settings.font_size = maxi(9, int(13 * scale))
 	if _change_name_button:
@@ -553,6 +566,16 @@ offset_right = 66.0
 offset_bottom = 176.0
 focus_mode = 0
 text = ""
+
+[node name="AboutButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 186.0
+offset_right = 66.0
+offset_bottom = 232.0
+focus_mode = 0
+text = "i"
+script = ExtResource("3_about_button")
 
 [node name="PlayerNameLabel" type="Label" parent="."]
 layout_mode = 0
