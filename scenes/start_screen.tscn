@@ -44,6 +44,7 @@ var _settings_modal: SettingsScreen
 var _menu_audio: AudioStreamPlayer
 var _selected_difficulty := DifficultySettings.DEFAULT_DIFFICULTY
 var _player_name_label: Label
+var _player_icon: TextureRect
 var _change_name_button: Button
 var _ranking_button: Button
 var _about_button: Button
@@ -188,12 +189,22 @@ func _build_screen() -> void:
 	_about_button.text = \"i\"
 	_setup_icon_button(_about_button, 28)
 
+	_player_icon = TextureRect.new()
+	_player_icon.texture = load(\"res://assets/hud/user.svg\")
+	_player_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_player_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	_player_icon.modulate = NEON_CYAN
+	_player_icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(_player_icon)
+
 	_player_name_label = $PlayerNameLabel
 	_apply_label_style(_player_name_label, \"\", _font_semi, 13, NEON_CYAN, 0, Color(0, 0, 0, 0))
-	_player_name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	_player_name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+	_player_name_label.clip_text = true
+	_player_name_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 
 	_change_name_button = $ChangeNameButton
-	_change_name_button.text = \"Trocar player\"
+	_change_name_button.text = \"Trocar Jogador\"
 	_change_name_button.focus_mode = Control.FOCUS_NONE
 	_change_name_button.add_theme_font_override(\"font\", _font_semi)
 	_change_name_button.add_theme_font_size_override(\"font_size\", 11)
@@ -360,11 +371,28 @@ func _layout() -> void:
 	_about_button.set_position(about_rect.position)
 	_about_button.set_size(about_rect.size)
 
-	var player_name_rect: Rect2 = rect_right.call(832, 28, 160, 24)
-	_player_name_label.set_position(player_name_rect.position)
-	_player_name_label.set_size(player_name_rect.size)
-
-	var change_name_rect: Rect2 = rect_right.call(832, 56, 160, 26)
+	# Player name + icon group (icon left, name right, right-anchored, responsive)
+	var name_font_size: int = maxi(10, int(13 * scale))
+	_player_name_label.add_theme_font_size_override(\"font_size\", name_font_size)
+	var text_w: float = _font_semi.get_string_size(_player_name_label.text, HORIZONTAL_ALIGNMENT_LEFT, -1, name_font_size).x
+	var btn_font_size: int = maxi(9, int(11 * scale))
+	var btn_text_w: float = _font_semi.get_string_size(\"Trocar Jogador\", HORIZONTAL_ALIGNMENT_LEFT, -1, btn_font_size).x
+	var icon_sz: float = 18.0 * scale
+	var icon_gap: float = 5.0 * scale
+	var max_name_w: float = 180.0 * scale
+	# name must be wide enough so button fits its text (btn needs padding ~16px)
+	var min_name_w: float = btn_text_w + 16.0 * scale - icon_sz - icon_gap
+	var name_w: float = clampf(text_w + 8.0 * scale, min_name_w, max_name_w)
+	var right_margin: float = 18.0 * scale
+	var group_right: float = s.x - right_margin
+	var group_left: float = group_right - icon_sz - icon_gap - name_w
+	var group_top: float = oy + 28.0 * scale
+	_player_icon.set_position(Vector2(group_left, group_top + 1.0 * scale))
+	_player_icon.set_size(Vector2(icon_sz, icon_sz))
+	_player_name_label.set_position(Vector2(group_left + icon_sz + icon_gap, group_top))
+	_player_name_label.set_size(Vector2(name_w, icon_sz + 4.0 * scale))
+	var group_w: float = icon_sz + icon_gap + name_w
+	var change_name_rect: Rect2 = Rect2(Vector2(group_left, group_top + icon_sz + 4.0 * scale), Vector2(group_w, 22.0 * scale))
 	_change_name_button.set_position(change_name_rect.position)
 	_change_name_button.set_size(change_name_rect.size)
 
@@ -483,7 +511,9 @@ func _update_player_name_display() -> void:
 	var current_name := \"\"
 	if player_data:
 		current_name = String(player_data.call(\"get_display_name\"))
-	_player_name_label.text = \"\ud83d\udc64 %s\" % current_name if current_name != \"\" else \"\"
+	_player_name_label.text = current_name
+	if is_node_ready():
+		_layout()
 
 
 func _on_ranking_pressed() -> void:
