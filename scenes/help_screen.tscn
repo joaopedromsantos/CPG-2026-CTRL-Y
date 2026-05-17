@@ -1,0 +1,252 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/help_screen.gd" id="1_help_script"]
+[ext_resource type="Texture2D" uid="uid://dxl2a8c6y6ohx" path="res://assets/hud/close-x.svg" id="2_close_x"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+content_margin_left = 34.0
+content_margin_top = 30.0
+content_margin_right = 34.0
+content_margin_bottom = 30.0
+bg_color = Color(0.08, 0.18, 0.36, 0.96)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.36, 0.97, 1, 1)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_size = 18
+shadow_offset = Vector2(0, 8)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_close"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_section"]
+content_margin_left = 18.0
+content_margin_top = 14.0
+content_margin_right = 18.0
+content_margin_bottom = 14.0
+bg_color = Color(0.04, 0.08, 0.18, 0.68)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.36, 0.97, 1, 0.45)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_header"]
+content_margin_left = 10.0
+content_margin_top = 7.0
+content_margin_right = 10.0
+content_margin_bottom = 7.0
+bg_color = Color(0.96, 0.5, 0.12, 0.92)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.82, 0.3, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_focus"]
+bg_color = Color(1, 1, 1, 0.12)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.36, 0.97, 1, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="HelpScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_help_script")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.02, 0.04, 0.08, 0.68)
+
+[node name="Panel" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -360.0
+offset_top = -235.0
+offset_right = 360.0
+offset_bottom = 235.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="Content" type="VBoxContainer" parent="Panel"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Title" type="Label" parent="Panel/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.36, 0.97, 1, 1)
+theme_override_font_sizes/font_size = 42
+text = "Ajuda"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Scroll" type="ScrollContainer" parent="Panel/Content"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="HelpRows" type="VBoxContainer" parent="Panel/Content/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="PowerUpsTable" type="PanelContainer" parent="Panel/Content/Scroll/HelpRows"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_section")
+
+[node name="PowerUpsContent" type="VBoxContainer" parent="Panel/Content/Scroll/HelpRows/PowerUpsTable"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="PowerUpsTitle" type="Label" parent="Panel/Content/Scroll/HelpRows/PowerUpsTable/PowerUpsContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.36, 0.97, 1, 1)
+theme_override_constants/outline_size = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.65)
+theme_override_font_sizes/font_size = 24
+text = "Power-ups"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Header" type="PanelContainer" parent="Panel/Content/Scroll/HelpRows/PowerUpsTable/PowerUpsContent"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_header")
+
+[node name="HeaderRow" type="HBoxContainer" parent="Panel/Content/Scroll/HelpRows/PowerUpsTable/PowerUpsContent/Header"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="PowerUpHeader" type="Label" parent="Panel/Content/Scroll/HelpRows/PowerUpsTable/PowerUpsContent/Header/HeaderRow"]
+custom_minimum_size = Vector2(170, 34)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.65)
+theme_override_font_sizes/font_size = 20
+text = "Power-up"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="EffectHeader" type="Label" parent="Panel/Content/Scroll/HelpRows/PowerUpsTable/PowerUpsContent/Header/HeaderRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.65)
+theme_override_font_sizes/font_size = 20
+text = "Efeito"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Rows" type="VBoxContainer" parent="Panel/Content/Scroll/HelpRows/PowerUpsTable/PowerUpsContent"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="DifficultyTable" type="PanelContainer" parent="Panel/Content/Scroll/HelpRows"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_section")
+
+[node name="DifficultyContent" type="VBoxContainer" parent="Panel/Content/Scroll/HelpRows/DifficultyTable"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="DifficultyTitle" type="Label" parent="Panel/Content/Scroll/HelpRows/DifficultyTable/DifficultyContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.36, 0.97, 1, 1)
+theme_override_constants/outline_size = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.65)
+theme_override_font_sizes/font_size = 24
+text = "Niveis de dificuldade"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Header" type="PanelContainer" parent="Panel/Content/Scroll/HelpRows/DifficultyTable/DifficultyContent"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_header")
+
+[node name="HeaderRow" type="HBoxContainer" parent="Panel/Content/Scroll/HelpRows/DifficultyTable/DifficultyContent/Header"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="DifficultyHeader" type="Label" parent="Panel/Content/Scroll/HelpRows/DifficultyTable/DifficultyContent/Header/HeaderRow"]
+custom_minimum_size = Vector2(170, 34)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.65)
+theme_override_font_sizes/font_size = 20
+text = "Nivel"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DifficultyEffectHeader" type="Label" parent="Panel/Content/Scroll/HelpRows/DifficultyTable/DifficultyContent/Header/HeaderRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.65)
+theme_override_font_sizes/font_size = 20
+text = "Como muda o jogo"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Rows" type="VBoxContainer" parent="Panel/Content/Scroll/HelpRows/DifficultyTable/DifficultyContent"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="CloseButton" type="Button" parent="."]
+layout_mode = 1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 304.0
+offset_top = -222.0
+offset_right = 346.0
+offset_bottom = -180.0
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 0
+theme_override_font_sizes/font_size = 28
+theme_override_styles/normal = SubResource("StyleBoxEmpty_close")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_close")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_close")
+theme_override_styles/focus = SubResource("StyleBoxFlat_button_focus")
+icon = ExtResource("2_close_x")
+icon_alignment = 1
+expand_icon = true
