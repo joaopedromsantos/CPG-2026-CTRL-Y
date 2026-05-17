@@ -1,4 +1,5 @@
 extends Node2D
+@onready var root_control: Control = $CanvasLayer/RootControl
 @onready var equation_label: Label = $CanvasLayer/RootControl/TopCenterContainer/EquationLabel
 @onready var feedback_label: Label = $CanvasLayer/RootControl/TopCenterContainer/FeedbackLabel
 
@@ -60,10 +61,13 @@ const SLOT_COUNTDOWN_OUTLINE_COLOR := Color(0.0, 0.0, 0.0, 0.9)
 const SLOT_ICON_ACTIVE_MODULATE := Color(0.35, 0.35, 0.35, 1.0)
 const SLOT_ICON_INACTIVE_MODULATE := Color(1.0, 1.0, 1.0, 1.0)
 const RESERVE_SLOT_INDEX := 3
+const DEATH_FADE_TARGET_ALPHA := 0.8
 
 var timer := GameTimer.new()
 var _current_equation: Dictionary = {}
 var _feedback_tween: Tween
+var _death_fade_tween: Tween
+var _death_fade_rect: ColorRect
 var _last_score := 0
 var _last_lives := -1
 var _last_power_up_slots: Array = []
@@ -75,6 +79,7 @@ var _slot_countdown_labels: Array[Label] = []
 
 
 func _ready() -> void:
+	_setup_death_fade()
 	_setup_power_up_slot_icons()
 	pause_screen.resume_requested.connect(_on_pause_screen_resume_requested)
 	pause_screen.start_screen_requested.connect(_on_pause_screen_start_screen_requested)
@@ -92,6 +97,7 @@ func on_game_over(score: int) -> void:
 	timer.stop_timer()
 	pause_screen.hide_pause()
 	_hide_feedback()
+	_hide_death_fade()
 	endgame_score_label.text = "%d" % [score]
 	endgame_time_label.text = timer.formatted_time()
 	endgame_overlay.visible = true
@@ -201,6 +207,40 @@ func _setup_power_up_slot_icons() -> void:
 		_slot_countdown_labels.append(countdown)
 
 
+func _setup_death_fade() -> void:
+	_death_fade_rect = ColorRect.new()
+	_death_fade_rect.name = "DeathFade"
+	_death_fade_rect.visible = false
+	_death_fade_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_death_fade_rect.color = Color(0.0, 0.0, 0.0, 0.0)
+	_death_fade_rect.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_death_fade_rect.z_index = 90
+	root_control.add_child(_death_fade_rect)
+	endgame_overlay.z_index = 100
+
+
+func show_death_fade(duration: float) -> void:
+	if _death_fade_tween and _death_fade_tween.is_valid():
+		_death_fade_tween.kill()
+	_death_fade_rect.visible = true
+	_death_fade_rect.color = Color(0.0, 0.0, 0.0, 0.0)
+	_death_fade_tween = create_tween()
+	_death_fade_tween.tween_property(
+		_death_fade_rect,
+		"color:a",
+		DEATH_FADE_TARGET_ALPHA,
+		maxf(duration, 0.01)
+	).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+
+
+func _hide_death_fade() -> void:
+	if _death_fade_tween and _death_fade_tween.is_valid():
+		_death_fade_tween.kill()
+	if _death_fade_rect:
+		_death_fade_rect.visible = false
+		_death_fade_rect.color = Color(0.0, 0.0, 0.0, 0.0)
+
+
 func on_power_up_slots_change(slots: Array) -> void:
 	_last_power_up_slots = slots.duplicate()
 	for i in range(_slot_icon_rects.size()):
@@ -247,7 +287,6 @@ func _make_active_slot_style(base_style: StyleBox) -> StyleBoxFlat:
 
 func on_restart_game() -> void:
 	endgame_overlay.visible = false
-	pause_screen.hide_pause()
 	pause_button.visible = true
 	pause_button.texture_normal = PAUSE_BUTTON_IMAGE
 	timer.reset_timer()
