@@ -1,6 +1,7 @@
-[gd_scene format=3 uid="uid://dl3mrdxm470pj"]
+[gd_scene load_steps=2 format=3 uid="uid://dl3mrdxm470pj"]
 
 [ext_resource type="PackedScene" uid="uid://cofypyl68ho7i" path="res://assets/player/Robot.fbx" id="1_tx5wa"]
+[ext_resource type="Texture2D" path="res://assets/hud/cog.svg" id="2_cog"]
 
 [sub_resource type="GDScript" id="GDScript_start_screen"]
 script/source = "extends Control
@@ -387,7 +388,10 @@ func _build_screen() -> void:
 	_start_button.pressed.connect(_start_game)
 
 	_settings_button = $SettingsButton
-	_settings_button.text = \"⚙\"
+	_settings_button.text = \"\"
+	_settings_button.icon = load(\"res://assets/hud/cog.svg\")
+	_settings_button.expand_icon = true
+	_settings_button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_settings_button.focus_mode = Control.FOCUS_NONE
 	_settings_button.add_theme_font_override(\"font\", _font_bold)
 	_settings_button.add_theme_font_size_override(\"font_size\", 28)
@@ -395,6 +399,7 @@ func _build_screen() -> void:
 	_settings_button.add_theme_color_override(\"font_hover_color\", Color.WHITE)
 	_settings_button.add_theme_color_override(\"font_pressed_color\", Color.WHITE)
 	_settings_button.add_theme_constant_override(\"outline_size\", 3)
+	_settings_button.add_theme_constant_override(\"icon_max_width\", 31)
 	_settings_button.add_theme_color_override(\"font_outline_color\", Color(0.04, 0.16, 0.30))
 	_settings_button.add_theme_stylebox_override(\"normal\", _button_style(Color(0.04, 0.16, 0.30), Color(0.36, 0.97, 1.0)))
 	_settings_button.add_theme_stylebox_override(\"hover\", _button_style(Color(0.06, 0.22, 0.40), Color(0.52, 1.0, 1.0)))
@@ -667,7 +672,10 @@ offset_top = 18.0
 offset_right = 66.0
 offset_bottom = 64.0
 focus_mode = 0
-text = "⚙"
+theme_override_constants/icon_max_width = 31
+icon = ExtResource("2_cog")
+icon_alignment = 1
+expand_icon = true
 
 [node name="DifficultyPrevButton" type="Button" parent="."]
 layout_mode = 0

@@ -63,6 +63,7 @@ func _on_save_pressed() -> void:
 	if _game_settings:
 		_game_settings.call("set_audio_settings", int(music_slider.value), int(sfx_slider.value))
 	music_volume_changed.emit()
+	_close()
 
 
 func _on_reset_pressed() -> void:
@@ -77,6 +78,10 @@ func _on_reset_pressed() -> void:
 
 func _on_close_pressed() -> void:
 	close_button.release_focus()
+	_close()
+
+
+func _close() -> void:
 	visible = false
 	close_requested.emit()
 	if get_signal_connection_list("close_requested").is_empty():
