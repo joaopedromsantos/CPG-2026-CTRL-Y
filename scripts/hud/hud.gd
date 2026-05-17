@@ -28,6 +28,9 @@ const OVERCLOCK_VIEW_SCRIPT = preload("res://scripts/hud/overclock/overclock_vie
 @onready var endgame_buttons_row: HBoxContainer = $CanvasLayer/RootControl/EndGameOverlay/Panel/Content/ButtonsRow
 @onready var record_container: Control = $CanvasLayer/RootControl/BottomRightContainer
 @onready var record_label: Label = $CanvasLayer/RootControl/BottomRightContainer/RecordPanel/Row/RecordLabel
+@onready var countdown_layer: Control = $CanvasLayer/RootControl/CountdownLayer
+@onready var countdown_label: Label = $CanvasLayer/RootControl/CountdownLayer/CountdownLabel
+@onready var countdown_dim: ColorRect = $CanvasLayer/RootControl/CountdownLayer/DimRect
 @onready var slot_labels: Array[Label] = [
 	$CanvasLayer/RootControl/BottomCenterContainer/SlotsRow/Slot1/ContentLabel,
 	$CanvasLayer/RootControl/BottomCenterContainer/SlotsRow/Slot2/ContentLabel,
@@ -40,6 +43,7 @@ signal pause_event
 signal restart_event
 signal start_screen_event
 signal quit_event
+signal countdown_finished
 
 const PLAY_BUTTON_IMAGE = preload("res://assets/hud/play-button.png")
 const PAUSE_BUTTON_IMAGE = preload("res://assets/hud/pause-button-hud.png")
@@ -444,3 +448,38 @@ func set_record_holder(record_name: String, record_score: int) -> void:
 		return
 	record_label.text = "%s - %d" % [record_name, record_score]
 	record_container.visible = true
+
+
+func start_countdown() -> void:
+	countdown_layer.visible = true
+	pause_button.visible = false
+	var steps := ["3", "2", "1", "GO!"]
+	for i in range(steps.size()):
+		var step_text: String = steps[i]
+		countdown_label.text = step_text
+		countdown_label.modulate = Color(1, 1, 1, 1)
+		countdown_label.scale = Vector2(2.0, 2.0)
+		countdown_label.pivot_offset = countdown_label.size * 0.5
+		var is_go := step_text == "GO!"
+		if is_go:
+			countdown_label.add_theme_color_override("font_color", Color(0.2, 1.0, 0.3, 1))
+		else:
+			countdown_label.add_theme_color_override("font_color", Color(1, 1, 1, 1))
+		var tween := create_tween()
+		tween.set_parallel(true)
+		tween.tween_property(countdown_label, "scale", Vector2(1.0, 1.0), 0.35) \
+			.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+		if is_go:
+			tween.tween_property(countdown_label, "modulate:a", 0.0, 0.5) \
+				.set_delay(0.25)
+			tween.tween_property(countdown_dim, "color:a", 0.0, 0.4) \
+				.set_delay(0.1)
+		else:
+			tween.tween_property(countdown_label, "modulate:a", 0.0, 0.25) \
+				.set_delay(0.55)
+		var wait_time := 0.5 if is_go else 0.85
+		await get_tree().create_timer(wait_time).timeout
+	countdown_layer.visible = false
+	countdown_dim.color = Color(0, 0, 0, 0.45)
+	pause_button.visible = true
+	countdown_finished.emit()

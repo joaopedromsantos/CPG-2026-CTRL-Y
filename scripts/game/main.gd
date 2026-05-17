@@ -69,6 +69,7 @@ var _shake_duration := 0.0
 var _shake_time_left := 0.0
 var _shake_strength := 0.0
 var _game_over_sequence_id := 0
+var _is_first_start := true
 
 
 func _ready() -> void:
@@ -100,6 +101,7 @@ func _ready() -> void:
 	_power_ups.power_up_collected.connect(_on_power_up_collected)
 	_cones.cone_hit.connect(_on_cone_hit)
 	power_up_slots_event.connect(hud.on_power_up_slots_change)
+	hud.countdown_finished.connect(_on_countdown_finished)
 	_connect_leaderboard_signal()
 	_restart()
 
@@ -278,6 +280,8 @@ func _build_audio() -> void:
 
 func _restart() -> void:
 	_game_over_sequence_id += 1
+	_is_paused = true
+	_is_game_over = false
 	_score = 0.0
 	_combo.reset()
 	overclock_reset.emit()
@@ -296,9 +300,6 @@ func _restart() -> void:
 	_power_up_effects.max_lives = _max_lives
 	_cones.enabled = current_difficulty != DIFFICULTY_WITHOUT_CONES
 	hud.set_max_lives(_max_lives)
-	_is_game_over = false
-	if _is_paused:
-		_resume()
 	_player.reset(1)
 	_blocks.reset()
 	_power_ups.reset()
@@ -314,13 +315,16 @@ func _restart() -> void:
 	if _snd_lose:
 		_snd_lose.stop()
 	if _snd_game:
-		_snd_game.play()
+		_snd_game.stop()
 	
 	restart_game.emit()
 	score_event.emit(int(_score))
 	lives_event.emit(_lives)
 	_set_active_equation(_equation_sequence.start(EQUATION_QUEUE_SIZE))
 	_fetch_record_holder()
+	hud.timer.stop_timer()
+	_player.pause_animation()
+	hud.start_countdown()
 
 
 func _end_game() -> void:
@@ -534,6 +538,15 @@ func _on_leaderboard_received(data: Dictionary) -> void:
 		return
 	var top: Dictionary = entries[0]
 	hud.set_record_holder(String(top.get("display_name", "")), int(top.get("highscore", 0)))
+
+
+func _on_countdown_finished() -> void:
+	_is_paused = false
+	_player.resume_animation()
+	hud.timer.reset_timer()
+	hud.timer.start_timer()
+	if _snd_game:
+		_snd_game.play()
 
 
 func _use_power_up_slot(slot: int) -> void:
