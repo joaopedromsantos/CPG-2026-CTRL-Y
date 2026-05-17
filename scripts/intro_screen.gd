@@ -42,6 +42,7 @@ var _robot: Node3D
 var _robot_animation: AnimationPlayer
 var _robot_base_position := Vector3.ZERO
 var _intro_started_at_msec := 0
+var _menu_audio: AudioStreamPlayer
 
 
 func _ready() -> void:
@@ -53,6 +54,7 @@ func _ready() -> void:
 	_build_star_field()
 	_build_robot_viewport()
 	_layout_robot_viewport()
+	_play_menu_music()
 	queue_redraw()
 
 
@@ -60,6 +62,18 @@ func _notification(what: int) -> void:
 	if what == NOTIFICATION_RESIZED and is_node_ready():
 		_layout_robot_viewport()
 		queue_redraw()
+
+
+func _exit_tree() -> void:
+	_stop_menu_music()
+
+
+func _stop_menu_music() -> void:
+	if _menu_audio:
+		_menu_audio.stop()
+		if _menu_audio.finished.is_connected(_menu_audio.play):
+			_menu_audio.finished.disconnect(_menu_audio.play)
+		_menu_audio.stream = null
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -70,6 +84,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 	if key_event.keycode == KEY_ENTER or key_event.keycode == KEY_KP_ENTER:
 		get_tree().root.set_input_as_handled()
+		_stop_menu_music()
 		get_tree().change_scene_to_file(GAME_SCENE)
 
 
@@ -103,6 +118,17 @@ func _build_star_field() -> void:
 		_stars.append(Vector2(rng.randf_range(0.0, DESIGN_SIZE.x), rng.randf_range(0.0, 700.0)))
 	for i in 130:
 		_sparks.append(Vector2(rng.randf_range(0.0, DESIGN_SIZE.x), rng.randf_range(510.0, 700.0)))
+
+
+func _play_menu_music() -> void:
+	_menu_audio = AudioStreamPlayer.new()
+	_menu_audio.stream = load("res://assets/sounds/menu_sound.wav")
+	add_child(_menu_audio)
+	_menu_audio.finished.connect(_menu_audio.play)
+	var game_settings := get_node_or_null("/root/GameSettings")
+	if game_settings:
+		game_settings.call("apply_music_volume", _menu_audio)
+	_menu_audio.play()
 
 
 func _build_robot_viewport() -> void:
