@@ -94,6 +94,7 @@ func _process(delta: float) -> void:
 	_blocos.tick(delta, _player.get_runner_position())
 	_power_ups.tick(delta, _player.get_runner_position())
 	_update_world_speed(delta)
+	
 
 
 func _update_world_speed(_delta: float) -> void:
