@@ -175,6 +175,58 @@ vertical_alignment = 1
 layout_mode = 2
 theme_override_constants/separation = 0
 
+[node name="ObstaclesTable" type="PanelContainer" parent="Panel/Content/Scroll/HelpRows"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_section")
+
+[node name="ObstaclesContent" type="VBoxContainer" parent="Panel/Content/Scroll/HelpRows/ObstaclesTable"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="ObstaclesTitle" type="Label" parent="Panel/Content/Scroll/HelpRows/ObstaclesTable/ObstaclesContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.36, 0.97, 1, 1)
+theme_override_constants/outline_size = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.65)
+theme_override_font_sizes/font_size = 24
+text = "Obstáculos"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Header" type="PanelContainer" parent="Panel/Content/Scroll/HelpRows/ObstaclesTable/ObstaclesContent"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_header")
+
+[node name="HeaderRow" type="HBoxContainer" parent="Panel/Content/Scroll/HelpRows/ObstaclesTable/ObstaclesContent/Header"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="ObstacleHeader" type="Label" parent="Panel/Content/Scroll/HelpRows/ObstaclesTable/ObstaclesContent/Header/HeaderRow"]
+custom_minimum_size = Vector2(170, 34)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.65)
+theme_override_font_sizes/font_size = 20
+text = "Obstáculo"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ObstacleEffectHeader" type="Label" parent="Panel/Content/Scroll/HelpRows/ObstaclesTable/ObstaclesContent/Header/HeaderRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.65)
+theme_override_font_sizes/font_size = 20
+text = "Efeito"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Rows" type="VBoxContainer" parent="Panel/Content/Scroll/HelpRows/ObstaclesTable/ObstaclesContent"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
 [node name="DifficultyTable" type="PanelContainer" parent="Panel/Content/Scroll/HelpRows"]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_section")
@@ -208,7 +260,7 @@ theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0.65)
 theme_override_font_sizes/font_size = 20
-text = "Nivel"
+text = "Nível"
 horizontal_alignment = 1
 vertical_alignment = 1
 

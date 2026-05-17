@@ -13,6 +13,7 @@ const FIRST_COLUMN_ICON_LEFT_MARGIN := 16.0
 
 @onready var close_button: Button = $CloseButton
 @onready var power_up_rows: VBoxContainer = $Panel/Content/Scroll/HelpRows/PowerUpsTable/PowerUpsContent/Rows
+@onready var obstacle_rows: VBoxContainer = $Panel/Content/Scroll/HelpRows/ObstaclesTable/ObstaclesContent/Rows
 @onready var difficulty_rows: VBoxContainer = $Panel/Content/Scroll/HelpRows/DifficultyTable/DifficultyContent/Rows
 
 var _tables_built := false
@@ -74,6 +75,17 @@ func _build_tables() -> void:
 
 	for item in power_ups:
 		power_up_rows.add_child(_make_power_up_row(item))
+
+	var obstacles := [
+		{
+			"icon": "res://assets/city-kit-roads/previews/construction-cone.png",
+			"name": "Cone",
+			"effect": "Remove 1 vida ao contato."
+		},
+	]
+
+	for item in obstacles:
+		obstacle_rows.add_child(_make_power_up_row(item))
 
 	var difficulties := [
 		{"badge": "I", "name": "Fácil", "effect": "Equações mais simples para começar a partida."},
