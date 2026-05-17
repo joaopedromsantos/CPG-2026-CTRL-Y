@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dh2nn4qlcg57e"]
 
-[ext_resource type="Script" uid="uid://cfl2kba1vabjm" path="res://scripts/hud.gd" id="1_6fi6k"]
+[ext_resource type="Script" uid="uid://cfl2kba1vabjm" path="res://scripts/hud/hud.gd" id="1_6fi6k"]
 [ext_resource type="Texture2D" uid="uid://b8kt244qmm62l" path="res://assets/hud/pause-button-hud.png" id="1_ahhtf"]
 [ext_resource type="FontFile" uid="uid://cnt7bgrpab5pp" path="res://assets/fonts/fredoka/Fredoka-SemiBold.ttf" id="4_fredoka"]
 [ext_resource type="PackedScene" path="res://scenes/end_game_screen.tscn" id="5_endgame"]

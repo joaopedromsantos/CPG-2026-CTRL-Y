@@ -366,7 +366,7 @@ Volumes são aplicados por categoria:
 │   ├── difficulty_settings.gd
 │   ├── equation_sequence.gd
 │   ├── game_settings.gd
-│   ├── hud.gd
+│   ├── hud/
 │   ├── main.gd
 │   ├── player.gd
 │   ├── player_record.gd
@@ -395,7 +395,7 @@ Volumes são aplicados por categoria:
 | `scripts/difficulty_settings.gd` | centraliza dificuldades, labels e validação |
 | `scripts/sound_settings.gd` | normaliza e aplica volume em players de áudio |
 | `scripts/settings_screen.gd` | controla o modal de configurações |
-| `scripts/hud.gd` | atualiza interface, vidas, score, timer, feedback, pause e game over |
+| `scripts/hud/hud.gd` | atualiza interface, vidas, score, timer, feedback, pause e game over |
 | `scripts/player_record.gd` | salva e carrega o high score local |
 | `scripts/game_settings.gd` | carrega, salva e aplica preferências do usuário |
 | `scripts/timer.gd` | cronômetro do HUD |
