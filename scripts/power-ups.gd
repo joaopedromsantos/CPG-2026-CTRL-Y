@@ -22,7 +22,7 @@ const FALLBACK_ASSETS := [
 
 # Per-asset uniform scale to normalize visual size across power-ups.
 const ASSET_SCALES := {
-	"res://assets/power-ups/magnifying_glass.glb": 0.5,
+	"res://assets/power-ups/magnifying_glass.glb": 0.3,
 	"res://assets/power-ups/cutscene_model.glb": 0.8,
 	"res://assets/power-ups/heart_emoji.glb": 0.005,
 	"res://assets/power-ups/Lightning Bolt.glb": 1.6,
@@ -49,7 +49,7 @@ var spawn_interval := 4.0
 var spawn_chance := 0.5
 
 # Floating animation
-var float_amplitude := 0.28
+var float_amplitude := 0.15
 var float_speed := 3.6
 var float_rotation_speed := 48.0
 

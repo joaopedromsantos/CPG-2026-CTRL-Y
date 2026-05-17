@@ -1,4 +1,4 @@
-class_name RunnerPowerUpEffectController
+class_name PowerUpEffectController
 extends Node
 
 signal lives_changed(lives: int)
@@ -10,6 +10,8 @@ const TYPE_HEART := "heart"
 const TYPE_LIGHTNING := "lightning"
 const TYPE_HOURGLASS := "hourglass"
 const TYPE_DOUBLE := "double"
+
+const LIGHTNING_PLAYER_SPEED_MULTIPLIER := 2.0
 
 var config: PowerUpConfig
 var player: RunnerPlayer
@@ -109,6 +111,12 @@ func get_world_speed_multiplier() -> float:
 	return 1.0
 
 
+func get_player_speed_multiplier() -> float:
+	if _has_active_type(TYPE_LIGHTNING):
+		return LIGHTNING_PLAYER_SPEED_MULTIPLIER
+	return 1.0
+
+
 func consume_revive_if_available(current_lives: int) -> bool:
 	_current_lives = current_lives
 	for i in range(_active_effects.size() - 1, -1, -1):
@@ -132,7 +140,8 @@ func _heal(amount: int) -> void:
 func _sync_effect_state() -> void:
 	if blocos:
 		blocos.set_correct_answers_highlighted(_has_active_type(TYPE_LUPA))
-		blocos.set_auto_correct_rows(_has_active_type(TYPE_LIGHTNING))
+	if player:
+		player.set_speed_multiplier(get_player_speed_multiplier())
 
 
 func _has_active_type(type: String) -> bool:

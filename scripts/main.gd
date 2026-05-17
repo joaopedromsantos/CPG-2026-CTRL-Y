@@ -14,19 +14,11 @@ const FLOOR_FRONT_Z := 11.6
 const BASE_WORLD_SPEED := 8.0
 const WORLD_SPEED_PER_SCORE := 0.2
 const EQUATION_QUEUE_SIZE := 3
-const DEFAULT_MAX_LIVES := 3
-const DIFFICULTY_LIVES := {
-	"easy": 6,
-	"medium": 5,
-	"hard": 4,
-	"impossible": 3,
-}
-const DIFFICULTY_WITHOUT_CONES := "easy"
+const MAX_LIVES := 3
 const POWER_UP_SLOT_COUNT := 4
 const ACTIVATABLE_POWER_UP_SLOT_COUNT := 3
 const RESERVE_POWER_UP_SLOT := 3
 const MIN_GAME_OVER_DELAY := 2.0
-const LIFE_LOST_REACTION_DELAY := 0.45
 const EQUATION_SEQUENCE_SCRIPT = preload("res://scripts/equation_sequence.gd")
 const POWER_UP_CONFIG = preload("res://assets/power-ups/power_up_config.tres")
 
@@ -37,20 +29,18 @@ var _lane_positions: Array[float] = [
 ]
 
 var _score := 0.0
-var _max_lives := DEFAULT_MAX_LIVES
-var _lives := DEFAULT_MAX_LIVES
+var _lives := MAX_LIVES
 var _is_game_over := false
 var _is_paused := false
 var world_speed := BASE_WORLD_SPEED
 var _power_up_slots: Array[String] = ["", "", "", ""]
 
 var _player: RunnerPlayer
-# var _hud: RunnerHud
 var _cenario: RunnerScenario
 var _blocos: RunnerBlocos
 var _power_ups: RunnerPowerUps
 var _cones: RunnerCones
-var _power_up_effects: RunnerPowerUpEffectController
+var _power_up_effects: PowerUpEffectController
 var _snd_game: AudioStreamPlayer
 var _snd_lose: AudioStreamPlayer
 var _snd_punch: AudioStreamPlayer
@@ -76,10 +66,9 @@ func _ready() -> void:
 	_build_power_ups()
 	_build_cones()
 	_build_power_up_effect_controller()
-	# _build_hud()
 	_setup_camera()
 	_build_audio()
-	
+
 	game_over.connect(hud.on_game_over)
 	restart_game.connect(hud.on_restart_game)
 	score_event.connect(hud.on_score_change)
@@ -113,21 +102,19 @@ func _process(delta: float) -> void:
 	_cenario.tick(delta)
 	_blocos.tick(delta, _player.get_runner_position())
 	_power_ups.tick(delta, _player.get_runner_position())
-	_cones.tick(
-		delta,
-		_player.get_runner_position(),
-		_blocos.get_active_row_z_positions(),
-		_blocos.get_distance_to_next_spawn()
-	)
+	_cones.tick(delta, _player.get_runner_position())
 	_update_world_speed(delta)
 	_update_camera_shake(delta)
 
 
 func _update_world_speed(_delta: float) -> void:
-	var speed_multiplier := 1.0
+	var world_speed_multiplier := 1.0
 	if _power_up_effects:
-		speed_multiplier = _power_up_effects.get_world_speed_multiplier()
-	var target_speed := (BASE_WORLD_SPEED + _score * WORLD_SPEED_PER_SCORE) * speed_multiplier
+		world_speed_multiplier = _power_up_effects.get_world_speed_multiplier()
+		# Lightning também acelera o mundo <- NOVO
+		world_speed_multiplier *= _power_up_effects.get_player_speed_multiplier()
+
+	var target_speed := (BASE_WORLD_SPEED + _score * WORLD_SPEED_PER_SCORE) * world_speed_multiplier
 	if is_equal_approx(world_speed, target_speed):
 		return
 
@@ -221,18 +208,12 @@ func _build_cones() -> void:
 
 
 func _build_power_up_effect_controller() -> void:
-	_power_up_effects = RunnerPowerUpEffectController.new()
+	_power_up_effects = PowerUpEffectController.new()
 	add_child(_power_up_effects)
-	_power_up_effects.setup(_player, _blocos, POWER_UP_CONFIG, _max_lives, _lives)
+	_power_up_effects.setup(_player, _blocos, POWER_UP_CONFIG, MAX_LIVES, _lives)
 	_power_up_effects.lives_changed.connect(_on_power_up_lives_changed)
 	_power_up_effects.power_up_slot_changed.connect(_on_power_up_slot_changed)
 	_power_up_effects.power_up_slot_changed.connect(hud.on_power_up_slot_active_changed)
-
-
-# func _build_hud() -> void:
-# 	_hud = RunnerHud.new()
-# 	add_child(_hud)
-# 	_hud.setup(hud_sentences)
 
 
 func _build_audio() -> void:
@@ -277,12 +258,7 @@ func _restart() -> void:
 	_shake_time_left = 0.0
 	if _camera:
 		_camera.position = _camera_base_position
-	var current_difficulty := _resolve_current_difficulty()
-	_max_lives = int(DIFFICULTY_LIVES.get(current_difficulty, DEFAULT_MAX_LIVES))
-	_lives = _max_lives
-	_power_up_effects.max_lives = _max_lives
-	_cones.enabled = current_difficulty != DIFFICULTY_WITHOUT_CONES
-	hud.set_max_lives(_max_lives)
+	_lives = MAX_LIVES
 	_is_game_over = false
 	if _is_paused:
 		_resume()
@@ -294,13 +270,11 @@ func _restart() -> void:
 	for i in range(POWER_UP_SLOT_COUNT):
 		_power_up_slots[i] = ""
 	power_up_slots_event.emit(_power_up_slots.duplicate())
-	# _hud.hide_game_over()
-	# _hud.update_score(0)
 	if _snd_lose:
 		_snd_lose.stop()
 	if _snd_game:
 		_snd_game.play()
-	
+
 	restart_game.emit()
 	score_event.emit(int(_score))
 	lives_event.emit(_lives)
@@ -333,7 +307,6 @@ func _end_game() -> void:
 func _on_hud_pause_event() -> void:
 	if _is_game_over:
 		return
-
 	if _is_paused:
 		_resume()
 	else:
@@ -374,6 +347,7 @@ func _on_blocos_answer_selected(is_correct: bool, _selected_answer: int) -> void
 	hud.show_feedback(is_correct)
 	_set_active_equation(_equation_sequence.advance())
 
+
 func _set_active_equation(equation: Dictionary) -> void:
 	hud.show_equation(equation)
 	_blocos.set_equation(equation)
@@ -403,27 +377,13 @@ func _lose_life() -> bool:
 		_lives = 1
 		_power_up_effects.set_current_lives(_lives)
 	lives_event.emit(_lives)
-	_play_life_lost_reaction()
 	if _lives <= 0:
-		_is_game_over = true
-		_end_game_after_life_lost_reaction()
+		_end_game()
 		return true
-
-	return false
-
-
-func _play_life_lost_reaction() -> void:
 	_player.take_damage()
 	_start_camera_shake(0.28, 0.18)
 	_snd_wrong.play()
-
-
-func _end_game_after_life_lost_reaction() -> void:
-	var sequence_id := _game_over_sequence_id
-	await get_tree().create_timer(LIFE_LOST_REACTION_DELAY).timeout
-	if sequence_id != _game_over_sequence_id:
-		return
-	_end_game()
+	return false
 
 
 func _start_camera_shake(duration: float, strength: float) -> void:
@@ -450,15 +410,8 @@ func _update_camera_shake(delta: float) -> void:
 
 
 func _on_power_up_lives_changed(lives: int) -> void:
-	_lives = clampi(lives, 0, _max_lives)
+	_lives = clampi(lives, 0, MAX_LIVES)
 	lives_event.emit(_lives)
-
-
-func _resolve_current_difficulty() -> String:
-	var game_settings := get_node_or_null("/root/GameSettings")
-	if game_settings:
-		return String(game_settings.get("selected_difficulty"))
-	return "easy"
 
 
 func _use_power_up_slot(slot: int) -> void:
