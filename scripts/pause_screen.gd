@@ -2,6 +2,7 @@ class_name PauseScreen
 extends Control
 
 signal resume_requested
+signal restart_requested
 signal start_screen_requested
 
 @onready var score_value: Label = $Panel/Content/StatsRow/ScoreStat/ScoreContent/ScoreValue
@@ -9,6 +10,7 @@ signal start_screen_requested
 @onready var lives_value: Label = $Panel/Content/StatsRow/LivesStat/LivesContent/LivesValue
 @onready var power_ups_value: Label = $Panel/Content/PowerUpsPanel/PowerUpsContent/PowerUpsValue
 @onready var resume_button: Button = $Panel/Content/ButtonsRow/ResumeButton
+@onready var restart_button: Button = $Panel/Content/ButtonsRow/RestartButton
 @onready var start_screen_button: Button = $Panel/Content/ButtonsRow/StartScreenButton
 
 const POWER_UP_LABELS := {
@@ -24,6 +26,7 @@ const POWER_UP_LABELS := {
 func _ready() -> void:
 	visible = false
 	resume_button.pressed.connect(_on_resume_button_pressed)
+	restart_button.pressed.connect(_on_restart_button_pressed)
 	start_screen_button.pressed.connect(_on_start_screen_button_pressed)
 
 
@@ -56,6 +59,11 @@ func _format_power_up_slots(power_up_slots: Array) -> String:
 func _on_resume_button_pressed() -> void:
 	resume_button.release_focus()
 	resume_requested.emit()
+
+
+func _on_restart_button_pressed() -> void:
+	restart_button.release_focus()
+	restart_requested.emit()
 
 
 func _on_start_screen_button_pressed() -> void:
