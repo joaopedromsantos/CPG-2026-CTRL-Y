@@ -229,7 +229,7 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.52, 0.18, 0.06, 1)
 theme_override_fonts/font = ExtResource("2_fredoka")
 theme_override_font_sizes/font_size = 18
-text = "ACERTOS"
+text = "PONTOS"
 horizontal_alignment = 1
 
 [node name="ScoreValue" type="Label" parent="Panel/Content/StatsRow/ScoreStat/ScoreContent" unique_id=699526473]
