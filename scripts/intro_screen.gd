@@ -11,6 +11,19 @@ const ROBOT_IDLE_ANIMATION := "RobotArmature|Robot_Idle"
 const ROBOT_IDLE_SWAY_SPEED := 1.8
 const ROBOT_IDLE_SWAY_ANGLE := 0.035
 const ROBOT_IDLE_BOB_HEIGHT := 0.035
+const ROBOT_PUSHBACK_DURATION := 0.62
+const ROBOT_PUSHBACK_DISTANCE := 0.42
+const ROBOT_PUSHBACK_LEAN := 0.22
+const ROBOT_PUSHBACK_SHAKE := 0.035
+const ROBOT_ARM_SWING := 0.85
+const ROBOT_ARM_BONES := [
+	"Shoulder.L",
+	"UpperArm.L",
+	"LowerArm.L",
+	"Shoulder.R",
+	"UpperArm.R",
+	"LowerArm.R",
+]
 const PANEL_STAGGER := 0.62
 const PANEL_ENTER_DURATION := 0.36
 const PANEL_SLIDE_DISTANCE := 42.0
@@ -40,7 +53,10 @@ var _robot_viewport_container: SubViewportContainer
 var _robot_viewport: SubViewport
 var _robot: Node3D
 var _robot_animation: AnimationPlayer
+var _robot_skeleton: Skeleton3D
 var _robot_base_position := Vector3.ZERO
+var _robot_pushback_time_left := 0.0
+var _robot_arm_base_rotations: Dictionary = {}
 var _intro_started_at_msec := 0
 var _menu_audio: AudioStreamPlayer
 
@@ -77,6 +93,12 @@ func _stop_menu_music() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		var mouse_event := event as InputEventMouseButton
+		if mouse_event.button_index == MOUSE_BUTTON_LEFT and mouse_event.pressed and _is_robot_clicked(mouse_event.position):
+			get_tree().root.set_input_as_handled()
+			_play_robot_pushback()
+		return
 	if not (event is InputEventKey):
 		return
 	var key_event := event as InputEventKey
@@ -98,6 +120,8 @@ func _process(delta: float) -> void:
 		rotation_direction += 1.0
 	if not is_zero_approx(rotation_direction):
 		_robot.rotate_y(rotation_direction * ROBOT_ROTATION_SPEED * delta)
+	if _robot_pushback_time_left > 0.0:
+		_robot_pushback_time_left = maxf(_robot_pushback_time_left - delta, 0.0)
 	_update_robot_idle_sway()
 	queue_redraw()
 
@@ -153,6 +177,7 @@ func _build_robot_viewport() -> void:
 	_robot_base_position = _robot.position
 	world.add_child(_robot)
 	_setup_robot_idle_animation()
+	_setup_robot_arm_animation()
 
 	var key_light := DirectionalLight3D.new()
 	key_light.light_energy = 3.2
@@ -189,15 +214,80 @@ func _find_animation_player(node: Node) -> AnimationPlayer:
 	return null
 
 
+func _setup_robot_arm_animation() -> void:
+	_robot_skeleton = _find_skeleton(_robot)
+	if _robot_skeleton == null:
+		return
+	_robot_arm_base_rotations.clear()
+	for bone_name in ROBOT_ARM_BONES:
+		var bone_index := _robot_skeleton.find_bone(bone_name)
+		if bone_index >= 0:
+			_robot_arm_base_rotations[bone_name] = _robot_skeleton.get_bone_pose_rotation(bone_index)
+
+
+func _find_skeleton(node: Node) -> Skeleton3D:
+	if node is Skeleton3D:
+		return node as Skeleton3D
+	for child in node.get_children():
+		var found := _find_skeleton(child)
+		if found:
+			return found
+	return null
+
+
 func _update_robot_idle_sway() -> void:
 	if _robot_animation and not _robot_animation.is_playing():
 		_robot_animation.play(ROBOT_IDLE_ANIMATION)
 	var time := Time.get_ticks_msec() * 0.001
 	var sway := sin(time * ROBOT_IDLE_SWAY_SPEED)
 	var bob := sin(time * ROBOT_IDLE_SWAY_SPEED * 2.0)
-	_robot.rotation.x = sway * ROBOT_IDLE_SWAY_ANGLE * 0.45
-	_robot.rotation.z = sway * ROBOT_IDLE_SWAY_ANGLE
-	_robot.position = _robot_base_position + Vector3(0.0, bob * ROBOT_IDLE_BOB_HEIGHT, 0.0)
+	var pushback := _robot_pushback_amount()
+	var shake := sin(time * 65.0) * ROBOT_PUSHBACK_SHAKE * pushback
+	_robot.rotation.x = sway * ROBOT_IDLE_SWAY_ANGLE * 0.45 - pushback * ROBOT_PUSHBACK_LEAN
+	_robot.rotation.z = sway * ROBOT_IDLE_SWAY_ANGLE + shake
+	_robot.position = _robot_base_position + Vector3(shake * 0.25, bob * ROBOT_IDLE_BOB_HEIGHT, -pushback * ROBOT_PUSHBACK_DISTANCE)
+	_update_robot_arm_pushback(pushback, time)
+
+
+func _update_robot_arm_pushback(pushback: float, time: float) -> void:
+	if _robot_skeleton == null or _robot_arm_base_rotations.is_empty():
+		return
+	if pushback <= 0.0:
+		return
+
+	var flutter := sin(time * 38.0) * 0.18 * pushback
+	for bone_name in _robot_arm_base_rotations.keys():
+		var bone_index := _robot_skeleton.find_bone(String(bone_name))
+		if bone_index < 0:
+			continue
+		var side := -1.0 if String(bone_name).ends_with(".L") else 1.0
+		var base_rotation := _robot_arm_base_rotations[bone_name] as Quaternion
+		var lift := Quaternion(Vector3.RIGHT, (-ROBOT_ARM_SWING + flutter) * pushback)
+		var spread := Quaternion(Vector3.FORWARD, side * (0.42 + flutter) * pushback)
+		var twist := Quaternion(Vector3.UP, side * 0.18 * pushback)
+		if String(bone_name).begins_with("LowerArm"):
+			lift = Quaternion(Vector3.RIGHT, (-ROBOT_ARM_SWING * 0.45 + flutter) * pushback)
+			spread = Quaternion(Vector3.FORWARD, side * 0.20 * pushback)
+		_robot_skeleton.set_bone_pose_rotation(bone_index, base_rotation * spread * lift * twist)
+
+
+func _play_robot_pushback() -> void:
+	_robot_pushback_time_left = ROBOT_PUSHBACK_DURATION
+
+
+func _is_robot_clicked(screen_position: Vector2) -> bool:
+	if _robot_viewport_container == null:
+		return false
+	var robot_rect := _robot_viewport_container.get_global_rect()
+	return robot_rect.has_point(screen_position)
+
+
+func _robot_pushback_amount() -> float:
+	if _robot_pushback_time_left <= 0.0:
+		return 0.0
+	var progress := 1.0 - (_robot_pushback_time_left / ROBOT_PUSHBACK_DURATION)
+	var impact := sin(clampf(progress, 0.0, 1.0) * PI)
+	return pow(impact, 0.55)
 
 
 func _layout_robot_viewport() -> void:
