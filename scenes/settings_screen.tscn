@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cc1w6n6ss8oj8"]
 
-[ext_resource type="Script" uid="uid://dcihh0dum4d51" path="res://scripts/settings_screen.gd" id="1_settings_script"]
+[ext_resource type="Script" uid="uid://dcihh0dum4d51" path="res://scripts/screens/settings/settings_screen.gd" id="1_settings_script"]
 [ext_resource type="Texture2D" uid="uid://dxl2a8c6y6ohx" path="res://assets/hud/close-x.svg" id="2_close_x"]
 [ext_resource type="Texture2D" uid="uid://w6jaoweuw1am" path="res://assets/background/background.png" id="3_background"]
 

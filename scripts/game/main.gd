@@ -27,7 +27,7 @@ const ACTIVATABLE_POWER_UP_SLOT_COUNT := 3
 const RESERVE_POWER_UP_SLOT := 3
 const MIN_GAME_OVER_DELAY := 2.0
 const LIFE_LOST_REACTION_DELAY := 0.45
-const EQUATION_SEQUENCE_SCRIPT = preload("res://scripts/equation_sequence.gd")
+const EQUATION_SEQUENCE_SCRIPT = preload("res://scripts/equations/equation_sequence.gd")
 const SCENARIO_SCRIPT = preload("res://scripts/scenario/scenario.gd")
 const POWER_UP_CONFIG = preload("res://assets/power-ups/power_up_config.tres")
 
