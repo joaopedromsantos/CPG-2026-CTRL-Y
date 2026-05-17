@@ -82,6 +82,7 @@ func _ready() -> void:
 	_setup_death_fade()
 	_setup_power_up_slot_icons()
 	pause_screen.resume_requested.connect(_on_pause_screen_resume_requested)
+	pause_screen.restart_requested.connect(_on_pause_screen_restart_requested)
 	pause_screen.start_screen_requested.connect(_on_pause_screen_start_screen_requested)
 	timer.start_timer()
 
@@ -357,6 +358,10 @@ func _on_pause_button_pressed() -> void:
 
 func _on_pause_screen_resume_requested() -> void:
 	pause_event.emit()
+
+
+func _on_pause_screen_restart_requested() -> void:
+	restart_event.emit()
 
 
 func _on_pause_screen_start_screen_requested() -> void:
