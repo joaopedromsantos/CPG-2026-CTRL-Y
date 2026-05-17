@@ -21,4 +21,8 @@ mono_crash.*.json
 # End of https://www.toptal.com/developers/gitignore/api/godot
 .vscode/
 
-.claude/
+.claude/*
+!.claude/skills/
+.claude/skills/*
+!.claude/skills/tdd-refactor/
+!.claude/skills/tdd-refactor/**

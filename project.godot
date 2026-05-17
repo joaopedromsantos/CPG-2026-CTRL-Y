@@ -31,6 +31,10 @@ window/size/mode=2
 window/stretch/mode="viewport"
 window/stretch/aspect="ignore"
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/gut/plugin.cfg")
+
 [gui]
 
 theme/custom="res://assets/fonts/fredoka_theme.tres"
