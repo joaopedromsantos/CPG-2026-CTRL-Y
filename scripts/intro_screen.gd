@@ -6,6 +6,33 @@ const ROBOT_SCENE := preload("res://assets/player/Robot.fbx")
 const DESIGN_SIZE := Vector2(1408.0, 1152.0)
 const FONT_REGULAR := "res://assets/fonts/fredoka/Fredoka_Condensed-Medium.ttf"
 const FONT_BOLD := "res://assets/fonts/fredoka/Fredoka_Condensed-Bold.ttf"
+const ROBOT_ROTATION_SPEED := 1.8
+const ROBOT_IDLE_ANIMATION := "RobotArmature|Robot_Idle"
+const ROBOT_DEATH_ANIMATION := "RobotArmature|Robot_Death"
+const ROBOT_IDLE_SWAY_SPEED := 1.8
+const ROBOT_IDLE_SWAY_ANGLE := 0.035
+const ROBOT_IDLE_BOB_HEIGHT := 0.035
+const ROBOT_PUSHBACK_DURATION := 0.62
+const ROBOT_PUSHBACK_DISTANCE := 0.42
+const ROBOT_PUSHBACK_LEAN := 0.22
+const ROBOT_PUSHBACK_SHAKE := 0.035
+const ROBOT_ARM_SWING := 0.85
+const ROBOT_ARM_BONES := [
+	"Shoulder.L",
+	"UpperArm.L",
+	"LowerArm.L",
+	"Shoulder.R",
+	"UpperArm.R",
+	"LowerArm.R",
+]
+const PANEL_STAGGER := 0.62
+const PANEL_ENTER_DURATION := 0.36
+const PANEL_SLIDE_DISTANCE := 42.0
+const TYPEWRITER_SPEED := 38.0
+const TYPEWRITER_DELAY := 0.20
+const ORANGE_GLITCH_DURATION := 0.85
+const MONITOR_GLOW_SPEED := 3.0
+const ENTER_PROMPT_BLINK_SPEED := 4.2
 
 const CYAN := Color(0.11, 0.91, 0.98)
 const CYAN_SOFT := Color(0.11, 0.91, 0.98, 0.55)
@@ -26,10 +53,22 @@ var _stars: Array[Vector2] = []
 var _sparks: Array[Vector2] = []
 var _robot_viewport_container: SubViewportContainer
 var _robot_viewport: SubViewport
+var _robot_click_area: Control
 var _robot: Node3D
+var _robot_animation: AnimationPlayer
+var _robot_skeleton: Skeleton3D
+var _robot_base_position := Vector3.ZERO
+var _robot_pushback_time_left := 0.0
+var _robot_click_count := 0
+var _robot_is_dead := false
+var _robot_arm_base_rotations: Dictionary = {}
+var _is_robot_pointer_active := false
+var _intro_started_at_msec := 0
+var _menu_audio: AudioStreamPlayer
 
 
 func _ready() -> void:
+	_intro_started_at_msec = Time.get_ticks_msec()
 	_font_regular = load(FONT_REGULAR)
 	_font_bold = load(FONT_BOLD)
 	mouse_filter = Control.MOUSE_FILTER_STOP
@@ -37,6 +76,7 @@ func _ready() -> void:
 	_build_star_field()
 	_build_robot_viewport()
 	_layout_robot_viewport()
+	_play_menu_music()
 	queue_redraw()
 
 
@@ -44,6 +84,18 @@ func _notification(what: int) -> void:
 	if what == NOTIFICATION_RESIZED and is_node_ready():
 		_layout_robot_viewport()
 		queue_redraw()
+
+
+func _exit_tree() -> void:
+	_stop_menu_music()
+
+
+func _stop_menu_music() -> void:
+	if _menu_audio:
+		_menu_audio.stop()
+		if _menu_audio.finished.is_connected(_menu_audio.play):
+			_menu_audio.finished.disconnect(_menu_audio.play)
+		_menu_audio.stream = null
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -54,7 +106,47 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 	if key_event.keycode == KEY_ENTER or key_event.keycode == KEY_KP_ENTER:
 		get_tree().root.set_input_as_handled()
+		_stop_menu_music()
 		get_tree().change_scene_to_file(GAME_SCENE)
+
+
+func _gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		var mouse_event := event as InputEventMouseButton
+		if mouse_event.button_index == MOUSE_BUTTON_LEFT and mouse_event.pressed and _is_robot_clicked(get_global_mouse_position()):
+			accept_event()
+			_on_robot_clicked()
+
+
+func _on_robot_click_area_gui_input(event: InputEvent) -> void:
+	if _robot_is_dead:
+		return
+	if event is InputEventMouseButton:
+		var mouse_event := event as InputEventMouseButton
+		if mouse_event.button_index == MOUSE_BUTTON_LEFT and mouse_event.pressed:
+			_robot_click_area.accept_event()
+			_on_robot_clicked()
+
+
+func _process(delta: float) -> void:
+	if _robot == null:
+		return
+	var rotation_direction := 0.0
+	if Input.is_key_pressed(KEY_LEFT) or Input.is_key_pressed(KEY_A):
+		rotation_direction -= 1.0
+	if Input.is_key_pressed(KEY_RIGHT) or Input.is_key_pressed(KEY_D):
+		rotation_direction += 1.0
+	if not is_zero_approx(rotation_direction):
+		_robot.rotate_y(rotation_direction * ROBOT_ROTATION_SPEED * delta)
+	if _robot_is_dead:
+		_update_robot_pointer_cursor()
+		queue_redraw()
+		return
+	if _robot_pushback_time_left > 0.0:
+		_robot_pushback_time_left = maxf(_robot_pushback_time_left - delta, 0.0)
+	_update_robot_idle_sway()
+	_update_robot_pointer_cursor()
+	queue_redraw()
 
 
 func _draw() -> void:
@@ -75,6 +167,17 @@ func _build_star_field() -> void:
 		_sparks.append(Vector2(rng.randf_range(0.0, DESIGN_SIZE.x), rng.randf_range(510.0, 700.0)))
 
 
+func _play_menu_music() -> void:
+	_menu_audio = AudioStreamPlayer.new()
+	_menu_audio.stream = load("res://assets/sounds/menu_sound.wav")
+	add_child(_menu_audio)
+	_menu_audio.finished.connect(_menu_audio.play)
+	var game_settings := get_node_or_null("/root/GameSettings")
+	if game_settings:
+		game_settings.call("apply_music_volume", _menu_audio)
+	_menu_audio.play()
+
+
 func _build_robot_viewport() -> void:
 	_robot_viewport_container = SubViewportContainer.new()
 	_robot_viewport_container.name = "GameplayRobotPreview"
@@ -90,11 +193,21 @@ func _build_robot_viewport() -> void:
 	var world := Node3D.new()
 	_robot_viewport.add_child(world)
 
+	_robot_click_area = Control.new()
+	_robot_click_area.name = "RobotClickArea"
+	_robot_click_area.mouse_filter = Control.MOUSE_FILTER_STOP
+	_robot_click_area.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	_robot_click_area.gui_input.connect(_on_robot_click_area_gui_input)
+	add_child(_robot_click_area)
+
 	_robot = ROBOT_SCENE.instantiate()
 	_robot.name = "Robot"
-	_robot.scale = Vector3.ONE * 1.15
+	_robot.scale = Vector3.ONE * 0.4
 	_robot.rotation_degrees = Vector3(0.0, -28.0, 0.0)
+	_robot_base_position = _robot.position
 	world.add_child(_robot)
+	_setup_robot_idle_animation()
+	_setup_robot_arm_animation()
 
 	var key_light := DirectionalLight3D.new()
 	key_light.light_energy = 3.2
@@ -108,10 +221,144 @@ func _build_robot_viewport() -> void:
 	world.add_child(fill_light)
 
 	var camera := Camera3D.new()
-	camera.look_at_from_position(Vector3(0.0, 1.45, 5.1), Vector3(0.0, 1.05, 0.0), Vector3.UP)
+	camera.look_at_from_position(Vector3(0.0, 1.35, 5.8), Vector3(0.0, 0.9, 0.0), Vector3.UP)
 	camera.fov = 31.0
 	camera.current = true
 	world.add_child(camera)
+
+
+func _setup_robot_idle_animation() -> void:
+	_robot_animation = _find_animation_player(_robot)
+	if _robot_animation == null or not _robot_animation.has_animation(ROBOT_IDLE_ANIMATION):
+		return
+	_robot_animation.play(ROBOT_IDLE_ANIMATION)
+
+
+func _find_animation_player(node: Node) -> AnimationPlayer:
+	if node is AnimationPlayer:
+		return node as AnimationPlayer
+	for child in node.get_children():
+		var found := _find_animation_player(child)
+		if found:
+			return found
+	return null
+
+
+func _setup_robot_arm_animation() -> void:
+	_robot_skeleton = _find_skeleton(_robot)
+	if _robot_skeleton == null:
+		return
+	_robot_arm_base_rotations.clear()
+	for bone_name in ROBOT_ARM_BONES:
+		var bone_index := _robot_skeleton.find_bone(bone_name)
+		if bone_index >= 0:
+			_robot_arm_base_rotations[bone_name] = _robot_skeleton.get_bone_pose_rotation(bone_index)
+
+
+func _find_skeleton(node: Node) -> Skeleton3D:
+	if node is Skeleton3D:
+		return node as Skeleton3D
+	for child in node.get_children():
+		var found := _find_skeleton(child)
+		if found:
+			return found
+	return null
+
+
+func _update_robot_idle_sway() -> void:
+	if _robot_animation and not _robot_animation.is_playing():
+		_robot_animation.play(ROBOT_IDLE_ANIMATION)
+	var time := Time.get_ticks_msec() * 0.001
+	var sway := sin(time * ROBOT_IDLE_SWAY_SPEED)
+	var bob := sin(time * ROBOT_IDLE_SWAY_SPEED * 2.0)
+	var pushback := _robot_pushback_amount()
+	var shake := sin(time * 65.0) * ROBOT_PUSHBACK_SHAKE * pushback
+	_robot.rotation.x = sway * ROBOT_IDLE_SWAY_ANGLE * 0.45 - pushback * ROBOT_PUSHBACK_LEAN
+	_robot.rotation.z = sway * ROBOT_IDLE_SWAY_ANGLE + shake
+	_robot.position = _robot_base_position + Vector3(shake * 0.25, bob * ROBOT_IDLE_BOB_HEIGHT, -pushback * ROBOT_PUSHBACK_DISTANCE)
+	_update_robot_arm_pushback(pushback, time)
+
+
+func _update_robot_arm_pushback(pushback: float, time: float) -> void:
+	if _robot_skeleton == null or _robot_arm_base_rotations.is_empty():
+		return
+	if pushback <= 0.0:
+		return
+
+	var flutter := sin(time * 38.0) * 0.18 * pushback
+	for bone_name in _robot_arm_base_rotations.keys():
+		var bone_index := _robot_skeleton.find_bone(String(bone_name))
+		if bone_index < 0:
+			continue
+		var side := -1.0 if String(bone_name).ends_with(".L") else 1.0
+		var base_rotation := _robot_arm_base_rotations[bone_name] as Quaternion
+		var lift := Quaternion(Vector3.RIGHT, (-ROBOT_ARM_SWING + flutter) * pushback)
+		var spread := Quaternion(Vector3.FORWARD, side * (0.42 + flutter) * pushback)
+		var twist := Quaternion(Vector3.UP, side * 0.18 * pushback)
+		if String(bone_name).begins_with("LowerArm"):
+			lift = Quaternion(Vector3.RIGHT, (-ROBOT_ARM_SWING * 0.45 + flutter) * pushback)
+			spread = Quaternion(Vector3.FORWARD, side * 0.20 * pushback)
+		_robot_skeleton.set_bone_pose_rotation(bone_index, base_rotation * spread * lift * twist)
+
+
+func _play_robot_pushback() -> void:
+	_robot_pushback_time_left = ROBOT_PUSHBACK_DURATION
+
+
+func _on_robot_clicked() -> void:
+	if _robot_is_dead:
+		return
+	_robot_click_count += 1
+	if _robot_click_count > 5:
+		_play_robot_death()
+	else:
+		_play_robot_pushback()
+
+
+func _play_robot_death() -> void:
+	_robot_is_dead = true
+	_robot_pushback_time_left = 0.0
+	if _robot_click_area:
+		_robot_click_area.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_reset_robot_arm_pose()
+	_robot.position = _robot_base_position
+	_robot.rotation.x = 0.0
+	_robot.rotation.z = 0.0
+	if _robot_animation and _robot_animation.has_animation(ROBOT_DEATH_ANIMATION):
+		_robot_animation.stop()
+		_robot_animation.play(ROBOT_DEATH_ANIMATION)
+
+
+func _reset_robot_arm_pose() -> void:
+	if _robot_skeleton == null or _robot_arm_base_rotations.is_empty():
+		return
+	for bone_name in _robot_arm_base_rotations.keys():
+		var bone_index := _robot_skeleton.find_bone(String(bone_name))
+		if bone_index >= 0:
+			_robot_skeleton.set_bone_pose_rotation(bone_index, _robot_arm_base_rotations[bone_name] as Quaternion)
+
+
+func _is_robot_clicked(screen_position: Vector2) -> bool:
+	if _robot_click_area == null:
+		return false
+	var robot_rect := _robot_click_area.get_global_rect()
+	return robot_rect.has_point(screen_position)
+
+
+func _update_robot_pointer_cursor() -> void:
+	var should_use_pointer := _is_robot_clicked(get_global_mouse_position()) and not _robot_is_dead
+	if should_use_pointer == _is_robot_pointer_active:
+		return
+	_is_robot_pointer_active = should_use_pointer
+	Input.set_default_cursor_shape(Input.CURSOR_POINTING_HAND if should_use_pointer else Input.CURSOR_ARROW)
+
+
+func _robot_pushback_amount() -> float:
+	if _robot_pushback_time_left <= 0.0:
+		return 0.0
+	var progress := 1.0 - (_robot_pushback_time_left / ROBOT_PUSHBACK_DURATION)
+	var impact := sin(clampf(progress, 0.0, 1.0) * PI)
+	return pow(impact, 0.55)
 
 
 func _layout_robot_viewport() -> void:
@@ -123,11 +370,18 @@ func _layout_robot_viewport() -> void:
 	_robot_viewport_container.position = pixel_rect.position
 	_robot_viewport_container.size = pixel_rect.size
 	_robot_viewport.size = Vector2i(maxi(1, int(pixel_rect.size.x)), maxi(1, int(pixel_rect.size.y)))
+	if _robot_click_area:
+		var hit_rect := Rect2(
+			pixel_rect.position + Vector2(pixel_rect.size.x * 0.36, pixel_rect.size.y * 0.16),
+			Vector2(pixel_rect.size.x * 0.34, pixel_rect.size.y * 0.64)
+		)
+		_robot_click_area.position = hit_rect.position
+		_robot_click_area.size = hit_rect.size
 
 
 func _draw_scene() -> void:
 	_draw_background()
-	_draw_left_panels()
+	_draw_left_panels_animated()
 	_draw_monitor()
 	_draw_continue_box()
 
@@ -165,6 +419,136 @@ func _draw_distant_city() -> void:
 	for y in [517, 567, 647]:
 		draw_line(Vector2(0, y), Vector2(118, y), Color(CYAN.r, CYAN.g, CYAN.b, 0.22), 1.0)
 		draw_line(Vector2(664, y), Vector2(832, y), Color(CYAN.r, CYAN.g, CYAN.b, 0.22), 1.0)
+
+
+func _draw_left_panels_animated() -> void:
+	_draw_intro_panel(0, Rect2(36, 66, 568, 160), [
+		{"text": "SISTEMA INICIANDO...", "pos": Vector2(76, 131), "font_size": 38, "color": CYAN, "font": _font_bold, "glitch": false},
+		{"text": "ERRO DETECTADO.", "pos": Vector2(78, 184), "font_size": 31, "color": ORANGE, "font": _font_bold, "glitch": true},
+	])
+
+	_draw_intro_panel(1, Rect2(36, 254, 568, 188), _make_panel_lines([
+		"Voc\u00ea \u00e9 RX-07, um rob\u00f4 criado para",
+		"resolver problemas matem\u00e1ticos.",
+		"Mas algo deu errado na sua",
+		"programa\u00e7\u00e3o."
+	], Vector2(76, 301), 28, CYAN, _font_regular))
+
+	_draw_intro_panel(2, Rect2(36, 462, 568, 188), _make_panel_lines([
+		"Seu n\u00facleo de energia est\u00e1 falhando,",
+		"e a \u00fanica forma de continuar",
+		"funcionando \u00e9 resolver equa\u00e7\u00f5es",
+		"antes que o sistema entre em colapso."
+	], Vector2(76, 510), 28, CYAN, _font_regular))
+
+	_draw_intro_panel(3, Rect2(36, 668, 568, 152), _make_panel_lines([
+		"Cada c\u00e1lculo correto estabiliza",
+		"seus circuitos por mais alguns",
+		"segundos."
+	], Vector2(76, 716), 28, CYAN, _font_regular))
+
+	_draw_intro_panel(4, Rect2(36, 838, 568, 108), _make_panel_lines([
+		"Cada erro aproxima o desligamento",
+		"definitivo."
+	], Vector2(76, 882), 28, CYAN, _font_regular))
+
+	_draw_intro_panel(5, Rect2(36, 965, 568, 118), [
+		{"text": "RESOLVA. SOBREVIVA.", "pos": Vector2(78, 1018), "font_size": 32, "color": ORANGE, "font": _font_bold, "glitch": true},
+		{"text": "REPROGRAME SEU DESTINO.", "pos": Vector2(78, 1062), "font_size": 32, "color": ORANGE, "font": _font_bold, "glitch": true},
+	])
+
+
+func _make_panel_lines(lines: Array[String], pos: Vector2, font_size: int, color: Color, font: Font) -> Array:
+	var panel_lines := []
+	for i in lines.size():
+		panel_lines.append({
+			"text": lines[i],
+			"pos": pos + Vector2(0, i * 39),
+			"font_size": font_size,
+			"color": color,
+			"font": font,
+			"glitch": false,
+		})
+	return panel_lines
+
+
+func _draw_intro_panel(index: int, rect: Rect2, lines: Array) -> void:
+	var elapsed := _intro_elapsed()
+	var start_time := index * PANEL_STAGGER
+	var enter_progress := clampf((elapsed - start_time) / PANEL_ENTER_DURATION, 0.0, 1.0)
+	if enter_progress <= 0.0:
+		return
+
+	var eased := _ease_out_cubic(enter_progress)
+	var offset := Vector2(-PANEL_SLIDE_DISTANCE * (1.0 - eased), 0.0)
+	var alpha := eased
+	_draw_panel_alpha(Rect2(rect.position + offset, rect.size), alpha)
+
+	var text_time := maxf(elapsed - start_time - PANEL_ENTER_DURATION - TYPEWRITER_DELAY, 0.0)
+	var visible_chars := int(text_time * TYPEWRITER_SPEED)
+	for line in lines:
+		var text := String(line["text"])
+		var visible_text := text.substr(0, mini(text.length(), visible_chars))
+		visible_chars = maxi(visible_chars - text.length(), 0)
+		if visible_text.is_empty():
+			continue
+		_draw_intro_text(
+			visible_text,
+			(line["pos"] as Vector2) + offset,
+			int(line["font_size"]),
+			line["color"] as Color,
+			line["font"] as Font,
+			alpha,
+			bool(line["glitch"]) and text_time <= ORANGE_GLITCH_DURATION,
+			index
+		)
+
+
+func _draw_intro_text(text: String, pos: Vector2, font_size: int, color: Color, font: Font, alpha: float, glitch: bool, panel_index: int) -> void:
+	var text_color := _with_alpha(color, alpha)
+	if glitch:
+		var glitch_seed := int(_intro_elapsed() * 22.0) + panel_index * 13
+		if glitch_seed % 5 == 0:
+			_draw_text_alpha(text, pos + Vector2(-3, 0), font_size, Color(CYAN.r, CYAN.g, CYAN.b, alpha * 0.58), font)
+			_draw_text_alpha(text, pos + Vector2(3, 1), font_size, Color(ORANGE.r, ORANGE.g * 0.72, ORANGE.b, alpha * 0.70), font)
+		if glitch_seed % 7 == 0:
+			text_color.a *= 0.45
+	_draw_text_alpha(text, pos, font_size, text_color, font)
+
+
+func _draw_panel_alpha(rect: Rect2, alpha: float) -> void:
+	var cut := 18.0
+	var points := PackedVector2Array([
+		Vector2(rect.position.x + cut, rect.position.y),
+		Vector2(rect.end.x - 22, rect.position.y + 4),
+		Vector2(rect.end.x, rect.position.y + cut),
+		Vector2(rect.end.x, rect.end.y - cut),
+		Vector2(rect.end.x - cut, rect.end.y),
+		Vector2(rect.position.x + cut, rect.end.y),
+		Vector2(rect.position.x, rect.end.y - cut),
+		Vector2(rect.position.x, rect.position.y + cut),
+	])
+	draw_colored_polygon(points, _with_alpha(PANEL_FILL, PANEL_FILL.a * alpha))
+	draw_polyline(_closed(points), _with_alpha(CYAN, alpha), 3.0)
+	draw_line(Vector2(rect.position.x + cut, rect.position.y), Vector2(rect.position.x + 32, rect.position.y), _with_alpha(Color(0.58, 1.0, 1.0), alpha), 3.0)
+	draw_line(Vector2(rect.end.x - 42, rect.position.y + 3), Vector2(rect.end.x - 18, rect.position.y + 3), _with_alpha(CYAN_SOFT, CYAN_SOFT.a * alpha), 3.0)
+
+
+func _draw_text_alpha(text: String, pos: Vector2, font_size: int, color: Color, font: Font) -> void:
+	draw_string(font, pos + Vector2(2, 2), text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, _with_alpha(SHADOW, SHADOW.a * color.a))
+	draw_string(font, pos, text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, color)
+
+
+func _intro_elapsed() -> float:
+	return maxf(float(Time.get_ticks_msec() - _intro_started_at_msec) * 0.001, 0.0)
+
+
+func _ease_out_cubic(t: float) -> float:
+	return 1.0 - pow(1.0 - clampf(t, 0.0, 1.0), 3.0)
+
+
+func _with_alpha(color: Color, alpha: float) -> Color:
+	return Color(color.r, color.g, color.b, clampf(alpha, 0.0, 1.0))
 
 
 func _draw_left_panels() -> void:
@@ -207,6 +591,10 @@ func _draw_left_panels() -> void:
 
 
 func _draw_panel(rect: Rect2) -> void:
+	_draw_panel_tinted(rect, CYAN, 1.0)
+
+
+func _draw_panel_tinted(rect: Rect2, border_color: Color, alpha: float) -> void:
 	var cut := 18.0
 	var points := PackedVector2Array([
 		Vector2(rect.position.x + cut, rect.position.y),
@@ -219,29 +607,69 @@ func _draw_panel(rect: Rect2) -> void:
 		Vector2(rect.position.x, rect.position.y + cut),
 	])
 	draw_colored_polygon(points, PANEL_FILL)
-	draw_polyline(_closed(points), CYAN, 3.0)
-	draw_line(Vector2(rect.position.x + cut, rect.position.y), Vector2(rect.position.x + 32, rect.position.y), Color(0.58, 1.0, 1.0), 3.0)
-	draw_line(Vector2(rect.end.x - 42, rect.position.y + 3), Vector2(rect.end.x - 18, rect.position.y + 3), CYAN_SOFT, 3.0)
+	for width in [9.0, 5.0]:
+		var width_float: float = width
+		draw_polyline(_closed(points), Color(border_color.r, border_color.g, border_color.b, alpha * 0.16 * (width_float / 9.0)), width_float)
+	draw_polyline(_closed(points), Color(border_color.r, border_color.g, border_color.b, alpha), 3.0)
+	draw_line(Vector2(rect.position.x + cut, rect.position.y), Vector2(rect.position.x + 32, rect.position.y), Color(0.72, 1.0, 1.0, alpha), 3.0)
+	draw_line(Vector2(rect.end.x - 42, rect.position.y + 3), Vector2(rect.end.x - 18, rect.position.y + 3), Color(border_color.r, border_color.g, border_color.b, alpha * 0.55), 3.0)
+
+
+func _draw_prompt_glow_text(text: String, pos: Vector2, font_size: int, color: Color, pulse: float) -> void:
+	var glow_alpha := lerpf(0.18, 0.58, pulse)
+	_draw_text_alpha(text, pos + Vector2(-2, 0), font_size, Color(0.72, 1.0, 1.0, glow_alpha), _font_bold)
+	_draw_text_alpha(text, pos + Vector2(2, 0), font_size, Color(0.72, 1.0, 1.0, glow_alpha), _font_bold)
+	_draw_text_alpha(text, pos + Vector2(0, -2), font_size, Color(0.72, 1.0, 1.0, glow_alpha), _font_bold)
+	_draw_text_alpha(text, pos + Vector2(0, 2), font_size, Color(0.72, 1.0, 1.0, glow_alpha), _font_bold)
+	_draw_text_alpha(text, pos, font_size, color, _font_bold)
 
 
 func _draw_continue_box() -> void:
-	_draw_panel(Rect2(1086, 42, 288, 128))
-	_draw_text("PRESSIONE [ENTER]", Vector2(1118, 98), 26, CYAN, _font_bold)
-	_draw_text("PARA CONTINUAR", Vector2(1134, 133), 25, CYAN, _font_bold)
+	var pulse: float = 0.5 + sin(_intro_elapsed() * ENTER_PROMPT_BLINK_SPEED) * 0.5
+	var bright_cyan := Color(
+		lerpf(CYAN.r, 0.70, pulse),
+		lerpf(CYAN.g, 1.0, pulse),
+		lerpf(CYAN.b, 1.0, pulse),
+		1.0
+	)
+	_draw_panel_tinted(Rect2(1086, 42, 288, 128), bright_cyan, lerpf(0.72, 1.0, pulse))
+	_draw_prompt_glow_text("PRESSIONE [ENTER]", Vector2(1118, 98), 26, bright_cyan, pulse)
+	_draw_prompt_glow_text("PARA CONTINUAR", Vector2(1134, 133), 25, bright_cyan, pulse)
 
 
 func _draw_monitor() -> void:
+	var pulse: float = 0.5 + sin(_intro_elapsed() * MONITOR_GLOW_SPEED) * 0.5
+	var blue_glow_alpha: float = lerpf(0.18, 0.52, pulse)
 	var screen := PackedVector2Array([
 		Vector2(1010, 220), Vector2(1266, 181), Vector2(1291, 352), Vector2(995, 374)
 	])
 	draw_colored_polygon(screen, Color(0.02, 0.09, 0.18))
+	for width in [24.0, 16.0, 9.0]:
+		var width_float: float = width
+		draw_polyline(_closed(screen), Color(CYAN.r, CYAN.g, CYAN.b, blue_glow_alpha * (width_float / 24.0) * 0.32), width_float)
 	draw_polyline(_closed(screen), Color(0.03, 0.28, 0.52), 12)
 	var inner := PackedVector2Array([
 		Vector2(1049, 259), Vector2(1242, 237), Vector2(1255, 332), Vector2(1041, 344)
 	])
 	draw_colored_polygon(inner, Color(0.02, 0.03, 0.05))
-	_draw_text("ERRO DE", Vector2(1087, 289), 29, ORANGE, _font_bold)
-	_draw_text("PROGRAMAÇÃO", Vector2(1055, 333), 29, ORANGE, _font_bold)
+	for width in [10.0, 6.0]:
+		var width_float: float = width
+		draw_polyline(_closed(inner), Color(CYAN.r, CYAN.g, CYAN.b, blue_glow_alpha * (width_float / 10.0) * 0.22), width_float)
+	_draw_glowing_monitor_text("ERRO DE", Vector2(1087, 289), 29)
+	_draw_glowing_monitor_text("PROGRAMAÇÃO", Vector2(1055, 333), 29)
+
+
+func _draw_glowing_monitor_text(text: String, pos: Vector2, font_size: int) -> void:
+	var pulse: float = 0.5 + sin(_intro_elapsed() * MONITOR_GLOW_SPEED) * 0.5
+	var glow_alpha: float = lerpf(0.24, 0.72, pulse)
+	for radius in [8.0, 5.0, 3.0]:
+		var radius_float: float = radius
+		var alpha: float = glow_alpha * (radius_float / 8.0) * 0.45
+		_draw_text_alpha(text, pos + Vector2(-radius, 0), font_size, Color(ORANGE.r, ORANGE.g, ORANGE.b, alpha), _font_bold)
+		_draw_text_alpha(text, pos + Vector2(radius, 0), font_size, Color(ORANGE.r, ORANGE.g, ORANGE.b, alpha), _font_bold)
+		_draw_text_alpha(text, pos + Vector2(0, -radius), font_size, Color(ORANGE.r, ORANGE.g, ORANGE.b, alpha), _font_bold)
+		_draw_text_alpha(text, pos + Vector2(0, radius), font_size, Color(ORANGE.r, ORANGE.g, ORANGE.b, alpha), _font_bold)
+	_draw_text_alpha(text, pos, font_size, Color(1.0, 0.74, 0.24, 1.0), _font_bold)
 
 
 func _draw_platform() -> void:
