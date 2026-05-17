@@ -7,12 +7,16 @@ signal score_event
 signal lives_event
 signal power_up_slots_event(slots: Array)
 signal power_up_used(type: String, slot: int)
+signal overclock_event(tier: int)
+signal overclock_reset
 
 const LANE_WIDTH := 2.8
 const FLOOR_BACK_Z := -18.0
 const FLOOR_FRONT_Z := 11.6
 const BASE_WORLD_SPEED := 8.0
-const WORLD_SPEED_PER_SCORE := 0.2
+const WORLD_SPEED_PER_SCORE := 0.002
+const BASE_SCORE_PER_CORRECT := 100
+const COMBO_CONTROLLER_SCRIPT = preload("res://scripts/combo/combo_controller.gd")
 const EQUATION_QUEUE_SIZE := 3
 const DEFAULT_MAX_LIVES := 3
 const DIFFICULTY_LIVES := {
@@ -38,6 +42,7 @@ var _lane_positions: Array[float] = [
 ]
 
 var _score := 0.0
+var _combo = COMBO_CONTROLLER_SCRIPT.new()
 var _max_lives := DEFAULT_MAX_LIVES
 var _lives := DEFAULT_MAX_LIVES
 var _is_game_over := false
@@ -85,6 +90,8 @@ func _ready() -> void:
 	restart_game.connect(hud.on_restart_game)
 	score_event.connect(hud.on_score_change)
 	lives_event.connect(hud.on_lives_change)
+	overclock_event.connect(hud.on_overclock_triggered)
+	overclock_reset.connect(hud.on_overclock_reset)
 	hud.pause_event.connect(_on_hud_pause_event)
 	hud.restart_event.connect(_restart)
 	hud.start_screen_event.connect(_on_hud_start_screen_event)
@@ -271,6 +278,8 @@ func _build_audio() -> void:
 func _restart() -> void:
 	_game_over_sequence_id += 1
 	_score = 0.0
+	_combo.reset()
+	overclock_reset.emit()
 	_max_lives = DifficultySettings.get_max_lives(_resolve_current_difficulty())
 	world_speed = BASE_WORLD_SPEED
 	_scenario.world_speed = world_speed
@@ -388,10 +397,16 @@ func _resume() -> void:
 
 func _on_blocks_answer_selected(is_correct: bool, _selected_answer: int) -> void:
 	if is_correct:
-		_score += _power_up_effects.get_score_multiplier()
+		var combo_mult: int = int(_combo.get_multiplier())
+		var power_mult: int = _power_up_effects.get_score_multiplier()
+		_score += BASE_SCORE_PER_CORRECT * combo_mult * power_mult
 		score_event.emit(int(_score))
 		_snd_correct.play()
+		var new_tier: int = int(_combo.register_correct())
+		if new_tier > 0:
+			overclock_event.emit(new_tier)
 	else:
+		_break_combo()
 		if _lose_life():
 			return
 
@@ -415,9 +430,17 @@ func _on_power_up_collected(type: String) -> void:
 func _on_cone_hit() -> void:
 	if _is_game_over:
 		return
+	_break_combo()
 	if _lose_life():
 		return
 	hud.show_feedback(false)
+
+
+func _break_combo() -> void:
+	var had_tier: bool = int(_combo.current_tier) > 0
+	_combo.register_miss()
+	if had_tier:
+		overclock_reset.emit()
 
 
 func _lose_life() -> bool:

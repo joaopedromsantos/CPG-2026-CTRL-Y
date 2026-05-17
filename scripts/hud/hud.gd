@@ -5,6 +5,7 @@ const LIVES_VIEW_SCRIPT = preload("res://scripts/hud/lives/lives_view.gd")
 const FEEDBACK_VIEW_SCRIPT = preload("res://scripts/hud/feedback/feedback_view.gd")
 const DEATH_FADE_VIEW_SCRIPT = preload("res://scripts/hud/death/death_fade_view.gd")
 const ENDGAME_VIEW_SCRIPT = preload("res://scripts/hud/endgame/endgame_view.gd")
+const OVERCLOCK_VIEW_SCRIPT = preload("res://scripts/hud/overclock/overclock_view.gd")
 
 @onready var root_control: Control = $CanvasLayer/RootControl
 @onready var equation_label: Label = $CanvasLayer/RootControl/TopCenterContainer/EquationLabel
@@ -16,6 +17,10 @@ const ENDGAME_VIEW_SCRIPT = preload("res://scripts/hud/endgame/endgame_view.gd")
 @onready var pause_button: TextureButton = $CanvasLayer/RootControl/TopLeftContainer/PauseButton
 @onready var pause_screen: PauseScreen = $CanvasLayer/RootControl/PauseScreen
 @onready var endgame_overlay: Control = $CanvasLayer/RootControl/EndGameOverlay
+@onready var overclock_label: Label = $CanvasLayer/RootControl/OverclockLayer/OverclockLabel
+@onready var overclock_edges: ColorRect = $CanvasLayer/RootControl/OverclockLayer/EdgesRect
+@onready var combo_badge_container: PanelContainer = $CanvasLayer/RootControl/TopRightContainer/Wrapper/ComboBadgeContainer
+@onready var combo_badge_label: Label = $CanvasLayer/RootControl/TopRightContainer/Wrapper/ComboBadgeContainer/ComboBadgeLabel
 @onready var endgame_score_label: Label = $CanvasLayer/RootControl/EndGameOverlay/Panel/Content/StatsRow/ScoreStat/ScoreContent/ScoreValue
 @onready var endgame_time_label: Label = $CanvasLayer/RootControl/EndGameOverlay/Panel/Content/StatsRow/TimeStat/TimeContent/TimeValue
 @onready var endgame_title_label: Label = $CanvasLayer/RootControl/EndGameOverlay/Panel/Content/Title
@@ -97,11 +102,13 @@ var _lives_view := LIVES_VIEW_SCRIPT.new()
 var _feedback_view := FEEDBACK_VIEW_SCRIPT.new()
 var _death_fade_view := DEATH_FADE_VIEW_SCRIPT.new()
 var _endgame_view := ENDGAME_VIEW_SCRIPT.new()
+var _overclock_view := OVERCLOCK_VIEW_SCRIPT.new()
 
 
 func _ready() -> void:
 	_setup_death_fade()
 	_setup_power_up_slot_icons()
+	_overclock_view.setup(overclock_label, overclock_edges)
 	pause_screen.resume_requested.connect(_on_pause_screen_resume_requested)
 	pause_screen.restart_requested.connect(_on_pause_screen_restart_requested)
 	pause_screen.start_screen_requested.connect(_on_pause_screen_start_screen_requested)
@@ -295,6 +302,63 @@ func on_restart_game() -> void:
 	_last_power_up_slots = []
 	show_equation({})
 	_hide_feedback()
+	on_overclock_reset()
+
+
+const COMBO_BADGE_TIER_TEXT := {1: "X2", 2: "X4", 3: "X6"}
+const COMBO_BADGE_TIER_FONT_COLOR := {
+	1: Color(1, 0.95, 0.18, 1),
+	2: Color(0.2, 0.85, 1.0, 1),
+	3: Color(0.85, 0.3, 1.0, 1),
+}
+const COMBO_BADGE_TIER_OUTLINE := {
+	1: Color(0.3, 0.22, 0, 1),
+	2: Color(0, 0.15, 0.35, 1),
+	3: Color(0.22, 0, 0.32, 1),
+}
+const COMBO_BADGE_TIER_BORDER := {
+	1: Color(1, 0.95, 0.18, 1),
+	2: Color(0.2, 0.85, 1.0, 1),
+	3: Color(0.85, 0.3, 1.0, 1),
+}
+
+
+func on_overclock_triggered(tier: int) -> void:
+	_overclock_view.play(tier)
+	_apply_combo_badge(tier)
+
+
+func on_overclock_reset() -> void:
+	_overclock_view.stop()
+	_hide_combo_badge()
+
+
+func _apply_combo_badge(tier: int) -> void:
+	if not COMBO_BADGE_TIER_TEXT.has(tier):
+		return
+	combo_badge_label.text = String(COMBO_BADGE_TIER_TEXT[tier])
+	combo_badge_label.add_theme_color_override("font_color", COMBO_BADGE_TIER_FONT_COLOR[tier])
+	combo_badge_label.add_theme_color_override("font_outline_color", COMBO_BADGE_TIER_OUTLINE[tier])
+	var panel_style := combo_badge_container.get_theme_stylebox("panel")
+	if panel_style is StyleBoxFlat:
+		var sb := (panel_style as StyleBoxFlat).duplicate() as StyleBoxFlat
+		var border_color: Color = COMBO_BADGE_TIER_BORDER[tier]
+		sb.border_color = border_color
+		sb.shadow_color = Color(border_color.r, border_color.g, border_color.b, 0.5)
+		combo_badge_container.add_theme_stylebox_override("panel", sb)
+	combo_badge_container.visible = true
+	combo_badge_container.pivot_offset = combo_badge_container.size * 0.5
+	combo_badge_container.scale = Vector2(0.6, 0.6)
+	var tween := combo_badge_container.create_tween()
+	tween.tween_property(combo_badge_container, "scale", Vector2(1.15, 1.15), 0.12) \
+		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tween.tween_property(combo_badge_container, "scale", Vector2(1.0, 1.0), 0.14) \
+		.set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
+
+
+func _hide_combo_badge() -> void:
+	combo_badge_container.visible = false
+	combo_badge_container.scale = Vector2.ONE
 
 
 func show_feedback(is_correct: bool) -> void:
