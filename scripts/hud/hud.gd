@@ -1,4 +1,11 @@
 extends Node2D
+
+const POWER_UP_SLOTS_VIEW_SCRIPT = preload("res://scripts/hud/slots/power_up_slots_view.gd")
+const LIVES_VIEW_SCRIPT = preload("res://scripts/hud/lives/lives_view.gd")
+const FEEDBACK_VIEW_SCRIPT = preload("res://scripts/hud/feedback/feedback_view.gd")
+const DEATH_FADE_VIEW_SCRIPT = preload("res://scripts/hud/death/death_fade_view.gd")
+const ENDGAME_VIEW_SCRIPT = preload("res://scripts/hud/endgame/endgame_view.gd")
+
 @onready var root_control: Control = $CanvasLayer/RootControl
 @onready var equation_label: Label = $CanvasLayer/RootControl/TopCenterContainer/EquationLabel
 @onready var feedback_label: Label = $CanvasLayer/RootControl/TopCenterContainer/FeedbackLabel
@@ -85,6 +92,11 @@ var _slot_panels: Array[Panel] = []
 var _slot_default_styles: Array[StyleBox] = []
 var _slot_active_styles: Array[StyleBoxFlat] = []
 var _slot_countdown_labels: Array[Label] = []
+var _slots_view := POWER_UP_SLOTS_VIEW_SCRIPT.new()
+var _lives_view := LIVES_VIEW_SCRIPT.new()
+var _feedback_view := FEEDBACK_VIEW_SCRIPT.new()
+var _death_fade_view := DEATH_FADE_VIEW_SCRIPT.new()
+var _endgame_view := ENDGAME_VIEW_SCRIPT.new()
 
 
 func _ready() -> void:
@@ -118,18 +130,17 @@ func on_game_over(score: int) -> void:
 
 
 func _reset_endgame_celebration() -> void:
-	if endgame_title_label:
-		endgame_title_label.text = ENDGAME_DEFAULT_TITLE
-		endgame_title_label.add_theme_color_override("font_color", ENDGAME_DEFAULT_TITLE_COLOR)
-	if endgame_subtitle_label:
-		endgame_subtitle_label.text = ENDGAME_DEFAULT_SUBTITLE
+	_endgame_view.reset_celebration(
+		endgame_title_label,
+		endgame_subtitle_label,
+		ENDGAME_DEFAULT_TITLE,
+		ENDGAME_DEFAULT_SUBTITLE,
+		ENDGAME_DEFAULT_TITLE_COLOR
+	)
 
 
 func _set_endgame_awaiting_ranking() -> void:
-	if endgame_subtitle_label:
-		endgame_subtitle_label.text = ENDGAME_SUBMITTING_SUBTITLE
-	if endgame_buttons_row:
-		endgame_buttons_row.visible = false
+	_endgame_view.set_awaiting_ranking(endgame_subtitle_label, endgame_buttons_row, ENDGAME_SUBMITTING_SUBTITLE)
 
 
 func _connect_ranking_signal() -> void:
@@ -146,14 +157,17 @@ func on_score_submission_skipped() -> void:
 
 
 func _on_score_submitted(is_new_record: bool) -> void:
-	if endgame_subtitle_label:
-		endgame_subtitle_label.text = ENDGAME_DEFAULT_SUBTITLE
+	_endgame_view.apply_score_submitted(
+		is_new_record,
+		endgame_title_label,
+		endgame_subtitle_label,
+		endgame_buttons_row,
+		ENDGAME_DEFAULT_SUBTITLE,
+		ENDGAME_NEW_RECORD_TITLE,
+		ENDGAME_NEW_RECORD_TITLE_COLOR
+	)
 	if is_new_record and endgame_title_label:
-		endgame_title_label.text = ENDGAME_NEW_RECORD_TITLE
-		endgame_title_label.add_theme_color_override("font_color", ENDGAME_NEW_RECORD_TITLE_COLOR)
 		_play_new_record_animation()
-	if endgame_buttons_row:
-		endgame_buttons_row.visible = true
 
 
 func _play_new_record_animation() -> void:
@@ -192,38 +206,16 @@ func on_score_change(score: int) -> void:
 
 
 func on_lives_change(lives: int) -> void:
-	var hearts := hearts_row.get_children()
 	var lost := _last_lives != -1 and lives < _last_lives
-	for i in range(hearts.size()):
-		var heart := hearts[i] as TextureRect
-		var should_be_full := i < lives
-		var was_full := heart.texture == HEART_FULL_TEXTURE
-		heart.texture = HEART_FULL_TEXTURE if should_be_full else HEART_EMPTY_TEXTURE
-		if lost and was_full and not should_be_full:
+	var changed_to_empty := _lives_view.update_lives(hearts_row, lives, HEART_FULL_TEXTURE, HEART_EMPTY_TEXTURE)
+	if lost:
+		for heart in changed_to_empty:
 			_play_heart_lost_animation(heart)
 	_last_lives = lives
 
 
 func set_max_lives(max_lives: int) -> void:
-	var target := maxi(max_lives, 0)
-	var hearts := hearts_row.get_children()
-	while hearts.size() > target:
-		var extra: Node = hearts.pop_back()
-		extra.queue_free()
-	while hearts.size() < target:
-		var template: TextureRect = null
-		if hearts_row.get_child_count() > 0:
-			template = hearts_row.get_child(0) as TextureRect
-		var new_heart := TextureRect.new()
-		new_heart.custom_minimum_size = Vector2(36, 36)
-		new_heart.texture = HEART_FULL_TEXTURE
-		new_heart.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		new_heart.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		new_heart.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-		if template:
-			new_heart.custom_minimum_size = template.custom_minimum_size
-		hearts_row.add_child(new_heart)
-		hearts.append(new_heart)
+	_lives_view.set_max_lives(hearts_row, max_lives, HEART_FULL_TEXTURE)
 
 
 func _play_heart_lost_animation(heart: TextureRect) -> void:
@@ -235,74 +227,25 @@ func _play_heart_lost_animation(heart: TextureRect) -> void:
 
 
 func _setup_power_up_slot_icons() -> void:
-	_slot_icon_rects.clear()
-	_slot_panels.clear()
-	_slot_default_styles.clear()
-	_slot_active_styles.clear()
-	_slot_countdown_labels.clear()
-	for label in slot_labels:
-		label.visible = false
-		var panel := label.get_parent() as Panel
-		var is_reserve_slot := _slot_panels.size() == RESERVE_SLOT_INDEX
-		if is_reserve_slot:
-			panel.z_index = 20
-		var key_label := panel.get_node_or_null("KeyLabel") as Label
-		if key_label:
-			key_label.z_index = 10
-		_slot_panels.append(panel)
-		_slot_default_styles.append(panel.get_theme_stylebox("panel"))
-		_slot_active_styles.append(_make_active_slot_style(panel.get_theme_stylebox("panel")))
-
-		var icon := TextureRect.new()
-		icon.name = "PowerUpIcon"
-		icon.set_anchors_preset(Control.PRESET_FULL_RECT)
-		if is_reserve_slot:
-			icon.offset_left = 4.0
-			icon.offset_top = 4.0
-			icon.offset_right = -4.0
-			icon.offset_bottom = -4.0
-		else:
-			icon.offset_left = 11.0
-			icon.offset_top = 8.0
-			icon.offset_right = -11.0
-			icon.offset_bottom = -8.0
-		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		label.get_parent().add_child(icon)
-		_slot_icon_rects.append(icon)
-
-		var countdown := Label.new()
-		countdown.name = "PowerUpCountdown"
-		countdown.visible = false
-		countdown.set_anchors_preset(Control.PRESET_FULL_RECT)
-		countdown.offset_left = 0.0
-		countdown.offset_top = 0.0
-		countdown.offset_right = 0.0
-		countdown.offset_bottom = 0.0
-		countdown.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		countdown.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		countdown.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		countdown.add_theme_font_size_override("font_size", 27)
-		countdown.add_theme_color_override("font_color", SLOT_COUNTDOWN_FONT_COLOR)
-		countdown.add_theme_color_override("font_outline_color", SLOT_COUNTDOWN_OUTLINE_COLOR)
-		countdown.add_theme_constant_override("outline_size", 8)
-		if label.has_theme_font("font"):
-			countdown.add_theme_font_override("font", label.get_theme_font("font"))
-		label.get_parent().add_child(countdown)
-		_slot_countdown_labels.append(countdown)
+	_slots_view.setup(
+		slot_labels,
+		RESERVE_SLOT_INDEX,
+		SLOT_COUNTDOWN_FONT_COLOR,
+		SLOT_COUNTDOWN_OUTLINE_COLOR,
+		SLOT_ICON_ACTIVE_MODULATE,
+		SLOT_ICON_INACTIVE_MODULATE,
+		SLOT_ACTIVE_BORDER_COLOR,
+		SLOT_ACTIVE_SHADOW_COLOR
+	)
+	_slot_icon_rects = _slots_view.icon_rects
+	_slot_panels = _slots_view.panels
+	_slot_default_styles = _slots_view.default_styles
+	_slot_active_styles = _slots_view.active_styles
+	_slot_countdown_labels = _slots_view.countdown_labels
 
 
 func _setup_death_fade() -> void:
-	_death_fade_rect = ColorRect.new()
-	_death_fade_rect.name = "DeathFade"
-	_death_fade_rect.visible = false
-	_death_fade_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_death_fade_rect.color = Color(0.0, 0.0, 0.0, 0.0)
-	_death_fade_rect.set_anchors_preset(Control.PRESET_FULL_RECT)
-	_death_fade_rect.z_index = 90
-	root_control.add_child(_death_fade_rect)
-	endgame_overlay.z_index = 100
+	_death_fade_rect = _death_fade_view.create_death_fade(root_control, endgame_overlay)
 
 
 func show_death_fade(duration: float) -> void:
@@ -322,54 +265,18 @@ func show_death_fade(duration: float) -> void:
 func _hide_death_fade() -> void:
 	if _death_fade_tween and _death_fade_tween.is_valid():
 		_death_fade_tween.kill()
-	if _death_fade_rect:
-		_death_fade_rect.visible = false
-		_death_fade_rect.color = Color(0.0, 0.0, 0.0, 0.0)
+	_death_fade_view.hide_death_fade(_death_fade_rect)
 
 
 func on_power_up_slots_change(slots: Array) -> void:
 	_last_power_up_slots = slots.duplicate()
-	for i in range(_slot_icon_rects.size()):
-		var type := ""
-		if i < slots.size():
-			type = String(slots[i])
-		_slot_icon_rects[i].texture = _power_up_display(type)
-		if type == "":
-			on_power_up_slot_active_changed(i, "", 0.0, 0.0, false)
+	var inactive_slots := _slots_view.update_slots(slots, POWER_UP_TYPE_TO_SLOT_ICON, POWER_UP_SLOT_TEXTURES)
+	for slot in inactive_slots:
+		on_power_up_slot_active_changed(slot, "", 0.0, 0.0, false)
 
 
 func on_power_up_slot_active_changed(slot: int, _type: String, remaining: float, _duration: float, active: bool) -> void:
-	if slot < 0 or slot >= _slot_countdown_labels.size():
-		return
-
-	_slot_panels[slot].add_theme_stylebox_override(
-		"panel",
-		_slot_active_styles[slot] if active else _slot_default_styles[slot]
-	)
-	_slot_countdown_labels[slot].visible = active
-	_slot_icon_rects[slot].modulate = SLOT_ICON_ACTIVE_MODULATE if active else SLOT_ICON_INACTIVE_MODULATE
-	if active:
-		_slot_countdown_labels[slot].text = "%d" % [maxi(0, ceili(remaining))]
-
-
-func _power_up_display(type: String) -> Texture2D:
-	var slot_icon := int(POWER_UP_TYPE_TO_SLOT_ICON.get(type, -1))
-	return POWER_UP_SLOT_TEXTURES.get(slot_icon, null) as Texture2D
-
-
-func _make_active_slot_style(base_style: StyleBox) -> StyleBoxFlat:
-	var style := base_style.duplicate(true) as StyleBoxFlat
-	if style == null:
-		style = StyleBoxFlat.new()
-	style.border_width_left = maxi(style.border_width_left, 4)
-	style.border_width_top = maxi(style.border_width_top, 4)
-	style.border_width_right = maxi(style.border_width_right, 4)
-	style.border_width_bottom = maxi(style.border_width_bottom, 4)
-	style.border_color = SLOT_ACTIVE_BORDER_COLOR
-	style.shadow_color = SLOT_ACTIVE_SHADOW_COLOR
-	style.shadow_size = maxi(style.shadow_size, 8)
-	style.shadow_offset = Vector2.ZERO
-	return style
+	_slots_view.update_slot_active(slot, remaining, active)
 
 func on_restart_game() -> void:
 	endgame_overlay.visible = false
@@ -391,12 +298,7 @@ func on_restart_game() -> void:
 
 
 func show_feedback(is_correct: bool) -> void:
-	if is_correct:
-		feedback_label.text = "Acertou!"
-		feedback_label.add_theme_color_override("font_color", FEEDBACK_COLOR_CORRECT)
-	else:
-		feedback_label.text = "Errou! ✕"
-		feedback_label.add_theme_color_override("font_color", FEEDBACK_COLOR_WRONG)
+	_feedback_view.set_feedback(feedback_label, is_correct, FEEDBACK_COLOR_CORRECT, FEEDBACK_COLOR_WRONG)
 
 	if _feedback_tween and _feedback_tween.is_valid():
 		_feedback_tween.kill()
@@ -416,8 +318,7 @@ func show_feedback(is_correct: bool) -> void:
 func _hide_feedback() -> void:
 	if _feedback_tween and _feedback_tween.is_valid():
 		_feedback_tween.kill()
-	feedback_label.text = ""
-	feedback_label.modulate = Color(1, 1, 1, 0)
+	_feedback_view.clear_feedback(feedback_label)
 
 
 func _on_pause_button_pressed() -> void:
