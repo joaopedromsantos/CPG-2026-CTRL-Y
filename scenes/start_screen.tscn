@@ -1,8 +1,8 @@
 [gd_scene load_steps=3 format=3 uid="uid://dl3mrdxm470pj"]
 
 [ext_resource type="PackedScene" uid="uid://cofypyl68ho7i" path="res://assets/player/Robot.fbx" id="1_tx5wa"]
-[ext_resource type="Script" path="res://scripts/start_help_button.gd" id="2_help_button"]
-[ext_resource type="Script" path="res://scripts/start_about_button.gd" id="3_about_button"]
+[ext_resource type="Script" path="res://scripts/screens/start/start_help_button.gd" id="2_help_button"]
+[ext_resource type="Script" path="res://scripts/screens/start/start_about_button.gd" id="3_about_button"]
 [ext_resource type="Texture2D" path="res://assets/hud/cog.svg" id="2_cog"]
 [ext_resource type="Texture2D" uid="uid://w6jaoweuw1am" path="res://assets/background/background.png" id="3_background"]
 

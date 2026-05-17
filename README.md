@@ -97,7 +97,7 @@ O modal de configurações fica em:
 
 ```text
 scenes/settings_screen.tscn
-scripts/settings_screen.gd
+scripts/screens/settings/settings_screen.gd
 ```
 
 Ele permite alterar:
@@ -125,7 +125,7 @@ Valores padrão quando não há configuração salva:
 
 ## Sistema de Equações
 
-As equações são carregadas por `scripts/equation_sequence.gd`.
+As equações são carregadas por `scripts/equations/equation_sequence.gd`.
 
 Funcionalidades:
 
@@ -305,7 +305,7 @@ Autoloads configurados em `project.godot`:
 
 ```text
 PlayerRecord="*res://scripts/player/record/player_record.gd"
-GameSettings="*res://scripts/game_settings.gd"
+GameSettings="*res://scripts/settings/game_settings.gd"
 ```
 
 ## Áudio
@@ -361,18 +361,17 @@ Volumes são aplicados por categoria:
 │   └── start_screen.tscn
 ├── scripts/
 │   ├── blocks/
-│   ├── scenario/
-│   ├── cones.gd
-│   ├── difficulty_settings.gd
-│   ├── equation_sequence.gd
-│   ├── game_settings.gd
+│   ├── equations/
+│   ├── game/
 │   ├── hud/
-│   ├── main.gd
+│   ├── obstacles/
 │   ├── player/
 │   ├── power_ups/
-│   ├── settings_screen.gd
-│   ├── sound_settings.gd
-│   └── timer.gd
+│   ├── ranking/
+│   ├── scenario/
+│   ├── screens/
+│   ├── settings/
+│   └── timer/
 ├── project.godot
 └── README.md
 ```
@@ -381,21 +380,21 @@ Volumes são aplicados por categoria:
 
 | Arquivo | Função |
 | --- | --- |
-| `scripts/main.gd` | controla ciclo principal, pontuação, vidas, pausa, áudio, game over e conexões entre sistemas |
+| `scripts/game/main.gd` | controla ciclo principal, pontuação, vidas, pausa, áudio, game over e conexões entre sistemas |
 | `scripts/player/player.gd` | controla o personagem, pistas, pulo e animações |
 | `scripts/blocks/blocks.gd` | gera blocos de resposta, resolve a resposta escolhida e emite acerto/erro |
-| `scripts/cones.gd` | gera obstáculos e detecta colisão com o jogador |
+| `scripts/obstacles/cones.gd` | gera obstáculos e detecta colisão com o jogador |
 | `scripts/scenario/scenario.gd` | cria e atualiza o cenário 3D |
 | `scripts/power_ups/power_ups.gd` | gera power-ups na pista e detecta coleta |
 | `scripts/power_ups/effects/power_up_effect_controller.gd` | aplica efeitos temporários dos power-ups |
-| `scripts/equation_sequence.gd` | carrega, filtra, embaralha e entrega equações |
-| `scripts/difficulty_settings.gd` | centraliza dificuldades, labels e validação |
-| `scripts/sound_settings.gd` | normaliza e aplica volume em players de áudio |
-| `scripts/settings_screen.gd` | controla o modal de configurações |
+| `scripts/equations/equation_sequence.gd` | carrega, filtra, embaralha e entrega equações |
+| `scripts/settings/difficulty_settings.gd` | centraliza dificuldades, labels e validação |
+| `scripts/settings/sound_settings.gd` | normaliza e aplica volume em players de áudio |
+| `scripts/screens/settings/settings_screen.gd` | controla o modal de configurações |
 | `scripts/hud/hud.gd` | atualiza interface, vidas, score, timer, feedback, pause e game over |
 | `scripts/player/record/player_record.gd` | salva e carrega o high score local |
-| `scripts/game_settings.gd` | carrega, salva e aplica preferências do usuário |
-| `scripts/timer.gd` | cronômetro do HUD |
+| `scripts/settings/game_settings.gd` | carrega, salva e aplica preferências do usuário |
+| `scripts/timer/game_timer.gd` | cronômetro do HUD |
 
 ## Observações
 

@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3]
 
-[ext_resource type="Script" path="res://scripts/name_input_screen.gd" id="1_name_input_script"]
+[ext_resource type="Script" path="res://scripts/screens/name_input/name_input_screen.gd" id="1_name_input_script"]
 [ext_resource type="Texture2D" uid="uid://w6jaoweuw1am" path="res://assets/background/background.png" id="2_background"]
 [ext_resource type="FontFile" uid="uid://cnt7bgrpab5pp" path="res://assets/fonts/fredoka/Fredoka-SemiBold.ttf" id="3_fredoka"]
 
