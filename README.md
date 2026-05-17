@@ -36,7 +36,7 @@ Entrega final implementada:
 Versão do projeto em `project.godot`:
 
 ```text
-1.0.7
+1.0.8
 ```
 
 ## Requisitos
