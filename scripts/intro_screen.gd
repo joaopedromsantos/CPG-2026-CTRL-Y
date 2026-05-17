@@ -53,6 +53,7 @@ var _stars: Array[Vector2] = []
 var _sparks: Array[Vector2] = []
 var _robot_viewport_container: SubViewportContainer
 var _robot_viewport: SubViewport
+var _robot_click_area: Control
 var _robot: Node3D
 var _robot_animation: AnimationPlayer
 var _robot_skeleton: Skeleton3D
@@ -61,6 +62,7 @@ var _robot_pushback_time_left := 0.0
 var _robot_click_count := 0
 var _robot_is_dead := false
 var _robot_arm_base_rotations: Dictionary = {}
+var _is_robot_pointer_active := false
 var _intro_started_at_msec := 0
 var _menu_audio: AudioStreamPlayer
 
@@ -116,6 +118,16 @@ func _gui_input(event: InputEvent) -> void:
 			_on_robot_clicked()
 
 
+func _on_robot_click_area_gui_input(event: InputEvent) -> void:
+	if _robot_is_dead:
+		return
+	if event is InputEventMouseButton:
+		var mouse_event := event as InputEventMouseButton
+		if mouse_event.button_index == MOUSE_BUTTON_LEFT and mouse_event.pressed:
+			_robot_click_area.accept_event()
+			_on_robot_clicked()
+
+
 func _process(delta: float) -> void:
 	if _robot == null:
 		return
@@ -127,11 +139,13 @@ func _process(delta: float) -> void:
 	if not is_zero_approx(rotation_direction):
 		_robot.rotate_y(rotation_direction * ROBOT_ROTATION_SPEED * delta)
 	if _robot_is_dead:
+		_update_robot_pointer_cursor()
 		queue_redraw()
 		return
 	if _robot_pushback_time_left > 0.0:
 		_robot_pushback_time_left = maxf(_robot_pushback_time_left - delta, 0.0)
 	_update_robot_idle_sway()
+	_update_robot_pointer_cursor()
 	queue_redraw()
 
 
@@ -178,6 +192,13 @@ func _build_robot_viewport() -> void:
 
 	var world := Node3D.new()
 	_robot_viewport.add_child(world)
+
+	_robot_click_area = Control.new()
+	_robot_click_area.name = "RobotClickArea"
+	_robot_click_area.mouse_filter = Control.MOUSE_FILTER_STOP
+	_robot_click_area.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	_robot_click_area.gui_input.connect(_on_robot_click_area_gui_input)
+	add_child(_robot_click_area)
 
 	_robot = ROBOT_SCENE.instantiate()
 	_robot.name = "Robot"
@@ -297,6 +318,8 @@ func _on_robot_clicked() -> void:
 func _play_robot_death() -> void:
 	_robot_is_dead = true
 	_robot_pushback_time_left = 0.0
+	if _robot_click_area:
+		_robot_click_area.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_reset_robot_arm_pose()
 	_robot.position = _robot_base_position
 	_robot.rotation.x = 0.0
@@ -322,6 +345,14 @@ func _is_robot_clicked(screen_position: Vector2) -> bool:
 	return robot_rect.has_point(screen_position)
 
 
+func _update_robot_pointer_cursor() -> void:
+	var should_use_pointer := _is_robot_clicked(get_global_mouse_position()) and not _robot_is_dead
+	if should_use_pointer == _is_robot_pointer_active:
+		return
+	_is_robot_pointer_active = should_use_pointer
+	Input.set_default_cursor_shape(Input.CURSOR_POINTING_HAND if should_use_pointer else Input.CURSOR_ARROW)
+
+
 func _robot_pushback_amount() -> float:
 	if _robot_pushback_time_left <= 0.0:
 		return 0.0
@@ -339,6 +370,9 @@ func _layout_robot_viewport() -> void:
 	_robot_viewport_container.position = pixel_rect.position
 	_robot_viewport_container.size = pixel_rect.size
 	_robot_viewport.size = Vector2i(maxi(1, int(pixel_rect.size.x)), maxi(1, int(pixel_rect.size.y)))
+	if _robot_click_area:
+		_robot_click_area.position = pixel_rect.position
+		_robot_click_area.size = pixel_rect.size
 
 
 func _draw_scene() -> void:
