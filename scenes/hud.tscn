@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://diiip0l25v3bb" path="res://assets/hud/heart_full.svg" id="7_heart_full"]
 [ext_resource type="Texture2D" uid="uid://c8kl0kppfkymg" path="res://assets/hud/clock.svg" id="9_clock"]
 [ext_resource type="PackedScene" uid="uid://cubnf6432qwe2" path="res://scenes/pause_screen.tscn" id="10_pause"]
+[ext_resource type="Shader" path="res://assets/shaders/overclock_edges.gdshader" id="11_overclock_shader"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_score_panel"]
 content_margin_left = 13.0
@@ -84,6 +85,34 @@ corner_radius_bottom_left = 11
 shadow_color = Color(0, 0, 0, 0.3)
 shadow_size = 4
 shadow_offset = Vector2(0, 2)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_combo_badge_panel"]
+content_margin_left = 14.0
+content_margin_top = 6.0
+content_margin_right = 14.0
+content_margin_bottom = 6.0
+bg_color = Color(0.07, 0.05, 0.16, 0.92)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.95, 0.18, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+shadow_color = Color(1, 0.95, 0.18, 0.45)
+shadow_size = 10
+shadow_offset = Vector2(0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_overclock_edges"]
+shader = ExtResource("11_overclock_shader")
+shader_parameter/neon_color = Color(1, 0.9, 0.1, 1)
+shader_parameter/intensity = 0.0
+shader_parameter/glitch = 0.0
+shader_parameter/time_scale = 18.0
+shader_parameter/edge_size = 0.18
+shader_parameter/pulse_speed = 9.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_reserve_slot_panel"]
 content_margin_left = 3.0
@@ -191,23 +220,23 @@ layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -305.0
+offset_left = -235.0
 offset_top = 25.0
 offset_right = -25.0
-offset_bottom = 210.0
+offset_bottom = 250.0
 grow_horizontal = 0
 
 [node name="Wrapper" type="VBoxContainer" parent="CanvasLayer/RootControl/TopRightContainer" unique_id=1560139957]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 180.0
+offset_bottom = 220.0
 grow_horizontal = 2
-grow_vertical = 0
-theme_override_constants/separation = 7
+grow_vertical = 1
+theme_override_constants/separation = 6
 
 [node name="ScoreContainer" type="PanelContainer" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper" unique_id=1070437582]
-custom_minimum_size = Vector2(280, 64)
+custom_minimum_size = Vector2(210, 50)
 layout_mode = 2
 size_flags_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_score_panel")
@@ -218,7 +247,7 @@ theme_override_constants/separation = 12
 alignment = 1
 
 [node name="StarIcon" type="TextureRect" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper/ScoreContainer/Row" unique_id=95357194]
-custom_minimum_size = Vector2(45, 45)
+custom_minimum_size = Vector2(35, 35)
 layout_mode = 2
 size_flags_vertical = 4
 texture = ExtResource("6_star")
@@ -230,15 +259,15 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.12, 0.28, 0.55, 1)
 theme_override_colors/font_outline_color = Color(1, 0.86, 0.4, 1)
-theme_override_constants/outline_size = 6
+theme_override_constants/outline_size = 5
 theme_override_fonts/font = ExtResource("4_fredoka")
-theme_override_font_sizes/font_size = 36
+theme_override_font_sizes/font_size = 28
 text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="LivesContainer" type="PanelContainer" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper" unique_id=281865549]
-custom_minimum_size = Vector2(280, 50)
+custom_minimum_size = Vector2(210, 39)
 layout_mode = 2
 size_flags_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_lives_panel")
@@ -249,7 +278,7 @@ theme_override_constants/separation = 7
 alignment = 1
 
 [node name="Heart1" type="TextureRect" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper/LivesContainer/HeartsRow" unique_id=712596775]
-custom_minimum_size = Vector2(36, 36)
+custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 size_flags_vertical = 4
 texture = ExtResource("7_heart_full")
@@ -257,7 +286,7 @@ expand_mode = 1
 stretch_mode = 5
 
 [node name="Heart2" type="TextureRect" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper/LivesContainer/HeartsRow" unique_id=1383218290]
-custom_minimum_size = Vector2(36, 36)
+custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 size_flags_vertical = 4
 texture = ExtResource("7_heart_full")
@@ -265,7 +294,7 @@ expand_mode = 1
 stretch_mode = 5
 
 [node name="Heart3" type="TextureRect" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper/LivesContainer/HeartsRow" unique_id=1166635942]
-custom_minimum_size = Vector2(36, 36)
+custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 size_flags_vertical = 4
 texture = ExtResource("7_heart_full")
@@ -273,7 +302,7 @@ expand_mode = 1
 stretch_mode = 5
 
 [node name="CronometerContainer" type="PanelContainer" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper" unique_id=1445436165]
-custom_minimum_size = Vector2(280, 48)
+custom_minimum_size = Vector2(210, 38)
 layout_mode = 2
 size_flags_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_time_panel")
@@ -284,7 +313,7 @@ theme_override_constants/separation = 10
 alignment = 1
 
 [node name="ClockIcon" type="TextureRect" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper/CronometerContainer/Row" unique_id=1729524101]
-custom_minimum_size = Vector2(34, 34)
+custom_minimum_size = Vector2(27, 27)
 layout_mode = 2
 size_flags_vertical = 4
 texture = ExtResource("9_clock")
@@ -296,8 +325,26 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.08, 0.22, 0.45, 1)
 theme_override_fonts/font = ExtResource("4_fredoka")
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 17
 text = "00:00"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ComboBadgeContainer" type="PanelContainer" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper" unique_id=1910000010]
+visible = false
+custom_minimum_size = Vector2(210, 44)
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_combo_badge_panel")
+
+[node name="ComboBadgeLabel" type="Label" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper/ComboBadgeContainer" unique_id=1910000011]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.95, 0.18, 1)
+theme_override_colors/font_outline_color = Color(0.3, 0.22, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("4_fredoka")
+theme_override_font_sizes/font_size = 25
+text = "X2"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -473,6 +520,51 @@ grow_vertical = 2
 theme_override_colors/font_color = Color(0.1, 0.1, 0.1, 1)
 theme_override_fonts/font = ExtResource("4_fredoka")
 theme_override_font_sizes/font_size = 18
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="OverclockLayer" type="Control" parent="CanvasLayer/RootControl" unique_id=1910000001]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="EdgesRect" type="ColorRect" parent="CanvasLayer/RootControl/OverclockLayer" unique_id=1910000002]
+material = SubResource("ShaderMaterial_overclock_edges")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0)
+
+[node name="OverclockLabel" type="Label" parent="CanvasLayer/RootControl/OverclockLayer" unique_id=1910000003]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -340.0
+offset_top = -200.0
+offset_right = 340.0
+offset_bottom = -80.0
+grow_horizontal = 2
+grow_vertical = 0
+pivot_offset = Vector2(340, 60)
+mouse_filter = 2
+theme_override_colors/font_color = Color(1, 0.95, 0.18, 1)
+theme_override_colors/font_outline_color = Color(0.3, 0.22, 0, 1)
+theme_override_constants/outline_size = 14
+theme_override_fonts/font = ExtResource("4_fredoka")
+theme_override_font_sizes/font_size = 72
+text = "OVERCLOCK"
 horizontal_alignment = 1
 vertical_alignment = 1
 

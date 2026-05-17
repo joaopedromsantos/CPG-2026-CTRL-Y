@@ -13,7 +13,7 @@ func set_max_lives(hearts_row: HBoxContainer, max_lives: int, heart_full_texture
 		if hearts_row.get_child_count() > 0:
 			template = hearts_row.get_child(0) as TextureRect
 		var new_heart := TextureRect.new()
-		new_heart.custom_minimum_size = Vector2(36, 36)
+		new_heart.custom_minimum_size = Vector2(28, 28)
 		new_heart.texture = heart_full_texture
 		new_heart.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		new_heart.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
