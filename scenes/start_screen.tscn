@@ -49,6 +49,7 @@ var _change_name_button: Button
 var _ranking_button: Button
 var _about_button: Button
 var _ranking_loading_label: Label
+var _version_label: Label
 var _ranking_request_pending := false
 
 
@@ -221,6 +222,13 @@ func _build_screen() -> void:
 	_apply_label_style(_ranking_loading_label, \"Carregando ranking...\", _font_semi, 18, NEON_CYAN, 4, Color(0.02, 0.10, 0.20))
 	_ranking_loading_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_ranking_loading_label.visible = false
+
+	_version_label = Label.new()
+	add_child(_version_label)
+	var game_version := String(ProjectSettings.get_setting(\"application/config/version\", \"0.0.0\"))
+	_apply_label_style(_version_label, \"v%s\" % game_version, _font_regular, 12, Color(1.0, 1.0, 1.0, 0.58), 0, Color(0, 0, 0, 0))
+	_version_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+	_version_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 	_build_difficulty_selector()
 	_build_settings_modal()
@@ -412,6 +420,10 @@ func _layout() -> void:
 	_difficulty_next_button.set_position(diff_next_rect.position)
 	_difficulty_next_button.set_size(diff_next_rect.size)
 
+	var version_rect: Rect2 = rect_left.call(20, 544, 160, 22)
+	_version_label.set_position(version_rect.position)
+	_version_label.set_size(version_rect.size)
+
 	_start_button.add_theme_font_size_override(\"font_size\", maxi(18, int(34 * scale)))
 	_settings_button.add_theme_font_size_override(\"font_size\", maxi(16, int(28 * scale)))
 	_help_button.add_theme_font_size_override(\"font_size\", maxi(16, int(28 * scale)))
@@ -423,6 +435,8 @@ func _layout() -> void:
 		_change_name_button.add_theme_font_size_override(\"font_size\", maxi(8, int(11 * scale)))
 	if _ranking_loading_label and _ranking_loading_label.label_settings:
 		_ranking_loading_label.label_settings.font_size = maxi(12, int(18 * scale))
+	if _version_label and _version_label.label_settings:
+		_version_label.label_settings.font_size = maxi(8, int(12 * scale))
 	_difficulty_prev_button.add_theme_font_size_override(\"font_size\", maxi(16, int(30 * scale)))
 	_difficulty_badge.add_theme_font_size_override(\"font_size\", maxi(13, int(21 * scale)))
 	_difficulty_next_button.add_theme_font_size_override(\"font_size\", maxi(16, int(30 * scale)))
