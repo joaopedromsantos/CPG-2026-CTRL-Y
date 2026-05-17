@@ -24,6 +24,8 @@ var _blink_duration := 2.0
 var _blink_elapsed := 0.0
 var _blink_toggle_time := 0.0
 
+const DEATH_ANIMATION := "RobotArmature|Robot_Death"
+
 
 func get_runner_position() -> Vector3:
 	return global_position
@@ -75,8 +77,14 @@ func jump() -> void:
 
 func die() -> void:
 	_is_dead = true
-	_anim.play("RobotArmature|Robot_Death")
-	_current_animation = "RobotArmature|Robot_Death"
+	_anim.play(DEATH_ANIMATION)
+	_current_animation = DEATH_ANIMATION
+
+
+func get_death_animation_duration() -> float:
+	if _anim and _anim.has_animation(DEATH_ANIMATION):
+		return _anim.get_animation(DEATH_ANIMATION).length
+	return 2.0
 
 
 func take_damage() -> void:

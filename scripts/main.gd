@@ -18,6 +18,7 @@ const MAX_LIVES := 3
 const POWER_UP_SLOT_COUNT := 4
 const ACTIVATABLE_POWER_UP_SLOT_COUNT := 3
 const RESERVE_POWER_UP_SLOT := 3
+const MIN_GAME_OVER_DELAY := 2.0
 const EQUATION_SEQUENCE_SCRIPT = preload("res://scripts/equation_sequence.gd")
 const POWER_UP_CONFIG = preload("res://assets/power-ups/power_up_config.tres")
 
@@ -52,6 +53,7 @@ var _camera_base_position := Vector3.ZERO
 var _shake_duration := 0.0
 var _shake_time_left := 0.0
 var _shake_strength := 0.0
+var _game_over_sequence_id := 0
 
 
 func _ready() -> void:
@@ -243,6 +245,7 @@ func _build_audio() -> void:
 
 
 func _restart() -> void:
+	_game_over_sequence_id += 1
 	_score = 0.0
 	world_speed = BASE_WORLD_SPEED
 	_cenario.world_speed = world_speed
@@ -281,6 +284,8 @@ func _end_game() -> void:
 	if _is_paused:
 		_resume()
 	_is_game_over = true
+	_game_over_sequence_id += 1
+	var sequence_id := _game_over_sequence_id
 	var player_record := get_node_or_null("/root/PlayerRecord")
 	if player_record:
 		player_record.call("update_high_score", int(_score))
@@ -290,6 +295,10 @@ func _end_game() -> void:
 	_snd_wrong.stop()
 	_snd_lose.play()
 	_player.die()
+	var death_delay := maxf(MIN_GAME_OVER_DELAY, _player.get_death_animation_duration())
+	await get_tree().create_timer(death_delay).timeout
+	if sequence_id != _game_over_sequence_id:
+		return
 	game_over.emit(int(_score))
 
 
