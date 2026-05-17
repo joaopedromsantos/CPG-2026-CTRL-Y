@@ -1,16 +1,19 @@
-[gd_scene format=3 uid="uid://dh2nn4qlcg57e"]
+[gd_scene format=3 uid="uid://cq5ws1pvpsgiw"]
 
 [ext_resource type="Script" uid="uid://cfl2kba1vabjm" path="res://scripts/hud.gd" id="1_6fi6k"]
 [ext_resource type="Texture2D" uid="uid://b8kt244qmm62l" path="res://assets/hud/pause-button-hud.png" id="1_ahhtf"]
 [ext_resource type="FontFile" uid="uid://cnt7bgrpab5pp" path="res://assets/fonts/fredoka/Fredoka-SemiBold.ttf" id="4_fredoka"]
-[ext_resource type="Texture2D" path="res://assets/hud/star.svg" id="6_star"]
-[ext_resource type="Texture2D" path="res://assets/hud/heart_full.svg" id="7_heart_full"]
-[ext_resource type="Texture2D" path="res://assets/hud/heart_empty.svg" id="8_heart_empty"]
-[ext_resource type="Texture2D" path="res://assets/hud/clock.svg" id="9_clock"]
 [ext_resource type="PackedScene" path="res://scenes/end_game_screen.tscn" id="5_endgame"]
+[ext_resource type="Texture2D" uid="uid://bpnspwk5vlobq" path="res://assets/hud/star.svg" id="6_star"]
+[ext_resource type="Texture2D" uid="uid://diiip0l25v3bb" path="res://assets/hud/heart_full.svg" id="7_heart_full"]
+[ext_resource type="Texture2D" uid="uid://c8kl0kppfkymg" path="res://assets/hud/clock.svg" id="9_clock"]
 [ext_resource type="PackedScene" path="res://scenes/pause_screen.tscn" id="10_pause"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_score_panel"]
+content_margin_left = 18.0
+content_margin_top = 8.0
+content_margin_right = 18.0
+content_margin_bottom = 8.0
 bg_color = Color(1, 0.94, 0.72, 1)
 border_width_left = 4
 border_width_top = 4
@@ -49,6 +52,10 @@ content_margin_right = 10
 content_margin_bottom = 4
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_time_panel"]
+content_margin_left = 14.0
+content_margin_top = 6.0
+content_margin_right = 14.0
+content_margin_bottom = 6.0
 bg_color = Color(0.9, 0.95, 1, 1)
 border_width_left = 3
 border_width_top = 3
@@ -68,6 +75,10 @@ content_margin_right = 10
 content_margin_bottom = 4
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_slot_panel"]
+content_margin_left = 10.0
+content_margin_top = 6.0
+content_margin_right = 10.0
+content_margin_bottom = 6.0
 bg_color = Color(1, 0.96, 0.86, 1)
 border_width_left = 3
 border_width_top = 3
@@ -87,6 +98,10 @@ content_margin_right = 7
 content_margin_bottom = 4
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_reserve_slot_panel"]
+content_margin_left = 4.0
+content_margin_top = 3.0
+content_margin_right = 4.0
+content_margin_bottom = 3.0
 bg_color = Color(1, 0.96, 0.86, 0.92)
 border_width_left = 2
 border_width_top = 2
@@ -165,6 +180,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="FeedbackLabel" type="Label" parent="CanvasLayer/RootControl/TopCenterContainer" unique_id=1594818645]
+modulate = Color(1, 1, 1, 0)
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -176,14 +192,13 @@ offset_top = 4.0
 offset_right = 180.0
 offset_bottom = 74.0
 grow_horizontal = 2
+grow_vertical = 0
 pivot_offset = Vector2(180, 35)
-modulate = Color(1, 1, 1, 0)
 theme_override_colors/font_color = Color(0.2, 0.85, 0.3, 1)
 theme_override_colors/font_outline_color = Color(0, 0.2, 0.05, 1)
 theme_override_constants/outline_size = 8
 theme_override_fonts/font = ExtResource("4_fredoka")
 theme_override_font_sizes/font_size = 36
-text = ""
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -213,7 +228,7 @@ layout_mode = 2
 size_flags_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_score_panel")
 
-[node name="Row" type="HBoxContainer" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper/ScoreContainer"]
+[node name="Row" type="HBoxContainer" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper/ScoreContainer" unique_id=1685886072]
 layout_mode = 2
 theme_override_constants/separation = 12
 alignment = 1
@@ -229,7 +244,6 @@ stretch_mode = 5
 [node name="ScoreLabel" type="Label" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper/ScoreContainer/Row" unique_id=2111862356]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 4
 theme_override_colors/font_color = Color(0.12, 0.28, 0.55, 1)
 theme_override_colors/font_outline_color = Color(1, 0.86, 0.4, 1)
 theme_override_constants/outline_size = 6
@@ -245,7 +259,7 @@ layout_mode = 2
 size_flags_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_lives_panel")
 
-[node name="HeartsRow" type="HBoxContainer" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper/LivesContainer"]
+[node name="HeartsRow" type="HBoxContainer" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper/LivesContainer" unique_id=520749258]
 layout_mode = 2
 theme_override_constants/separation = 7
 alignment = 1
@@ -280,7 +294,7 @@ layout_mode = 2
 size_flags_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_time_panel")
 
-[node name="Row" type="HBoxContainer" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper/CronometerContainer"]
+[node name="Row" type="HBoxContainer" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper/CronometerContainer" unique_id=498741677]
 layout_mode = 2
 theme_override_constants/separation = 10
 alignment = 1
@@ -296,7 +310,6 @@ stretch_mode = 5
 [node name="CronometerLabel" type="Label" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper/CronometerContainer/Row" unique_id=1471621642]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 4
 theme_override_colors/font_color = Color(0.08, 0.22, 0.45, 1)
 theme_override_fonts/font = ExtResource("4_fredoka")
 theme_override_font_sizes/font_size = 22
@@ -304,7 +317,7 @@ text = "00:00"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="BottomCenterContainer" type="Control" parent="CanvasLayer/RootControl"]
+[node name="BottomCenterContainer" type="Control" parent="CanvasLayer/RootControl" unique_id=2145533944]
 layout_mode = 1
 anchors_preset = 2
 anchor_left = 0.0
@@ -334,7 +347,7 @@ layout_mode = 2
 size_flags_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_slot_panel")
 
-[node name="KeyLabel" type="Label" parent="CanvasLayer/RootControl/BottomCenterContainer/SlotsRow/Slot1"]
+[node name="KeyLabel" type="Label" parent="CanvasLayer/RootControl/BottomCenterContainer/SlotsRow/Slot1" unique_id=2044394876]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -351,7 +364,7 @@ text = "1"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ContentLabel" type="Label" parent="CanvasLayer/RootControl/BottomCenterContainer/SlotsRow/Slot1"]
+[node name="ContentLabel" type="Label" parent="CanvasLayer/RootControl/BottomCenterContainer/SlotsRow/Slot1" unique_id=305943900]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -371,7 +384,7 @@ layout_mode = 2
 size_flags_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_slot_panel")
 
-[node name="KeyLabel" type="Label" parent="CanvasLayer/RootControl/BottomCenterContainer/SlotsRow/Slot2"]
+[node name="KeyLabel" type="Label" parent="CanvasLayer/RootControl/BottomCenterContainer/SlotsRow/Slot2" unique_id=1144716965]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -388,7 +401,7 @@ text = "2"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ContentLabel" type="Label" parent="CanvasLayer/RootControl/BottomCenterContainer/SlotsRow/Slot2"]
+[node name="ContentLabel" type="Label" parent="CanvasLayer/RootControl/BottomCenterContainer/SlotsRow/Slot2" unique_id=293824917]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -408,7 +421,7 @@ layout_mode = 2
 size_flags_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_slot_panel")
 
-[node name="KeyLabel" type="Label" parent="CanvasLayer/RootControl/BottomCenterContainer/SlotsRow/Slot3"]
+[node name="KeyLabel" type="Label" parent="CanvasLayer/RootControl/BottomCenterContainer/SlotsRow/Slot3" unique_id=2142682201]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -425,7 +438,7 @@ text = "3"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ContentLabel" type="Label" parent="CanvasLayer/RootControl/BottomCenterContainer/SlotsRow/Slot3"]
+[node name="ContentLabel" type="Label" parent="CanvasLayer/RootControl/BottomCenterContainer/SlotsRow/Slot3" unique_id=129638336]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -439,7 +452,7 @@ text = ""
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Slot4" type="Panel" parent="CanvasLayer/RootControl/BottomCenterContainer/SlotsRow/Slot3"]
+[node name="Slot4" type="Panel" parent="CanvasLayer/RootControl/BottomCenterContainer/SlotsRow/Slot3" unique_id=1572507154]
 z_index = 20
 custom_minimum_size = Vector2(41, 29)
 layout_mode = 1
@@ -456,7 +469,7 @@ grow_horizontal = 0
 grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_reserve_slot_panel")
 
-[node name="KeyLabel" type="Label" parent="CanvasLayer/RootControl/BottomCenterContainer/SlotsRow/Slot3/Slot4"]
+[node name="KeyLabel" type="Label" parent="CanvasLayer/RootControl/BottomCenterContainer/SlotsRow/Slot3/Slot4" unique_id=2104804159]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -473,7 +486,7 @@ text = "4"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ContentLabel" type="Label" parent="CanvasLayer/RootControl/BottomCenterContainer/SlotsRow/Slot3/Slot4"]
+[node name="ContentLabel" type="Label" parent="CanvasLayer/RootControl/BottomCenterContainer/SlotsRow/Slot3/Slot4" unique_id=1090121711]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -487,12 +500,15 @@ text = ""
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="EndGameOverlay" parent="CanvasLayer/RootControl" instance=ExtResource("5_endgame")]
+[node name="EndGameOverlay" parent="CanvasLayer/RootControl" unique_id=693551312 instance=ExtResource("5_endgame")]
+layout_mode = 1
 
-[node name="PauseScreen" parent="CanvasLayer/RootControl" instance=ExtResource("10_pause")]
-z_index = 100
+[node name="PauseScreen" parent="CanvasLayer/RootControl" unique_id=271199179 instance=ExtResource("10_pause")]
+layout_mode = 1
 
 [connection signal="pressed" from="CanvasLayer/RootControl/TopLeftContainer/PauseButton" to="." method="_on_pause_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/RootControl/EndGameOverlay/Panel/Content/ButtonsRow/RestartButton" to="." method="_on_restart_button_pressed"]
+
 [connection signal="pressed" from="CanvasLayer/RootControl/EndGameOverlay/Panel/Content/ButtonsRow/StartScreenButton" to="." method="_on_start_screen_button_pressed"]
+
 [connection signal="pressed" from="CanvasLayer/RootControl/EndGameOverlay/Panel/Content/ButtonsRow/QuitButton" to="." method="_on_quit_button_pressed"]
