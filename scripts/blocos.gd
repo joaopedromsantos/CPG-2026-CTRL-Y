@@ -51,6 +51,17 @@ func set_equation(equation: Dictionary) -> void:
 	_current_correct_answers = equation.get("correctAnswers", []).duplicate()
 
 
+func get_active_row_z_positions() -> Array[float]:
+	var positions: Array[float] = []
+	for row in _block_rows:
+		positions.append(row.position.z)
+	return positions
+
+
+func get_distance_to_next_spawn() -> float:
+	return maxf(float(steps_per_spawn) * step_distance - _distance_since_spawn, 0.0)
+
+
 func set_correct_answers_highlighted(enabled: bool) -> void:
 	_highlight_correct_answers = enabled
 	for row in _block_rows:

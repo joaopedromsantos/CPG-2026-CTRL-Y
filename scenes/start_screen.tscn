@@ -382,6 +382,7 @@ func _build_difficulty_buttons() -> void:
 		{\"key\": \"easy\", \"label\": \"FACIL\"},
 		{\"key\": \"medium\", \"label\": \"MEDIO\"},
 		{\"key\": \"hard\", \"label\": \"DIFICIL\"},
+		{\"key\": \"impossible\", \"label\": \"IMPOSSIVEL\"},
 	]
 
 	for item in difficulties:
@@ -484,14 +485,14 @@ func _layout() -> void:
 	_start_button.set_size(btn_rect.size)
 
 	var difficulty_index := 0
-	for difficulty in [\"easy\", \"medium\", \"hard\"]:
+	for difficulty in [\"easy\", \"medium\", \"hard\", \"impossible\"]:
 		if not _difficulty_buttons.has(difficulty):
 			continue
 		var difficulty_button := _difficulty_buttons[difficulty] as Button
-		var difficulty_rect: Rect2 = rect.call(318 + difficulty_index * 136, 500, 120, 42)
+		var difficulty_rect: Rect2 = rect.call(228 + difficulty_index * 148, 500, 132, 42)
 		difficulty_button.set_position(difficulty_rect.position)
 		difficulty_button.set_size(difficulty_rect.size)
-		difficulty_button.add_theme_font_size_override(\"font_size\", maxi(12, int(18 * scale)))
+		difficulty_button.add_theme_font_size_override(\"font_size\", maxi(11, int(16 * scale)))
 		difficulty_index += 1
 
 	_start_button.add_theme_font_size_override(\"font_size\", maxi(18, int(34 * scale)))
