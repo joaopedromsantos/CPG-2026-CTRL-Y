@@ -39,6 +39,9 @@ func setup(lane_positions: Array[float], start_lane: int) -> void:
 	_snd_jump = AudioStreamPlayer.new()
 	_snd_jump.stream = load("res://assets/sounds/jump_sound.wav")
 	add_child(_snd_jump)
+	var game_settings := get_node_or_null("/root/GameSettings")
+	if game_settings:
+		game_settings.call("apply_sfx_volume", _snd_jump)
 	reset(_current_lane)
 
 

@@ -3,7 +3,7 @@ extends RefCounted
 
 const DEFAULT_JSON_PATH := "res://data/equations.json"
 const DEFAULT_QUEUE_SIZE := 3
-const VALID_DIFFICULTIES := ["easy", "medium", "hard"]
+const VALID_DIFFICULTIES := ["easy", "medium", "hard", "impossible"]
 
 var _rng := RandomNumberGenerator.new()
 var _source_equations: Array = []

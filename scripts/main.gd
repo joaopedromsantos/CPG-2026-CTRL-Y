@@ -243,6 +243,14 @@ func _build_audio() -> void:
 	_snd_wrong.stream = load("res://assets/sounds/punch_sound.wav")
 	add_child(_snd_wrong)
 
+	var game_settings := get_node_or_null("/root/GameSettings")
+	if game_settings:
+		game_settings.call("apply_music_volume", _snd_game)
+		game_settings.call("apply_sfx_volume", _snd_lose)
+		game_settings.call("apply_sfx_volume", _snd_punch)
+		game_settings.call("apply_sfx_volume", _snd_correct)
+		game_settings.call("apply_sfx_volume", _snd_wrong)
+
 
 func _restart() -> void:
 	_game_over_sequence_id += 1
