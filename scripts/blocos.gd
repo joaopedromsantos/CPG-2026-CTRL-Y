@@ -3,6 +3,16 @@ extends Node3D
 
 signal answer_selected(is_correct: bool, selected_answer: int)
 
+const BLOCK_SIDE := 2.0
+const BLOCK_CORNER_RADIUS := 0.08
+const BLOCK_CORNER_SEGMENTS := 6
+const BLOCK_TEXT_FRONT_OFFSET := BLOCK_SIDE * 0.5 + 0.04
+const BLOCK_NUMBER_FONT_SIZE := 280
+const BLOCK_FLOAT_AMPLITUDE := 0.22
+const BLOCK_FLOAT_SPEED := 2.6
+const BLOCK_TILT_DEGREES := 20.0
+const BLOCK_TILT_SPEED := 2.4
+
 var world_speed := 8.0
 var steps_per_spawn := 20
 var step_distance := 1.0
@@ -17,7 +27,7 @@ var _mat_block: StandardMaterial3D
 var _mat_block_correct: StandardMaterial3D
 var _mat_block_side: StandardMaterial3D
 var _mat_number: StandardMaterial3D
-var _block_mesh: ArrayMesh
+var _block_mesh: Mesh
 var _current_options: Array = []
 var _current_correct_answers: Array = []
 var _highlight_correct_answers := false
@@ -29,7 +39,7 @@ func setup(lane_positions: Array[float]) -> void:
 	_lane_positions = lane_positions
 	_rng.randomize()
 	_build_materials()
-	_block_mesh = _make_rounded_box_mesh(Vector3(2.3, 2.4, 1.0), 0.6, 4)
+	_block_mesh = _make_rounded_cube_mesh()
 	reset()
 
 
@@ -81,6 +91,8 @@ func tick(delta: float, player_position: Vector3) -> void:
 
 	for row in _block_rows.duplicate():
 		row.position.z += world_speed * delta
+		for block in row.get_children():
+			_animate_block(block as Node3D, delta)
 		if row.position.z >= player_position.z and not bool(row.get_meta("resolved", false)):
 			_resolve_row(row, player_position)
 			continue
@@ -116,6 +128,9 @@ func _spawn_block_row() -> bool:
 		block.set_meta("answer_is_correct", is_correct)
 		_apply_block_highlight(block, is_correct)
 		block.position = Vector3(_lane_positions[lane_index], 1.2, 0.0)
+		block.set_meta("base_y", block.position.y)
+		block.set_meta("float_phase", _rng.randf() * TAU)
+		block.set_meta("tilt_phase", -PI * 0.5)
 		row.add_child(block)
 
 	return true
@@ -198,6 +213,14 @@ func _build_materials() -> void:
 	_mat_number.roughness = 0.28
 
 
+func _make_rounded_cube_mesh() -> ArrayMesh:
+	return _make_rounded_box_mesh(
+		Vector3.ONE * BLOCK_SIDE,
+		BLOCK_CORNER_RADIUS,
+		BLOCK_CORNER_SEGMENTS
+	)
+
+
 func _make_number_block(text: String) -> Node3D:
 	var root := Node3D.new()
 
@@ -209,7 +232,7 @@ func _make_number_block(text: String) -> Node3D:
 
 	var number := _make_text_mesh(text)
 	number.name = "Numero"
-	number.position = Vector3(0.0, 0.0, 0.55)
+	number.position = Vector3(0.0, 0.0, BLOCK_TEXT_FRONT_OFFSET)
 	root.add_child(number)
 
 	return root
@@ -232,9 +255,11 @@ func _apply_block_highlight(block: Node3D, is_correct: bool) -> void:
 func _make_text_mesh(text: String) -> Label3D:
 	var label := Label3D.new()
 	label.text = text
-	label.font_size = 300
+	label.font_size = BLOCK_NUMBER_FONT_SIZE
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	label.outline_size = 18
+	label.outline_modulate = Color(0.18, 0.1, 0.02, 0.85)
 	return label
 
 
@@ -345,3 +370,17 @@ func _add_surface(mesh: ArrayMesh, vertices: PackedVector3Array, normals: Packed
 	arrays[Mesh.ARRAY_NORMAL] = normals
 	arrays[Mesh.ARRAY_INDEX] = indices
 	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
+
+
+func _animate_block(block: Node3D, delta: float) -> void:
+	if block == null:
+		return
+
+	var float_phase := float(block.get_meta("float_phase", 0.0)) + BLOCK_FLOAT_SPEED * delta
+	var tilt_phase := float(block.get_meta("tilt_phase", -PI * 0.5)) + BLOCK_TILT_SPEED * delta
+	var base_y := float(block.get_meta("base_y", block.position.y))
+
+	block.set_meta("float_phase", float_phase)
+	block.set_meta("tilt_phase", tilt_phase)
+	block.position.y = base_y + sin(float_phase) * BLOCK_FLOAT_AMPLITUDE
+	block.rotation.y = deg_to_rad(sin(tilt_phase) * BLOCK_TILT_DEGREES)
