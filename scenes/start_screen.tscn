@@ -1,11 +1,13 @@
-[gd_scene format=3 uid="uid://dl3mrdxm470pj"]
+[gd_scene load_steps=2 format=3 uid="uid://dl3mrdxm470pj"]
 
 [ext_resource type="PackedScene" uid="uid://cofypyl68ho7i" path="res://assets/player/Robot.fbx" id="1_tx5wa"]
+[ext_resource type="Texture2D" path="res://assets/hud/cog.svg" id="2_cog"]
 
 [sub_resource type="GDScript" id="GDScript_start_screen"]
 script/source = "extends Control
 
 const GAME_SCENE := \"res://scenes/main.tscn\"
+const SETTINGS_SCENE := \"res://scenes/settings_screen.tscn\"
 const FONT_BOLD := \"res://assets/fonts/fredoka/Fredoka-Bold.ttf\"
 const FONT_SEMI := \"res://assets/fonts/fredoka/Fredoka-SemiBold.ttf\"
 const FONT_REGULAR := \"res://assets/fonts/fredoka/Fredoka-Regular.ttf\"
@@ -31,9 +33,13 @@ var _title: Label
 var _highscore_tag: Label
 var _highscore_value: Label
 var _start_button: Button
-var _difficulty_buttons: Dictionary = {}
-var _selected_difficulty := \"easy\"
+var _settings_button: Button
+var _difficulty_prev_button: Button
+var _difficulty_badge: Button
+var _difficulty_next_button: Button
+var _settings_modal: SettingsScreen
 var _menu_audio: AudioStreamPlayer
+var _selected_difficulty := DifficultySettings.DEFAULT_DIFFICULTY
 
 
 class StartArt:
@@ -326,6 +332,9 @@ func _play_menu_music() -> void:
 	_menu_audio.stream = load(\"res://assets/sounds/menu_sound.wav\")
 	add_child(_menu_audio)
 	_menu_audio.finished.connect(_menu_audio.play)
+	var game_settings := get_node_or_null(\"/root/GameSettings\")
+	if game_settings:
+		game_settings.call(\"apply_music_volume\", _menu_audio)
 	_menu_audio.play()
 
 
@@ -335,6 +344,10 @@ func _notification(what: int) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if _settings_modal and _settings_modal.visible:
+		if event.is_action_pressed(\"ui_cancel\"):
+			_close_settings()
+		return
 	if event.is_action_pressed(\"ui_accept\"):
 		_start_game()
 		return
@@ -360,7 +373,7 @@ func _build_screen() -> void:
 	_highscore_value.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 
 	_start_button = $StartButton
-	_start_button.text = \"COMEÇAR\"
+	_start_button.text = \"Começar\"
 	_start_button.focus_mode = Control.FOCUS_NONE
 	_start_button.add_theme_font_override(\"font\", _font_bold)
 	_start_button.add_theme_font_size_override(\"font_size\", 36)
@@ -374,50 +387,78 @@ func _build_screen() -> void:
 	_start_button.add_theme_stylebox_override(\"pressed\", _button_style(Color(0.12, 0.62, 0.26), Color(0.46, 0.86, 0.52)))
 	_start_button.pressed.connect(_start_game)
 
-	_build_difficulty_buttons()
+	_settings_button = $SettingsButton
+	_settings_button.text = \"\"
+	_settings_button.icon = load(\"res://assets/hud/cog.svg\")
+	_settings_button.expand_icon = true
+	_settings_button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_settings_button.focus_mode = Control.FOCUS_NONE
+	_settings_button.add_theme_font_override(\"font\", _font_bold)
+	_settings_button.add_theme_font_size_override(\"font_size\", 28)
+	_settings_button.add_theme_color_override(\"font_color\", Color.WHITE)
+	_settings_button.add_theme_color_override(\"font_hover_color\", Color.WHITE)
+	_settings_button.add_theme_color_override(\"font_pressed_color\", Color.WHITE)
+	_settings_button.add_theme_constant_override(\"outline_size\", 3)
+	_settings_button.add_theme_constant_override(\"icon_max_width\", 31)
+	_settings_button.add_theme_color_override(\"font_outline_color\", Color(0.04, 0.16, 0.30))
+	_settings_button.add_theme_stylebox_override(\"normal\", _button_style(Color(0.04, 0.16, 0.30), Color(0.36, 0.97, 1.0)))
+	_settings_button.add_theme_stylebox_override(\"hover\", _button_style(Color(0.06, 0.22, 0.40), Color(0.52, 1.0, 1.0)))
+	_settings_button.add_theme_stylebox_override(\"pressed\", _button_style(Color(0.03, 0.12, 0.24), Color(0.30, 0.82, 0.92)))
+	_settings_button.pressed.connect(_open_settings)
+
+	_build_difficulty_selector()
+	_build_settings_modal()
 
 
-func _build_difficulty_buttons() -> void:
-	var difficulties := [
-		{\"key\": \"easy\", \"label\": \"FACIL\"},
-		{\"key\": \"medium\", \"label\": \"MEDIO\"},
-		{\"key\": \"hard\", \"label\": \"DIFICIL\"},
-		{\"key\": \"impossible\", \"label\": \"IMPOSSIVEL\"},
-	]
+func _build_difficulty_selector() -> void:
+	_difficulty_prev_button = $DifficultyPrevButton
+	_difficulty_prev_button.text = \"<\"
+	_setup_compact_button(_difficulty_prev_button, 30)
+	_difficulty_prev_button.pressed.connect(_select_previous_difficulty)
 
-	for item in difficulties:
-		var difficulty := String(item[\"key\"])
-		var button := Button.new()
-		button.text = String(item[\"label\"])
-		button.focus_mode = Control.FOCUS_NONE
-		button.add_theme_font_override(\"font\", _font_semi)
-		button.add_theme_font_size_override(\"font_size\", 18)
-		button.add_theme_color_override(\"font_color\", Color.WHITE)
-		button.add_theme_color_override(\"font_hover_color\", Color.WHITE)
-		button.add_theme_color_override(\"font_pressed_color\", Color.WHITE)
-		button.pressed.connect(_select_difficulty.bind(difficulty))
-		add_child(button)
-		_difficulty_buttons[difficulty] = button
+	_difficulty_badge = $DifficultyBadge
+	_difficulty_badge.disabled = true
+	_difficulty_badge.focus_mode = Control.FOCUS_NONE
+	_difficulty_badge.add_theme_font_override(\"font\", _font_bold)
+	_difficulty_badge.add_theme_font_size_override(\"font_size\", 24)
+	_difficulty_badge.add_theme_color_override(\"font_disabled_color\", Color.WHITE)
+	_difficulty_badge.add_theme_constant_override(\"outline_size\", 4)
+	_difficulty_badge.add_theme_color_override(\"font_outline_color\", Color(0.44, 0.19, 0.03))
+	_difficulty_badge.add_theme_stylebox_override(\"disabled\", _button_style(Color(0.96, 0.50, 0.12), Color(1.0, 0.82, 0.30)))
 
-	_refresh_difficulty_buttons()
+	_difficulty_next_button = $DifficultyNextButton
+	_difficulty_next_button.text = \">\"
+	_setup_compact_button(_difficulty_next_button, 30)
+	_difficulty_next_button.pressed.connect(_select_next_difficulty)
 
-
-func _select_difficulty(difficulty: String) -> void:
-	_selected_difficulty = difficulty
-	_refresh_difficulty_buttons()
+	var game_settings := get_node_or_null(\"/root/GameSettings\")
+	if game_settings:
+		_selected_difficulty = DifficultySettings.normalize_difficulty(String(game_settings.get(\"selected_difficulty\")))
+	_refresh_difficulty_badge()
 
 
-func _refresh_difficulty_buttons() -> void:
-	for difficulty in _difficulty_buttons.keys():
-		var button := _difficulty_buttons[difficulty] as Button
-		if difficulty == _selected_difficulty:
-			button.add_theme_stylebox_override(\"normal\", _button_style(Color(0.96, 0.50, 0.12), Color(1.0, 0.82, 0.30)))
-			button.add_theme_stylebox_override(\"hover\", _button_style(Color(1.0, 0.58, 0.18), Color(1.0, 0.90, 0.42)))
-			button.add_theme_stylebox_override(\"pressed\", _button_style(Color(0.80, 0.36, 0.08), Color(0.96, 0.70, 0.22)))
-		else:
-			button.add_theme_stylebox_override(\"normal\", _button_style(Color(0.04, 0.16, 0.30), Color(0.36, 0.97, 1.0)))
-			button.add_theme_stylebox_override(\"hover\", _button_style(Color(0.06, 0.22, 0.40), Color(0.52, 1.0, 1.0)))
-			button.add_theme_stylebox_override(\"pressed\", _button_style(Color(0.03, 0.12, 0.24), Color(0.30, 0.82, 0.92)))
+func _build_settings_modal() -> void:
+	_settings_modal = load(SETTINGS_SCENE).instantiate() as SettingsScreen
+	_settings_modal.visible = false
+	_settings_modal.close_requested.connect(_close_settings)
+	_settings_modal.music_volume_changed.connect(_on_settings_music_volume_changed)
+	add_child(_settings_modal)
+
+
+func _setup_compact_button(button: Button, font_size: int) -> void:
+	button.focus_mode = Control.FOCUS_NONE
+	button.add_theme_font_override(\"font\", _font_bold)
+	button.add_theme_font_size_override(\"font_size\", font_size)
+	button.add_theme_color_override(\"font_color\", Color.WHITE)
+	button.add_theme_color_override(\"font_hover_color\", Color.WHITE)
+	button.add_theme_color_override(\"font_pressed_color\", Color.WHITE)
+	button.add_theme_color_override(\"font_disabled_color\", Color(1.0, 1.0, 1.0, 0.42))
+	button.add_theme_constant_override(\"outline_size\", 3)
+	button.add_theme_color_override(\"font_outline_color\", Color(0.04, 0.16, 0.30))
+	button.add_theme_stylebox_override(\"normal\", _button_style(Color(0.18, 0.78, 0.36), Color(0.58, 1.0, 0.66)))
+	button.add_theme_stylebox_override(\"hover\", _button_style(Color(0.22, 0.88, 0.42), Color(0.66, 1.0, 0.72)))
+	button.add_theme_stylebox_override(\"pressed\", _button_style(Color(0.12, 0.62, 0.26), Color(0.46, 0.86, 0.52)))
+	button.add_theme_stylebox_override(\"disabled\", _button_style(Color(0.10, 0.18, 0.24, 0.78), Color(0.32, 0.54, 0.60, 0.70)))
 
 
 func _make_label(text: String, font: Font, font_size: int, color: Color, outline_size: int, outline_color: Color) -> Label:
@@ -480,22 +521,31 @@ func _layout() -> void:
 	_highscore_value.set_position(hs_val_rect.position)
 	_highscore_value.set_size(hs_val_rect.size)
 
-	var btn_rect: Rect2 = rect.call(386, 425, 252, 64)
+	var btn_rect: Rect2 = rect.call(386, 405, 252, 64)
 	_start_button.set_position(btn_rect.position)
 	_start_button.set_size(btn_rect.size)
 
-	var difficulty_index := 0
-	for difficulty in [\"easy\", \"medium\", \"hard\", \"impossible\"]:
-		if not _difficulty_buttons.has(difficulty):
-			continue
-		var difficulty_button := _difficulty_buttons[difficulty] as Button
-		var difficulty_rect: Rect2 = rect.call(228 + difficulty_index * 148, 500, 132, 42)
-		difficulty_button.set_position(difficulty_rect.position)
-		difficulty_button.set_size(difficulty_rect.size)
-		difficulty_button.add_theme_font_size_override(\"font_size\", maxi(11, int(16 * scale)))
-		difficulty_index += 1
+	var settings_rect: Rect2 = rect.call(20, 18, 46, 46)
+	_settings_button.set_position(settings_rect.position)
+	_settings_button.set_size(settings_rect.size)
+
+	var diff_prev_rect: Rect2 = rect.call(386, 486, 48, 48)
+	_difficulty_prev_button.set_position(diff_prev_rect.position)
+	_difficulty_prev_button.set_size(diff_prev_rect.size)
+
+	var diff_badge_rect: Rect2 = rect.call(442, 486, 140, 48)
+	_difficulty_badge.set_position(diff_badge_rect.position)
+	_difficulty_badge.set_size(diff_badge_rect.size)
+
+	var diff_next_rect: Rect2 = rect.call(590, 486, 48, 48)
+	_difficulty_next_button.set_position(diff_next_rect.position)
+	_difficulty_next_button.set_size(diff_next_rect.size)
 
 	_start_button.add_theme_font_size_override(\"font_size\", maxi(18, int(34 * scale)))
+	_settings_button.add_theme_font_size_override(\"font_size\", maxi(16, int(28 * scale)))
+	_difficulty_prev_button.add_theme_font_size_override(\"font_size\", maxi(16, int(30 * scale)))
+	_difficulty_badge.add_theme_font_size_override(\"font_size\", maxi(13, int(21 * scale)))
+	_difficulty_next_button.add_theme_font_size_override(\"font_size\", maxi(16, int(30 * scale)))
 	_title.label_settings.font_size = maxi(28, int(72 * scale))
 	_highscore_tag.label_settings.font_size = maxi(10, int(14 * scale))
 	_highscore_value.label_settings.font_size = maxi(16, int(30 * scale))
@@ -511,10 +561,70 @@ func _update_highscore_display() -> void:
 func _start_game() -> void:
 	if _menu_audio:
 		_menu_audio.stop()
+	get_tree().change_scene_to_file(GAME_SCENE)
+
+
+func _open_settings() -> void:
+	_settings_button.release_focus()
+	if _settings_modal:
+		_settings_modal.show_settings()
+
+
+func _close_settings() -> void:
+	if _settings_modal:
+		_settings_modal.visible = false
+	_settings_button.grab_focus()
+
+
+func _on_settings_music_volume_changed() -> void:
+	var game_settings := get_node_or_null(\"/root/GameSettings\")
+	if game_settings and _menu_audio:
+		game_settings.call(\"apply_music_volume\", _menu_audio)
+
+
+func _select_previous_difficulty() -> void:
+	_change_difficulty(-1)
+
+
+func _select_next_difficulty() -> void:
+	_change_difficulty(1)
+
+
+func _change_difficulty(direction: int) -> void:
+	var index := DifficultySettings.get_index(_selected_difficulty)
+	var count := DifficultySettings.VALID_DIFFICULTIES.size()
+	index = clampi(index + direction, 0, count - 1)
+	_selected_difficulty = DifficultySettings.get_difficulty_for_index(index)
 	var game_settings := get_node_or_null(\"/root/GameSettings\")
 	if game_settings:
 		game_settings.call(\"set_difficulty\", _selected_difficulty)
-	get_tree().change_scene_to_file(GAME_SCENE)
+	_refresh_difficulty_badge()
+
+
+func _refresh_difficulty_badge() -> void:
+	if _difficulty_badge:
+		_difficulty_badge.text = DifficultySettings.get_label(_selected_difficulty)
+		var colors := _difficulty_colors(_selected_difficulty)
+		var fill: Color = colors.get(\"fill\", Color(0.10, 0.45, 0.86))
+		var border: Color = colors.get(\"border\", Color(0.48, 0.86, 1.0))
+		_difficulty_badge.add_theme_stylebox_override(\"disabled\", _button_style(fill, border))
+	if _difficulty_prev_button:
+		_difficulty_prev_button.disabled = DifficultySettings.get_index(_selected_difficulty) <= 0
+	if _difficulty_next_button:
+		_difficulty_next_button.disabled = DifficultySettings.get_index(_selected_difficulty) >= DifficultySettings.VALID_DIFFICULTIES.size() - 1
+
+
+func _difficulty_colors(difficulty: String) -> Dictionary:
+	match difficulty:
+		DifficultySettings.DIFFICULTY_EASY:
+			return {\"fill\": Color(0.18, 0.78, 0.36), \"border\": Color(0.58, 1.0, 0.66)}
+		DifficultySettings.DIFFICULTY_MEDIUM:
+			return {\"fill\": Color(0.10, 0.45, 0.86), \"border\": Color(0.48, 0.86, 1.0)}
+		DifficultySettings.DIFFICULTY_HARD:
+			return {\"fill\": Color(0.96, 0.50, 0.12), \"border\": Color(1.0, 0.82, 0.30)}
+		DifficultySettings.DIFFICULTY_IMPOSSIBLE:
+			return {\"fill\": Color(0.82, 0.16, 0.16), \"border\": Color(1.0, 0.48, 0.42)}
+	return {\"fill\": Color(0.18, 0.78, 0.36), \"border\": Color(0.58, 1.0, 0.66)}
 "
 
 [node name="StartScreen" type="Control" unique_id=405717112]
@@ -549,11 +659,51 @@ vertical_alignment = 1
 [node name="StartButton" type="Button" parent="." unique_id=1332176397]
 layout_mode = 0
 offset_left = 386.0
-offset_top = 425.0
+offset_top = 405.0
 offset_right = 638.0
-offset_bottom = 489.0
+offset_bottom = 469.0
 focus_mode = 0
-text = "COMEÇAR"
+text = "Começar"
+
+[node name="SettingsButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 18.0
+offset_right = 66.0
+offset_bottom = 64.0
+focus_mode = 0
+theme_override_constants/icon_max_width = 31
+icon = ExtResource("2_cog")
+icon_alignment = 1
+expand_icon = true
+
+[node name="DifficultyPrevButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 386.0
+offset_top = 486.0
+offset_right = 434.0
+offset_bottom = 534.0
+focus_mode = 0
+text = "<"
+
+[node name="DifficultyBadge" type="Button" parent="."]
+layout_mode = 0
+offset_left = 442.0
+offset_top = 486.0
+offset_right = 582.0
+offset_bottom = 534.0
+focus_mode = 0
+disabled = true
+text = "Fácil"
+
+[node name="DifficultyNextButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 590.0
+offset_top = 486.0
+offset_right = 638.0
+offset_bottom = 534.0
+focus_mode = 0
+text = ">"
 
 [node name="Robot" parent="." unique_id=2043943188 instance=ExtResource("1_tx5wa")]
 transform = Transform3D(-0.48011452, -0.22038832, 0.8490694, 0.83929515, -0.39688736, 0.3715696, 0.25509527, 0.89101577, 0.37552226, -0.37257493, 0, -5.92693)
