@@ -8,6 +8,7 @@ const FONT_REGULAR := "res://assets/fonts/fredoka/Fredoka_Condensed-Medium.ttf"
 const FONT_BOLD := "res://assets/fonts/fredoka/Fredoka_Condensed-Bold.ttf"
 const ROBOT_ROTATION_SPEED := 1.8
 const ROBOT_IDLE_ANIMATION := "RobotArmature|Robot_Idle"
+const ROBOT_DEATH_ANIMATION := "RobotArmature|Robot_Death"
 const ROBOT_IDLE_SWAY_SPEED := 1.8
 const ROBOT_IDLE_SWAY_ANGLE := 0.035
 const ROBOT_IDLE_BOB_HEIGHT := 0.035
@@ -56,6 +57,8 @@ var _robot_animation: AnimationPlayer
 var _robot_skeleton: Skeleton3D
 var _robot_base_position := Vector3.ZERO
 var _robot_pushback_time_left := 0.0
+var _robot_click_count := 0
+var _robot_is_dead := false
 var _robot_arm_base_rotations: Dictionary = {}
 var _intro_started_at_msec := 0
 var _menu_audio: AudioStreamPlayer
@@ -109,7 +112,7 @@ func _gui_input(event: InputEvent) -> void:
 		var mouse_event := event as InputEventMouseButton
 		if mouse_event.button_index == MOUSE_BUTTON_LEFT and mouse_event.pressed and _is_robot_clicked(get_global_mouse_position()):
 			accept_event()
-			_play_robot_pushback()
+			_on_robot_clicked()
 
 
 func _process(delta: float) -> void:
@@ -122,6 +125,9 @@ func _process(delta: float) -> void:
 		rotation_direction += 1.0
 	if not is_zero_approx(rotation_direction):
 		_robot.rotate_y(rotation_direction * ROBOT_ROTATION_SPEED * delta)
+	if _robot_is_dead:
+		queue_redraw()
+		return
 	if _robot_pushback_time_left > 0.0:
 		_robot_pushback_time_left = maxf(_robot_pushback_time_left - delta, 0.0)
 	_update_robot_idle_sway()
@@ -275,6 +281,37 @@ func _update_robot_arm_pushback(pushback: float, time: float) -> void:
 
 func _play_robot_pushback() -> void:
 	_robot_pushback_time_left = ROBOT_PUSHBACK_DURATION
+
+
+func _on_robot_clicked() -> void:
+	if _robot_is_dead:
+		return
+	_robot_click_count += 1
+	if _robot_click_count > 5:
+		_play_robot_death()
+	else:
+		_play_robot_pushback()
+
+
+func _play_robot_death() -> void:
+	_robot_is_dead = true
+	_robot_pushback_time_left = 0.0
+	_reset_robot_arm_pose()
+	_robot.position = _robot_base_position
+	_robot.rotation.x = 0.0
+	_robot.rotation.z = 0.0
+	if _robot_animation and _robot_animation.has_animation(ROBOT_DEATH_ANIMATION):
+		_robot_animation.stop()
+		_robot_animation.play(ROBOT_DEATH_ANIMATION)
+
+
+func _reset_robot_arm_pose() -> void:
+	if _robot_skeleton == null or _robot_arm_base_rotations.is_empty():
+		return
+	for bone_name in _robot_arm_base_rotations.keys():
+		var bone_index := _robot_skeleton.find_bone(String(bone_name))
+		if bone_index >= 0:
+			_robot_skeleton.set_bone_pose_rotation(bone_index, _robot_arm_base_rotations[bone_name] as Quaternion)
 
 
 func _is_robot_clicked(screen_position: Vector2) -> bool:
