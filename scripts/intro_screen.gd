@@ -339,9 +339,9 @@ func _reset_robot_arm_pose() -> void:
 
 
 func _is_robot_clicked(screen_position: Vector2) -> bool:
-	if _robot_viewport_container == null:
+	if _robot_click_area == null:
 		return false
-	var robot_rect := _robot_viewport_container.get_global_rect()
+	var robot_rect := _robot_click_area.get_global_rect()
 	return robot_rect.has_point(screen_position)
 
 
@@ -371,8 +371,12 @@ func _layout_robot_viewport() -> void:
 	_robot_viewport_container.size = pixel_rect.size
 	_robot_viewport.size = Vector2i(maxi(1, int(pixel_rect.size.x)), maxi(1, int(pixel_rect.size.y)))
 	if _robot_click_area:
-		_robot_click_area.position = pixel_rect.position
-		_robot_click_area.size = pixel_rect.size
+		var hit_rect := Rect2(
+			pixel_rect.position + Vector2(pixel_rect.size.x * 0.36, pixel_rect.size.y * 0.16),
+			Vector2(pixel_rect.size.x * 0.34, pixel_rect.size.y * 0.64)
+		)
+		_robot_click_area.position = hit_rect.position
+		_robot_click_area.size = hit_rect.size
 
 
 func _draw_scene() -> void:
