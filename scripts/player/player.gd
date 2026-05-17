@@ -86,6 +86,16 @@ func reset(start_lane: int) -> void:
 	_play_base_animation(RUN_ANIMATION)
 
 
+func pause_animation() -> void:
+	if _animation_player:
+		_animation_player.pause()
+
+
+func resume_animation() -> void:
+	if _animation_player:
+		_animation_player.play()
+
+
 func change_lane(direction: int) -> void:
 	if not _can_change_lane:
 		return
