@@ -3,7 +3,16 @@ extends Node3D
 
 signal cone_hit
 
-const CONE_SCENE: PackedScene = preload("res://assets/city-kit-roads/models/construction-cone.glb")
+const OBSTACLES: Array[Dictionary] = [
+	{
+		"scene": preload("res://assets/city-kit-roads/models/construction-cone.glb"),
+		"scale": 12.1
+	},
+	{
+		"scene": preload("res://assets/car-kit/models/box.glb"),
+		"scale": 2.1
+	}
+]
 const MIN_DISTANCE_FROM_BLOCKS := 7.0
 const PLAYER_LANE_TOLERANCE := 0.8
 const CONE_JUMP_CLEARANCE_Y := 0.6
@@ -82,9 +91,12 @@ func _try_spawn_cone(block_z_positions: Array, distance_to_next_block: float) ->
 
 
 func _make_cone() -> Node3D:
-	var cone := CONE_SCENE.instantiate() as Node3D
+	var scene_index := _rng.randi_range(0, OBSTACLES.size() - 1)
+	var obstacle_data := OBSTACLES[scene_index]
+	var cone := (obstacle_data["scene"] as PackedScene).instantiate() as Node3D
 	cone.name = "Cone"
-	cone.scale = Vector3.ONE * 12.1
+	var size: float = obstacle_data["scale"]
+	cone.scale = Vector3.ONE * size
 	cone.rotation_degrees = Vector3(0.0, 0.0, 0.0)
 	return cone
 

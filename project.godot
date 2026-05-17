@@ -28,8 +28,8 @@ RankingAPI="*res://scripts/ranking_api.gd"
 window/size/viewport_width=1024
 window/size/viewport_height=580
 window/size/mode=2
-window/stretch/mode="viewport"
-window/stretch/aspect="ignore"
+window/stretch/mode="canvas_items"
+window/stretch/aspect="keep"
 
 [editor_plugins]
 

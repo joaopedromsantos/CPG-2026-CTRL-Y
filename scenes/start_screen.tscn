@@ -328,8 +328,15 @@ func _layout() -> void:
 	var scale := minf(s.x / DESIGN_SIZE.x, s.y / DESIGN_SIZE.y)
 	var ox := (s.x - DESIGN_SIZE.x * scale) * 0.5
 	var oy := (s.y - DESIGN_SIZE.y * scale) * 0.5
+	# Centered elements (buttons, difficulty, etc.)
 	var rect := func(x: float, y: float, w: float, h: float) -> Rect2:
 		return Rect2(Vector2(ox + x * scale, oy + y * scale), Vector2(w * scale, h * scale))
+	# Left-edge elements (anchored to left border)
+	var rect_left := func(x: float, y: float, w: float, h: float) -> Rect2:
+		return Rect2(Vector2(x * scale, oy + y * scale), Vector2(w * scale, h * scale))
+	# Right-edge elements (anchored to right border)
+	var rect_right := func(x: float, y: float, w: float, h: float) -> Rect2:
+		return Rect2(Vector2(s.x - (DESIGN_SIZE.x - x) * scale, oy + y * scale), Vector2(w * scale, h * scale))
 
 	var title_rect: Rect2 = rect.call(160, 38, 710, 76)
 
@@ -337,27 +344,27 @@ func _layout() -> void:
 	_start_button.set_position(btn_rect.position)
 	_start_button.set_size(btn_rect.size)
 
-	var settings_rect: Rect2 = rect.call(20, 18, 46, 46)
+	var settings_rect: Rect2 = rect_left.call(20, 18, 46, 46)
 	_settings_button.set_position(settings_rect.position)
 	_settings_button.set_size(settings_rect.size)
 
-	var help_rect: Rect2 = rect.call(20, 74, 46, 46)
+	var help_rect: Rect2 = rect_left.call(20, 74, 46, 46)
 	_help_button.set_position(help_rect.position)
 	_help_button.set_size(help_rect.size)
 
-	var ranking_rect: Rect2 = rect.call(20, 130, 46, 46)
+	var ranking_rect: Rect2 = rect_left.call(20, 130, 46, 46)
 	_ranking_button.set_position(ranking_rect.position)
 	_ranking_button.set_size(ranking_rect.size)
 
-	var about_rect: Rect2 = rect.call(20, 186, 46, 46)
+	var about_rect: Rect2 = rect_left.call(20, 186, 46, 46)
 	_about_button.set_position(about_rect.position)
 	_about_button.set_size(about_rect.size)
 
-	var player_name_rect: Rect2 = rect.call(832, 28, 160, 24)
+	var player_name_rect: Rect2 = rect_right.call(832, 28, 160, 24)
 	_player_name_label.set_position(player_name_rect.position)
 	_player_name_label.set_size(player_name_rect.size)
 
-	var change_name_rect: Rect2 = rect.call(832, 56, 160, 26)
+	var change_name_rect: Rect2 = rect_right.call(832, 56, 160, 26)
 	_change_name_button.set_position(change_name_rect.position)
 	_change_name_button.set_size(change_name_rect.size)
 
