@@ -379,6 +379,7 @@ func _use_power_up_slot(slot: int) -> void:
 		return
 	if not _power_up_effects.activate(type, slot, _lives):
 		return
+	_power_ups.spawn_use_effect(type, _player.get_runner_position())
 	power_up_used.emit(type, slot)
 
 
