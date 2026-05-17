@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3]
 
-[ext_resource type="Script" path="res://scripts/about_screen.gd" id="1_about_script"]
+[ext_resource type="Script" path="res://scripts/screens/about/about_screen.gd" id="1_about_script"]
 [ext_resource type="Texture2D" uid="uid://dxl2a8c6y6ohx" path="res://assets/hud/close-x.svg" id="2_close_x"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]

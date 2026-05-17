@@ -1,11 +1,18 @@
 {
 	"dirs": [
 		"res://scripts/blocks/__tests__",
+		"res://scripts/equations/__tests__",
+		"res://scripts/game/__tests__",
 		"res://scripts/hud/__tests__",
 		"res://scripts/hud/slots/__tests__",
+		"res://scripts/obstacles/__tests__",
 		"res://scripts/player/__tests__",
 		"res://scripts/power_ups/__tests__",
-		"res://scripts/scenario/__tests__"
+		"res://scripts/ranking/__tests__",
+		"res://scripts/screens/__tests__",
+		"res://scripts/settings/__tests__",
+		"res://scripts/scenario/__tests__",
+		"res://scripts/timer/__tests__"
 	],
 	"include_subdirs": true,
 	"prefix": "test_",

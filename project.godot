@@ -18,10 +18,10 @@ config/icon="res://icon.svg"
 [autoload]
 
 PlayerRecord="*res://scripts/player/record/player_record.gd"
-GameSettings="*res://scripts/game_settings.gd"
-PointerCursorManager="*res://scripts/pointer_cursor_manager.gd"
+GameSettings="*res://scripts/settings/game_settings.gd"
+PointerCursorManager="*res://scripts/game/pointer_cursor_manager.gd"
 PlayerData="*res://scripts/player/data/player_data.gd"
-RankingAPI="*res://scripts/ranking_api.gd"
+RankingAPI="*res://scripts/ranking/ranking_api.gd"
 
 [display]
 

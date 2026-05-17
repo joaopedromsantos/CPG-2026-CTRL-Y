@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cubnf6432qwe2"]
 
-[ext_resource type="Script" path="res://scripts/pause_screen.gd" id="1_pause_script"]
+[ext_resource type="Script" path="res://scripts/screens/pause/pause_screen.gd" id="1_pause_script"]
 [ext_resource type="FontFile" uid="uid://cnt7bgrpab5pp" path="res://assets/fonts/fredoka/Fredoka-SemiBold.ttf" id="2_fredoka"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pause_panel"]
