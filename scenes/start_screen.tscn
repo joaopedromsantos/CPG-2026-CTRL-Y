@@ -10,6 +10,8 @@ script/source = "extends Control
 
 const GAME_SCENE := \"res://scenes/main.tscn\"
 const SETTINGS_SCENE := \"res://scenes/settings_screen.tscn\"
+const NAME_INPUT_SCENE := \"res://scenes/name_input_screen.tscn\"
+const RANKING_SCENE := \"res://scenes/ranking_screen.tscn\"
 const FONT_BOLD := \"res://assets/fonts/fredoka/Fredoka-Bold.ttf\"
 const FONT_SEMI := \"res://assets/fonts/fredoka/Fredoka-SemiBold.ttf\"
 const FONT_REGULAR := \"res://assets/fonts/fredoka/Fredoka-Regular.ttf\"
@@ -42,6 +44,11 @@ var _difficulty_next_button: Button
 var _settings_modal: SettingsScreen
 var _menu_audio: AudioStreamPlayer
 var _selected_difficulty := DifficultySettings.DEFAULT_DIFFICULTY
+var _player_name_label: Label
+var _change_name_button: Button
+var _ranking_button: Button
+var _ranking_loading_label: Label
+var _ranking_request_pending := false
 
 
 class StartArt:
@@ -68,13 +75,22 @@ class StartArt:
 		_stars_built = true
 
 func _ready() -> void:
+	var player_data := get_node_or_null(\"/root/PlayerData\")
+	if player_data and not bool(player_data.call(\"has_session_name\")):
+		call_deferred(\"_redirect_to_name_input\")
+		return
 	_font_bold = load(FONT_BOLD)
 	_font_semi = load(FONT_SEMI)
 	_font_regular = load(FONT_REGULAR)
 	_build_screen()
 	_layout()
 	_update_highscore_display()
+	_update_player_name_display()
 	_play_menu_music()
+
+
+func _redirect_to_name_input() -> void:
+	get_tree().change_scene_to_file(NAME_INPUT_SCENE)
 
 
 func _play_menu_music() -> void:
@@ -159,6 +175,34 @@ func _build_screen() -> void:
 	_help_button.text = \"?\"
 	_setup_icon_button(_help_button, 28)
 
+	_ranking_button = $RankingButton
+	_ranking_button.text = \"🏆\"
+	_setup_icon_button(_ranking_button, 26)
+	_ranking_button.pressed.connect(_on_ranking_pressed)
+
+	_player_name_label = $PlayerNameLabel
+	_apply_label_style(_player_name_label, \"\", _font_semi, 13, NEON_CYAN, 0, Color(0, 0, 0, 0))
+	_player_name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+
+	_change_name_button = $ChangeNameButton
+	_change_name_button.text = \"Trocar usu\u00e1rio\"
+	_change_name_button.focus_mode = Control.FOCUS_NONE
+	_change_name_button.add_theme_font_override(\"font\", _font_semi)
+	_change_name_button.add_theme_font_size_override(\"font_size\", 11)
+	_change_name_button.add_theme_color_override(\"font_color\", NEON_CYAN)
+	_change_name_button.add_theme_color_override(\"font_hover_color\", Color.WHITE)
+	_change_name_button.add_theme_color_override(\"font_pressed_color\", Color.WHITE)
+	_change_name_button.add_theme_constant_override(\"outline_size\", 0)
+	_change_name_button.add_theme_stylebox_override(\"normal\", _button_style(Color(0.04, 0.16, 0.30, 0.6), Color(0.36, 0.97, 1.0, 0.5)))
+	_change_name_button.add_theme_stylebox_override(\"hover\", _button_style(Color(0.06, 0.22, 0.40), Color(0.52, 1.0, 1.0)))
+	_change_name_button.add_theme_stylebox_override(\"pressed\", _button_style(Color(0.03, 0.12, 0.24), Color(0.30, 0.82, 0.92)))
+	_change_name_button.pressed.connect(_redirect_to_name_input)
+
+	_ranking_loading_label = $RankingLoadingLabel
+	_apply_label_style(_ranking_loading_label, \"Carregando ranking...\", _font_semi, 18, NEON_CYAN, 4, Color(0.02, 0.10, 0.20))
+	_ranking_loading_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_ranking_loading_label.visible = false
+
 	_build_difficulty_selector()
 	_build_settings_modal()
 
@@ -187,6 +231,9 @@ func _build_difficulty_selector() -> void:
 	var game_settings := get_node_or_null(\"/root/GameSettings\")
 	if game_settings:
 		_selected_difficulty = DifficultySettings.normalize_difficulty(String(game_settings.get(\"selected_difficulty\")))
+	var player_data := get_node_or_null(\"/root/PlayerData\")
+	if player_data:
+		player_data.call(\"set_difficulty\", _selected_difficulty)
 	_refresh_difficulty_badge()
 
 
@@ -298,6 +345,22 @@ func _layout() -> void:
 	_help_button.set_position(help_rect.position)
 	_help_button.set_size(help_rect.size)
 
+	var ranking_rect: Rect2 = rect.call(20, 130, 46, 46)
+	_ranking_button.set_position(ranking_rect.position)
+	_ranking_button.set_size(ranking_rect.size)
+
+	var player_name_rect: Rect2 = rect.call(832, 100, 160, 20)
+	_player_name_label.set_position(player_name_rect.position)
+	_player_name_label.set_size(player_name_rect.size)
+
+	var change_name_rect: Rect2 = rect.call(832, 122, 160, 26)
+	_change_name_button.set_position(change_name_rect.position)
+	_change_name_button.set_size(change_name_rect.size)
+
+	var ranking_loading_rect: Rect2 = rect.call(386, 350, 252, 32)
+	_ranking_loading_label.set_position(ranking_loading_rect.position)
+	_ranking_loading_label.set_size(ranking_loading_rect.size)
+
 	var diff_prev_rect: Rect2 = rect.call(386, 486, 48, 48)
 	_difficulty_prev_button.set_position(diff_prev_rect.position)
 	_difficulty_prev_button.set_size(diff_prev_rect.size)
@@ -313,6 +376,13 @@ func _layout() -> void:
 	_start_button.add_theme_font_size_override(\"font_size\", maxi(18, int(34 * scale)))
 	_settings_button.add_theme_font_size_override(\"font_size\", maxi(16, int(28 * scale)))
 	_help_button.add_theme_font_size_override(\"font_size\", maxi(16, int(28 * scale)))
+	_ranking_button.add_theme_font_size_override(\"font_size\", maxi(14, int(26 * scale)))
+	if _player_name_label and _player_name_label.label_settings:
+		_player_name_label.label_settings.font_size = maxi(9, int(13 * scale))
+	if _change_name_button:
+		_change_name_button.add_theme_font_size_override(\"font_size\", maxi(8, int(11 * scale)))
+	if _ranking_loading_label and _ranking_loading_label.label_settings:
+		_ranking_loading_label.label_settings.font_size = maxi(12, int(18 * scale))
 	_difficulty_prev_button.add_theme_font_size_override(\"font_size\", maxi(16, int(30 * scale)))
 	_difficulty_badge.add_theme_font_size_override(\"font_size\", maxi(13, int(21 * scale)))
 	_difficulty_next_button.add_theme_font_size_override(\"font_size\", maxi(16, int(30 * scale)))
@@ -328,6 +398,9 @@ func _update_highscore_display() -> void:
 
 
 func _start_game() -> void:
+	var player_data := get_node_or_null(\"/root/PlayerData\")
+	if player_data:
+		player_data.call(\"set_difficulty\", _selected_difficulty)
 	if _menu_audio:
 		_menu_audio.stop()
 	get_tree().change_scene_to_file(GAME_SCENE)
@@ -367,6 +440,9 @@ func _change_difficulty(direction: int) -> void:
 	var game_settings := get_node_or_null(\"/root/GameSettings\")
 	if game_settings:
 		game_settings.call(\"set_difficulty\", _selected_difficulty)
+	var player_data := get_node_or_null(\"/root/PlayerData\")
+	if player_data:
+		player_data.call(\"set_difficulty\", _selected_difficulty)
 	_refresh_difficulty_badge()
 
 
@@ -394,6 +470,44 @@ func _difficulty_colors(difficulty: String) -> Dictionary:
 		DifficultySettings.DIFFICULTY_IMPOSSIBLE:
 			return {\"fill\": Color(0.82, 0.16, 0.16), \"border\": Color(1.0, 0.48, 0.42)}
 	return {\"fill\": Color(0.18, 0.78, 0.36), \"border\": Color(0.58, 1.0, 0.66)}
+
+
+func _update_player_name_display() -> void:
+	if _player_name_label == null:
+		return
+	var player_data := get_node_or_null(\"/root/PlayerData\")
+	var current_name := \"\"
+	if player_data:
+		current_name = String(player_data.call(\"get_display_name\"))
+	_player_name_label.text = \"\ud83d\udc64 %s\" % current_name if current_name != \"\" else \"\"
+
+
+func _on_ranking_pressed() -> void:
+	if _ranking_request_pending:
+		return
+	var ranking_api := get_node_or_null(\"/root/RankingAPI\")
+	if ranking_api == null:
+		return
+	_ranking_request_pending = true
+	_ranking_loading_label.visible = true
+	_ranking_button.disabled = true
+	_start_button.disabled = true
+	if not ranking_api.is_connected(\"leaderboard_received\", _on_leaderboard_received):
+		ranking_api.connect(\"leaderboard_received\", _on_leaderboard_received, CONNECT_ONE_SHOT)
+	ranking_api.call(\"fetch_leaderboard\")
+
+
+func _on_leaderboard_received(_data: Dictionary) -> void:
+	_ranking_request_pending = false
+	if _ranking_loading_label:
+		_ranking_loading_label.visible = false
+	if _ranking_button:
+		_ranking_button.disabled = false
+	if _start_button:
+		_start_button.disabled = false
+	if _menu_audio:
+		_menu_audio.stop()
+	get_tree().change_scene_to_file(RANKING_SCENE)
 "
 
 [node name="StartScreen" type="Control" unique_id=405717112]
@@ -466,6 +580,45 @@ offset_bottom = 120.0
 focus_mode = 0
 text = "?"
 script = ExtResource("2_help_button")
+
+[node name="RankingButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 130.0
+offset_right = 66.0
+offset_bottom = 176.0
+focus_mode = 0
+text = "🏆"
+
+[node name="PlayerNameLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 832.0
+offset_top = 100.0
+offset_right = 992.0
+offset_bottom = 120.0
+text = ""
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="ChangeNameButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 832.0
+offset_top = 122.0
+offset_right = 992.0
+offset_bottom = 148.0
+focus_mode = 0
+text = "Trocar usuário"
+
+[node name="RankingLoadingLabel" type="Label" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 386.0
+offset_top = 350.0
+offset_right = 638.0
+offset_bottom = 382.0
+text = "Carregando ranking..."
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="DifficultyPrevButton" type="Button" parent="."]
 layout_mode = 0
