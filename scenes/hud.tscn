@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://cq5ws1pvpsgiw"]
+[gd_scene format=3 uid="uid://dh2nn4qlcg57e"]
 
 [ext_resource type="Script" uid="uid://cfl2kba1vabjm" path="res://scripts/hud.gd" id="1_6fi6k"]
 [ext_resource type="Texture2D" uid="uid://b8kt244qmm62l" path="res://assets/hud/pause-button-hud.png" id="1_ahhtf"]
@@ -7,13 +7,13 @@
 [ext_resource type="Texture2D" uid="uid://bpnspwk5vlobq" path="res://assets/hud/star.svg" id="6_star"]
 [ext_resource type="Texture2D" uid="uid://diiip0l25v3bb" path="res://assets/hud/heart_full.svg" id="7_heart_full"]
 [ext_resource type="Texture2D" uid="uid://c8kl0kppfkymg" path="res://assets/hud/clock.svg" id="9_clock"]
-[ext_resource type="PackedScene" path="res://scenes/pause_screen.tscn" id="10_pause"]
+[ext_resource type="PackedScene" uid="uid://cubnf6432qwe2" path="res://scenes/pause_screen.tscn" id="10_pause"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_score_panel"]
-content_margin_left = 18.0
-content_margin_top = 8.0
-content_margin_right = 18.0
-content_margin_bottom = 8.0
+content_margin_left = 13.0
+content_margin_top = 6.0
+content_margin_right = 13.0
+content_margin_bottom = 6.0
 bg_color = Color(1, 0.94, 0.72, 1)
 border_width_left = 4
 border_width_top = 4
@@ -27,12 +27,12 @@ corner_radius_bottom_left = 15
 shadow_color = Color(0, 0, 0, 0.35)
 shadow_size = 7
 shadow_offset = Vector2(0, 3)
-content_margin_left = 13
-content_margin_top = 6
-content_margin_right = 13
-content_margin_bottom = 6
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lives_panel"]
+content_margin_left = 10.0
+content_margin_top = 4.0
+content_margin_right = 10.0
+content_margin_bottom = 4.0
 bg_color = Color(0.99, 0.92, 0.92, 1)
 border_width_left = 3
 border_width_top = 3
@@ -46,16 +46,12 @@ corner_radius_bottom_left = 13
 shadow_color = Color(0, 0, 0, 0.3)
 shadow_size = 6
 shadow_offset = Vector2(0, 2)
-content_margin_left = 10
-content_margin_top = 4
-content_margin_right = 10
-content_margin_bottom = 4
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_time_panel"]
-content_margin_left = 14.0
-content_margin_top = 6.0
-content_margin_right = 14.0
-content_margin_bottom = 6.0
+content_margin_left = 10.0
+content_margin_top = 4.0
+content_margin_right = 10.0
+content_margin_bottom = 4.0
 bg_color = Color(0.9, 0.95, 1, 1)
 border_width_left = 3
 border_width_top = 3
@@ -69,16 +65,12 @@ corner_radius_bottom_left = 13
 shadow_color = Color(0, 0, 0, 0.3)
 shadow_size = 6
 shadow_offset = Vector2(0, 2)
-content_margin_left = 10
-content_margin_top = 4
-content_margin_right = 10
-content_margin_bottom = 4
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_slot_panel"]
-content_margin_left = 10.0
-content_margin_top = 6.0
-content_margin_right = 10.0
-content_margin_bottom = 6.0
+content_margin_left = 7.0
+content_margin_top = 4.0
+content_margin_right = 7.0
+content_margin_bottom = 4.0
 bg_color = Color(1, 0.96, 0.86, 1)
 border_width_left = 3
 border_width_top = 3
@@ -92,16 +84,12 @@ corner_radius_bottom_left = 11
 shadow_color = Color(0, 0, 0, 0.3)
 shadow_size = 4
 shadow_offset = Vector2(0, 2)
-content_margin_left = 7
-content_margin_top = 4
-content_margin_right = 7
-content_margin_bottom = 4
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_reserve_slot_panel"]
-content_margin_left = 4.0
-content_margin_top = 3.0
-content_margin_right = 4.0
-content_margin_bottom = 3.0
+content_margin_left = 3.0
+content_margin_top = 2.0
+content_margin_right = 3.0
+content_margin_bottom = 2.0
 bg_color = Color(1, 0.96, 0.86, 0.92)
 border_width_left = 2
 border_width_top = 2
@@ -115,10 +103,6 @@ corner_radius_bottom_left = 7
 shadow_color = Color(0, 0, 0, 0.2)
 shadow_size = 2
 shadow_offset = Vector2(0, 1)
-content_margin_left = 3
-content_margin_top = 2
-content_margin_right = 3
-content_margin_bottom = 2
 
 [node name="HUD" type="Node2D" unique_id=1585767812]
 script = ExtResource("1_6fi6k")
@@ -207,7 +191,7 @@ layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -225.0
+offset_left = -305.0
 offset_top = 25.0
 offset_right = -25.0
 offset_bottom = 210.0
@@ -223,7 +207,7 @@ grow_vertical = 0
 theme_override_constants/separation = 7
 
 [node name="ScoreContainer" type="PanelContainer" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper" unique_id=1070437582]
-custom_minimum_size = Vector2(200, 64)
+custom_minimum_size = Vector2(280, 64)
 layout_mode = 2
 size_flags_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_score_panel")
@@ -233,7 +217,7 @@ layout_mode = 2
 theme_override_constants/separation = 12
 alignment = 1
 
-[node name="StarIcon" type="TextureRect" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper/ScoreContainer/Row"]
+[node name="StarIcon" type="TextureRect" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper/ScoreContainer/Row" unique_id=95357194]
 custom_minimum_size = Vector2(45, 45)
 layout_mode = 2
 size_flags_vertical = 4
@@ -253,8 +237,8 @@ text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="LivesContainer" type="PanelContainer" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper"]
-custom_minimum_size = Vector2(200, 50)
+[node name="LivesContainer" type="PanelContainer" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper" unique_id=281865549]
+custom_minimum_size = Vector2(280, 50)
 layout_mode = 2
 size_flags_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_lives_panel")
@@ -264,7 +248,7 @@ layout_mode = 2
 theme_override_constants/separation = 7
 alignment = 1
 
-[node name="Heart1" type="TextureRect" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper/LivesContainer/HeartsRow"]
+[node name="Heart1" type="TextureRect" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper/LivesContainer/HeartsRow" unique_id=712596775]
 custom_minimum_size = Vector2(36, 36)
 layout_mode = 2
 size_flags_vertical = 4
@@ -272,7 +256,7 @@ texture = ExtResource("7_heart_full")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Heart2" type="TextureRect" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper/LivesContainer/HeartsRow"]
+[node name="Heart2" type="TextureRect" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper/LivesContainer/HeartsRow" unique_id=1383218290]
 custom_minimum_size = Vector2(36, 36)
 layout_mode = 2
 size_flags_vertical = 4
@@ -280,7 +264,7 @@ texture = ExtResource("7_heart_full")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Heart3" type="TextureRect" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper/LivesContainer/HeartsRow"]
+[node name="Heart3" type="TextureRect" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper/LivesContainer/HeartsRow" unique_id=1166635942]
 custom_minimum_size = Vector2(36, 36)
 layout_mode = 2
 size_flags_vertical = 4
@@ -289,7 +273,7 @@ expand_mode = 1
 stretch_mode = 5
 
 [node name="CronometerContainer" type="PanelContainer" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper" unique_id=1445436165]
-custom_minimum_size = Vector2(200, 48)
+custom_minimum_size = Vector2(280, 48)
 layout_mode = 2
 size_flags_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_time_panel")
@@ -299,7 +283,7 @@ layout_mode = 2
 theme_override_constants/separation = 10
 alignment = 1
 
-[node name="ClockIcon" type="TextureRect" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper/CronometerContainer/Row"]
+[node name="ClockIcon" type="TextureRect" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper/CronometerContainer/Row" unique_id=1729524101]
 custom_minimum_size = Vector2(34, 34)
 layout_mode = 2
 size_flags_vertical = 4
@@ -320,18 +304,15 @@ vertical_alignment = 1
 [node name="BottomCenterContainer" type="Control" parent="CanvasLayer/RootControl" unique_id=2145533944]
 layout_mode = 1
 anchors_preset = 2
-anchor_left = 0.0
 anchor_top = 1.0
-anchor_right = 0.0
 anchor_bottom = 1.0
 offset_left = 28.0
 offset_top = -245.0
 offset_right = 138.0
 offset_bottom = -20.0
-grow_horizontal = 1
 grow_vertical = 0
 
-[node name="SlotsRow" type="VBoxContainer" parent="CanvasLayer/RootControl/BottomCenterContainer"]
+[node name="SlotsRow" type="VBoxContainer" parent="CanvasLayer/RootControl/BottomCenterContainer" unique_id=1346056180]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -339,9 +320,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 8
-alignment = 0
 
-[node name="Slot1" type="Panel" parent="CanvasLayer/RootControl/BottomCenterContainer/SlotsRow"]
+[node name="Slot1" type="Panel" parent="CanvasLayer/RootControl/BottomCenterContainer/SlotsRow" unique_id=212610690]
 custom_minimum_size = Vector2(105, 70)
 layout_mode = 2
 size_flags_vertical = 0
@@ -374,11 +354,10 @@ grow_vertical = 2
 theme_override_colors/font_color = Color(0.1, 0.1, 0.1, 1)
 theme_override_fonts/font = ExtResource("4_fredoka")
 theme_override_font_sizes/font_size = 18
-text = ""
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Slot2" type="Panel" parent="CanvasLayer/RootControl/BottomCenterContainer/SlotsRow"]
+[node name="Slot2" type="Panel" parent="CanvasLayer/RootControl/BottomCenterContainer/SlotsRow" unique_id=317249546]
 custom_minimum_size = Vector2(105, 70)
 layout_mode = 2
 size_flags_vertical = 0
@@ -411,11 +390,10 @@ grow_vertical = 2
 theme_override_colors/font_color = Color(0.1, 0.1, 0.1, 1)
 theme_override_fonts/font = ExtResource("4_fredoka")
 theme_override_font_sizes/font_size = 18
-text = ""
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Slot3" type="Panel" parent="CanvasLayer/RootControl/BottomCenterContainer/SlotsRow"]
+[node name="Slot3" type="Panel" parent="CanvasLayer/RootControl/BottomCenterContainer/SlotsRow" unique_id=1385372688]
 custom_minimum_size = Vector2(105, 70)
 layout_mode = 2
 size_flags_vertical = 0
@@ -448,7 +426,6 @@ grow_vertical = 2
 theme_override_colors/font_color = Color(0.1, 0.1, 0.1, 1)
 theme_override_fonts/font = ExtResource("4_fredoka")
 theme_override_font_sizes/font_size = 18
-text = ""
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -461,10 +438,10 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -38.0
-offset_top = -27.0
-offset_right = 11.0
-offset_bottom = 10.0
+offset_left = 14.0
+offset_top = -38.0
+offset_right = 63.0
+offset_bottom = 0
 grow_horizontal = 0
 grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_reserve_slot_panel")
@@ -496,7 +473,6 @@ grow_vertical = 2
 theme_override_colors/font_color = Color(0.1, 0.1, 0.1, 1)
 theme_override_fonts/font = ExtResource("4_fredoka")
 theme_override_font_sizes/font_size = 18
-text = ""
 horizontal_alignment = 1
 vertical_alignment = 1
 

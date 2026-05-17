@@ -8,7 +8,7 @@
 [sub_resource type="GDScript" id="GDScript_start_screen"]
 script/source = "extends Control
 
-const GAME_SCENE := \"res://scenes/main.tscn\"
+const GAME_SCENE := \"res://scenes/intro_screen.tscn\"
 const SETTINGS_SCENE := \"res://scenes/settings_screen.tscn\"
 const NAME_INPUT_SCENE := \"res://scenes/name_input_screen.tscn\"
 const RANKING_SCENE := \"res://scenes/ranking_screen.tscn\"

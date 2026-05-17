@@ -6,8 +6,10 @@ extends CharacterBody3D
 @export var player_z := 8.5
 
 var _anim: AnimationPlayer
+var _gesture_anim: AnimationPlayer
 var _model: Node3D
 var _snd_jump: AudioStreamPlayer
+var _model_base_rotation := Vector3.ZERO
 
 var _lane_positions: Array[float] = []
 var _current_lane := 1
@@ -25,6 +27,28 @@ var _blink_elapsed := 0.0
 var _blink_toggle_time := 0.0
 
 const DEATH_ANIMATION := "RobotArmature|Robot_Death"
+const RUN_ANIMATION := "RobotArmature|Robot_Running"
+const JUMP_ANIMATION := "RobotArmature|Robot_WalkJump"
+const NO_ANIMATION := "RobotArmature|Robot_No"
+const NO_UPPER_ANIMATION := "upper_body_no"
+const HEAD_SPIN_TURNS := 2.0
+const HEAD_SPIN_STEPS := 16
+const BODY_SHAKE_ANGLE := 0.16
+const BODY_SHAKE_SPEED := 42.0
+const UPPER_BODY_BONES := [
+	"Abdomen",
+	"Torso",
+	"Neck",
+	"Head",
+	"Shoulder",
+	"UpperArm",
+	"LowerArm",
+	"Palm",
+	"Middle",
+	"Thumb",
+	"Index",
+	"Ring",
+]
 
 
 func get_runner_position() -> Vector3:
@@ -32,7 +56,9 @@ func get_runner_position() -> Vector3:
 
 func setup(lane_positions: Array[float], start_lane: int) -> void:
 	_model = $Robot
+	_model_base_rotation = _model.rotation
 	_anim = $Robot/AnimationPlayer
+	_setup_gesture_animation_player()
 	_lane_positions = lane_positions
 	_current_lane = clampi(start_lane, 0, _lane_positions.size() - 1)
 	_target_x = _lane_positions[_current_lane]
@@ -55,8 +81,10 @@ func reset(start_lane: int) -> void:
 	_blink_toggle_time = 0.0
 	if _model:
 		_model.visible = true
-	_anim.play("RobotArmature|Robot_Running")
-	_current_animation = "RobotArmature|Robot_Running"
+		_model.rotation = _model_base_rotation
+	if _gesture_anim:
+		_gesture_anim.stop()
+	_play_base_animation(RUN_ANIMATION)
 
 
 func change_lane(direction: int) -> void:
@@ -70,8 +98,7 @@ func change_lane(direction: int) -> void:
 func jump() -> void:
 	if not _can_change_lane or _is_jumping:
 		return
-	_anim.play("RobotArmature|Robot_WalkJump")
-	_current_animation = "RobotArmature|Robot_WalkJump"
+	_play_base_animation(JUMP_ANIMATION)
 	_vertical_velocity = _jump_force
 	_is_jumping = true
 	_can_change_lane = false
@@ -80,6 +107,10 @@ func jump() -> void:
 
 func die() -> void:
 	_is_dead = true
+	if _gesture_anim:
+		_gesture_anim.stop()
+	if _model:
+		_model.rotation = _model_base_rotation
 	_anim.play(DEATH_ANIMATION)
 	_current_animation = DEATH_ANIMATION
 
@@ -95,6 +126,7 @@ func take_damage() -> void:
 		return
 	_blink_elapsed = _blink_duration
 	_blink_toggle_time = 0.0
+	_play_no_gesture()
 
 
 func tick(delta: float) -> void:
@@ -109,8 +141,7 @@ func tick(delta: float) -> void:
 			position.y = player_y
 			_vertical_velocity = 0.0
 			_is_jumping = false
-			_anim.play("RobotArmature|Robot_Running")
-			_current_animation = "RobotArmature|Robot_Running"
+			_play_base_animation(RUN_ANIMATION)
 
 	if not _can_change_lane:
 		_lane_change_cooldown -= delta
@@ -121,20 +152,69 @@ func tick(delta: float) -> void:
 	_update_damage_blink(delta)
 
 	if not _is_dead and not _anim.is_playing():
-		if _current_animation != "RobotArmature|Robot_Running":
-			_anim.play("RobotArmature|Robot_Running")
-			_current_animation = "RobotArmature|Robot_Running"
+		if _current_animation != RUN_ANIMATION:
+			_play_base_animation(RUN_ANIMATION)
 		else:
-			_anim.play("RobotArmature|Robot_Running")
+			_anim.play(RUN_ANIMATION)
+
+
+func _setup_gesture_animation_player() -> void:
+	if _anim == null or not _anim.has_animation(NO_ANIMATION):
+		return
+
+	_gesture_anim = AnimationPlayer.new()
+	_gesture_anim.name = "UpperBodyGestureAnimationPlayer"
+	_gesture_anim.root_node = _anim.root_node
+	_model.add_child(_gesture_anim)
+
+	var no_animation := _anim.get_animation(NO_ANIMATION).duplicate(true) as Animation
+	_keep_upper_body_tracks(no_animation)
+	_make_head_spin_more_evident(no_animation)
+
+	var library := AnimationLibrary.new()
+	library.add_animation(NO_UPPER_ANIMATION, no_animation)
+	_gesture_anim.add_animation_library("", library)
+
+
+func _keep_upper_body_tracks(animation: Animation) -> void:
+	for track_index in range(animation.get_track_count() - 1, -1, -1):
+		if not _is_upper_body_track(animation.track_get_path(track_index)):
+			animation.remove_track(track_index)
+
+
+func _is_upper_body_track(track_path: NodePath) -> bool:
+	var path_text := String(track_path)
+	for bone_name in UPPER_BODY_BONES:
+		if path_text.contains(bone_name):
+			return true
+
+	return false
+
+
+func _play_no_gesture() -> void:
+	if _gesture_anim and _gesture_anim.has_animation(NO_UPPER_ANIMATION):
+		_gesture_anim.stop()
+		_gesture_anim.play(NO_UPPER_ANIMATION)
+
+
+func _play_base_animation(animation_name: String) -> void:
+	if _anim == null or not _anim.has_animation(animation_name):
+		return
+
+	_anim.play(animation_name)
+	_current_animation = animation_name
 
 
 func _update_damage_blink(delta: float) -> void:
 	if _blink_elapsed <= 0.0:
 		if _model and not _model.visible:
 			_model.visible = true
+		if _model:
+			_model.rotation = _model_base_rotation
 		return
 
 	_blink_elapsed = maxf(_blink_elapsed - delta, 0.0)
+	_update_body_damage_shake()
 	_blink_toggle_time -= delta
 	if _blink_toggle_time <= 0.0:
 		var progress := 1.0 - (_blink_elapsed / _blink_duration)
@@ -144,3 +224,52 @@ func _update_damage_blink(delta: float) -> void:
 
 	if _blink_elapsed <= 0.0 and _model:
 		_model.visible = true
+		_model.rotation = _model_base_rotation
+
+
+func _make_head_spin_more_evident(animation: Animation) -> void:
+	var head_rotation_paths: Array[NodePath] = []
+	var head_base_rotations: Array[Quaternion] = []
+	for track_index in range(animation.get_track_count() - 1, -1, -1):
+		if animation.track_get_type(track_index) != Animation.TYPE_ROTATION_3D:
+			continue
+		if not _is_head_track(animation.track_get_path(track_index)):
+			continue
+
+		head_rotation_paths.append(animation.track_get_path(track_index))
+		head_base_rotations.append(_get_first_rotation_key(animation, track_index))
+		animation.remove_track(track_index)
+
+	for path_index in head_rotation_paths.size():
+		var track_index := animation.add_track(Animation.TYPE_ROTATION_3D)
+		animation.track_set_path(track_index, head_rotation_paths[path_index])
+		var base_rotation := head_base_rotations[path_index]
+		for step in HEAD_SPIN_STEPS + 1:
+			var progress := float(step) / float(HEAD_SPIN_STEPS)
+			var spin := Quaternion(Vector3.UP, TAU * HEAD_SPIN_TURNS * progress)
+			animation.track_insert_key(track_index, animation.length * progress, base_rotation * spin)
+
+
+func _is_head_track(track_path: NodePath) -> bool:
+	var path_text := String(track_path)
+	return path_text.contains("Head") and not path_text.contains("Head_end")
+
+
+func _get_first_rotation_key(animation: Animation, track_index: int) -> Quaternion:
+	if animation.track_get_key_count(track_index) > 0:
+		return animation.track_get_key_value(track_index, 0) as Quaternion
+
+	return Quaternion.IDENTITY
+
+
+func _update_body_damage_shake() -> void:
+	if _model == null:
+		return
+
+	var elapsed := _blink_duration - _blink_elapsed
+	var fade := clampf(_blink_elapsed / _blink_duration, 0.0, 1.0)
+	_model.rotation = _model_base_rotation + Vector3(
+		sin(elapsed * BODY_SHAKE_SPEED * 0.71) * BODY_SHAKE_ANGLE * 0.35 * fade,
+		sin(elapsed * BODY_SHAKE_SPEED) * BODY_SHAKE_ANGLE * fade,
+		cos(elapsed * BODY_SHAKE_SPEED * 0.83) * BODY_SHAKE_ANGLE * 0.45 * fade
+	)

@@ -74,6 +74,42 @@ corner_radius_top_right = 18
 corner_radius_bottom_right = 18
 corner_radius_bottom_left = 18
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_restart_normal"]
+bg_color = Color(0.18, 0.55, 0.9, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.58, 0.9, 1, 1)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_restart_pressed"]
+bg_color = Color(0.1, 0.38, 0.72, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.36, 0.72, 0.95, 1)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_restart_hover"]
+bg_color = Color(0.22, 0.64, 1, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.68, 0.96, 1, 1)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_start_normal"]
 bg_color = Color(1, 0.72, 0.22, 1)
 border_width_left = 4
@@ -295,7 +331,7 @@ theme_override_constants/separation = 18
 alignment = 1
 
 [node name="ResumeButton" type="Button" parent="Panel/Content/ButtonsRow" unique_id=883680921]
-custom_minimum_size = Vector2(230, 72)
+custom_minimum_size = Vector2(190, 72)
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
@@ -311,8 +347,25 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_resume_pressed")
 theme_override_styles/hover = SubResource("StyleBoxFlat_resume_hover")
 text = "Continuar"
 
+[node name="RestartButton" type="Button" parent="Panel/Content/ButtonsRow"]
+custom_minimum_size = Vector2(190, 72)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0.03, 0.12, 0.28, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("2_fredoka")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/normal = SubResource("StyleBoxFlat_restart_normal")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_restart_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_restart_hover")
+text = "Reiniciar"
+
 [node name="StartScreenButton" type="Button" parent="Panel/Content/ButtonsRow" unique_id=2094072555]
-custom_minimum_size = Vector2(230, 72)
+custom_minimum_size = Vector2(190, 72)
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
