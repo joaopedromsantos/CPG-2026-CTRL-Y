@@ -1,6 +1,7 @@
 [gd_scene load_steps=2 format=3 uid="uid://dl3mrdxm470pj"]
 
 [ext_resource type="PackedScene" uid="uid://cofypyl68ho7i" path="res://assets/player/Robot.fbx" id="1_tx5wa"]
+[ext_resource type="Script" path="res://scripts/start_help_button.gd" id="2_help_button"]
 [ext_resource type="Texture2D" path="res://assets/hud/cog.svg" id="2_cog"]
 
 [sub_resource type="GDScript" id="GDScript_start_screen"]
@@ -34,6 +35,7 @@ var _highscore_tag: Label
 var _highscore_value: Label
 var _start_button: Button
 var _settings_button: Button
+var _help_button: Button
 var _difficulty_prev_button: Button
 var _difficulty_badge: Button
 var _difficulty_next_button: Button
@@ -348,6 +350,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event.is_action_pressed(\"ui_cancel\"):
 			_close_settings()
 		return
+	if _help_button and _help_button.has_method(\"is_help_visible\") and _help_button.call(\"is_help_visible\"):
+		return
 	if event.is_action_pressed(\"ui_accept\"):
 		_start_game()
 		return
@@ -406,6 +410,10 @@ func _build_screen() -> void:
 	_settings_button.add_theme_stylebox_override(\"pressed\", _button_style(Color(0.03, 0.12, 0.24), Color(0.30, 0.82, 0.92)))
 	_settings_button.pressed.connect(_open_settings)
 
+	_help_button = $HelpButton
+	_help_button.text = \"?\"
+	_setup_icon_button(_help_button, 28)
+
 	_build_difficulty_selector()
 	_build_settings_modal()
 
@@ -443,6 +451,20 @@ func _build_settings_modal() -> void:
 	_settings_modal.close_requested.connect(_close_settings)
 	_settings_modal.music_volume_changed.connect(_on_settings_music_volume_changed)
 	add_child(_settings_modal)
+
+
+func _setup_icon_button(button: Button, font_size: int) -> void:
+	button.focus_mode = Control.FOCUS_NONE
+	button.add_theme_font_override(\"font\", _font_bold)
+	button.add_theme_font_size_override(\"font_size\", font_size)
+	button.add_theme_color_override(\"font_color\", Color.WHITE)
+	button.add_theme_color_override(\"font_hover_color\", Color.WHITE)
+	button.add_theme_color_override(\"font_pressed_color\", Color.WHITE)
+	button.add_theme_constant_override(\"outline_size\", 3)
+	button.add_theme_color_override(\"font_outline_color\", Color(0.04, 0.16, 0.30))
+	button.add_theme_stylebox_override(\"normal\", _button_style(Color(0.04, 0.16, 0.30), Color(0.36, 0.97, 1.0)))
+	button.add_theme_stylebox_override(\"hover\", _button_style(Color(0.06, 0.22, 0.40), Color(0.52, 1.0, 1.0)))
+	button.add_theme_stylebox_override(\"pressed\", _button_style(Color(0.03, 0.12, 0.24), Color(0.30, 0.82, 0.92)))
 
 
 func _setup_compact_button(button: Button, font_size: int) -> void:
@@ -529,6 +551,10 @@ func _layout() -> void:
 	_settings_button.set_position(settings_rect.position)
 	_settings_button.set_size(settings_rect.size)
 
+	var help_rect: Rect2 = rect.call(20, 74, 46, 46)
+	_help_button.set_position(help_rect.position)
+	_help_button.set_size(help_rect.size)
+
 	var diff_prev_rect: Rect2 = rect.call(386, 486, 48, 48)
 	_difficulty_prev_button.set_position(diff_prev_rect.position)
 	_difficulty_prev_button.set_size(diff_prev_rect.size)
@@ -543,6 +569,7 @@ func _layout() -> void:
 
 	_start_button.add_theme_font_size_override(\"font_size\", maxi(18, int(34 * scale)))
 	_settings_button.add_theme_font_size_override(\"font_size\", maxi(16, int(28 * scale)))
+	_help_button.add_theme_font_size_override(\"font_size\", maxi(16, int(28 * scale)))
 	_difficulty_prev_button.add_theme_font_size_override(\"font_size\", maxi(16, int(30 * scale)))
 	_difficulty_badge.add_theme_font_size_override(\"font_size\", maxi(13, int(21 * scale)))
 	_difficulty_next_button.add_theme_font_size_override(\"font_size\", maxi(16, int(30 * scale)))
@@ -676,6 +703,16 @@ theme_override_constants/icon_max_width = 31
 icon = ExtResource("2_cog")
 icon_alignment = 1
 expand_icon = true
+
+[node name="HelpButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 74.0
+offset_right = 66.0
+offset_bottom = 120.0
+focus_mode = 0
+text = "?"
+script = ExtResource("2_help_button")
 
 [node name="DifficultyPrevButton" type="Button" parent="."]
 layout_mode = 0
