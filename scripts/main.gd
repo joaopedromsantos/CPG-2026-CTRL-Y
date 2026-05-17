@@ -47,6 +47,11 @@ var _snd_punch: AudioStreamPlayer
 var _snd_correct: AudioStreamPlayer
 var _snd_wrong: AudioStreamPlayer
 var _equation_sequence = EQUATION_SEQUENCE_SCRIPT.new()
+var _camera: Camera3D
+var _camera_base_position := Vector3.ZERO
+var _shake_duration := 0.0
+var _shake_time_left := 0.0
+var _shake_strength := 0.0
 
 
 func _ready() -> void:
@@ -80,11 +85,12 @@ func _ready() -> void:
 
 
 func _setup_camera() -> void:
-	var camera = Camera3D.new()
-	camera.position = Vector3(0, 4.0, 15.0)
-	add_child(camera)
-	camera.look_at(Vector3(0, 1.5, 0), Vector3.UP)
-	camera.current = true
+	_camera = Camera3D.new()
+	_camera.position = Vector3(0, 4.0, 15.0)
+	add_child(_camera)
+	_camera.look_at(Vector3(0, 1.5, 0), Vector3.UP)
+	_camera.current = true
+	_camera_base_position = _camera.position
 
 
 func _process(delta: float) -> void:
@@ -98,6 +104,7 @@ func _process(delta: float) -> void:
 	_power_ups.tick(delta, _player.get_runner_position())
 	_cones.tick(delta, _player.get_runner_position())
 	_update_world_speed(delta)
+	_update_camera_shake(delta)
 
 
 func _update_world_speed(_delta: float) -> void:
@@ -242,6 +249,9 @@ func _restart() -> void:
 	_blocos.world_speed = world_speed
 	_power_ups.world_speed = world_speed
 	_cones.world_speed = world_speed
+	_shake_time_left = 0.0
+	if _camera:
+		_camera.position = _camera_base_position
 	_lives = MAX_LIVES
 	_is_game_over = false
 	if _is_paused:
@@ -360,8 +370,32 @@ func _lose_life() -> bool:
 		_end_game()
 		return true
 	_player.take_damage()
+	_start_camera_shake(0.28, 0.18)
 	_snd_wrong.play()
 	return false
+
+
+func _start_camera_shake(duration: float, strength: float) -> void:
+	_shake_duration = minf(duration, 2.0)
+	_shake_time_left = _shake_duration
+	_shake_strength = strength
+
+
+func _update_camera_shake(delta: float) -> void:
+	if _camera == null:
+		return
+	if _shake_time_left <= 0.0:
+		_camera.position = _camera_base_position
+		return
+
+	_shake_time_left = maxf(_shake_time_left - delta, 0.0)
+	var progress := _shake_time_left / _shake_duration
+	var strength := _shake_strength * progress
+	_camera.position = _camera_base_position + Vector3(
+		randf_range(-strength, strength),
+		randf_range(-strength, strength),
+		0.0
+	)
 
 
 func _on_power_up_lives_changed(lives: int) -> void:

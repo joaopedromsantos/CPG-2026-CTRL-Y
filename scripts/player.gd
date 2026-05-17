@@ -6,6 +6,7 @@ extends CharacterBody3D
 @export var player_z := 8.5
 
 var _anim: AnimationPlayer
+var _model: Node3D
 var _snd_jump: AudioStreamPlayer
 
 var _lane_positions: Array[float] = []
@@ -19,12 +20,16 @@ var _is_jumping := false
 var _jump_force := 8.0
 var _gravity := 18.0
 var _is_dead := false
+var _blink_duration := 2.0
+var _blink_elapsed := 0.0
+var _blink_toggle_time := 0.0
 
 
 func get_runner_position() -> Vector3:
 	return global_position
 
 func setup(lane_positions: Array[float], start_lane: int) -> void:
+	_model = $Robot
 	_anim = $Robot/AnimationPlayer
 	_lane_positions = lane_positions
 	_current_lane = clampi(start_lane, 0, _lane_positions.size() - 1)
@@ -41,6 +46,10 @@ func reset(start_lane: int) -> void:
 	position = Vector3(_target_x, player_y, player_z)
 	rotation.y = PI
 	_is_dead = false
+	_blink_elapsed = 0.0
+	_blink_toggle_time = 0.0
+	if _model:
+		_model.visible = true
 	_anim.play("RobotArmature|Robot_Running")
 	_current_animation = "RobotArmature|Robot_Running"
 
@@ -73,8 +82,8 @@ func die() -> void:
 func take_damage() -> void:
 	if _is_dead:
 		return
-	_anim.play("RobotArmature|Robot_No")
-	_current_animation = "RobotArmature|Robot_No"
+	_blink_elapsed = _blink_duration
+	_blink_toggle_time = 0.0
 
 
 func tick(delta: float) -> void:
@@ -98,9 +107,29 @@ func tick(delta: float) -> void:
 			_can_change_lane = true
 			_lane_change_cooldown = 0.08
 
+	_update_damage_blink(delta)
+
 	if not _is_dead and not _anim.is_playing():
 		if _current_animation != "RobotArmature|Robot_Running":
 			_anim.play("RobotArmature|Robot_Running")
 			_current_animation = "RobotArmature|Robot_Running"
 		else:
 			_anim.play("RobotArmature|Robot_Running")
+
+
+func _update_damage_blink(delta: float) -> void:
+	if _blink_elapsed <= 0.0:
+		if _model and not _model.visible:
+			_model.visible = true
+		return
+
+	_blink_elapsed = maxf(_blink_elapsed - delta, 0.0)
+	_blink_toggle_time -= delta
+	if _blink_toggle_time <= 0.0:
+		var progress := 1.0 - (_blink_elapsed / _blink_duration)
+		_blink_toggle_time = lerpf(0.05, 0.35, progress)
+		if _model:
+			_model.visible = not _model.visible
+
+	if _blink_elapsed <= 0.0 and _model:
+		_model.visible = true
