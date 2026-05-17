@@ -4,7 +4,7 @@ extends CharacterBody3D
 const PLAYER_MOVEMENT_LOGIC_SCRIPT = preload("res://scripts/player/movement/player_movement_logic.gd")
 const PLAYER_ANIMATION_CONTROLLER_SCRIPT = preload("res://scripts/player/animation/player_animation_controller.gd")
 
-@export var lane_change_speed := 12.0
+@export var lane_change_speed := 8.4
 @export var player_y := 0.0
 @export var player_z := 8.5
 
