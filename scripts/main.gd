@@ -50,7 +50,7 @@ var _cenario: RunnerScenario
 var _blocos: RunnerBlocos
 var _power_ups: RunnerPowerUps
 var _cones: RunnerCones
-var _power_up_effects: RunnerPowerUpEffectController
+var _power_up_effects: PowerUpEffectController
 var _snd_game: AudioStreamPlayer
 var _snd_lose: AudioStreamPlayer
 var _snd_punch: AudioStreamPlayer
@@ -221,7 +221,7 @@ func _build_cones() -> void:
 
 
 func _build_power_up_effect_controller() -> void:
-	_power_up_effects = RunnerPowerUpEffectController.new()
+	_power_up_effects = PowerUpEffectController.new()
 	add_child(_power_up_effects)
 	_power_up_effects.setup(_player, _blocos, POWER_UP_CONFIG, _max_lives, _lives)
 	_power_up_effects.setup(_player, _blocos, POWER_UP_CONFIG, _max_lives, _lives)
@@ -333,6 +333,24 @@ func _end_game() -> void:
 		return
 	game_over.emit(int(_score))
 	_submit_online_score()
+
+
+func _submit_online_score() -> void:
+	var player_data := get_node_or_null("/root/PlayerData")
+	var ranking_api := get_node_or_null("/root/RankingAPI")
+	if player_data == null or ranking_api == null:
+		hud.on_score_submission_skipped()
+		return
+	var p_name := String(player_data.call("get_display_name"))
+	if p_name == "":
+		hud.on_score_submission_skipped()
+		return
+	var p_difficulty := String(player_data.get("difficulty"))
+	if p_difficulty == "":
+		p_difficulty = _resolve_current_difficulty()
+	ranking_api.call("submit_score", p_name, p_difficulty, int(_score))
+
+
 
 
 func _on_hud_pause_event() -> void:
