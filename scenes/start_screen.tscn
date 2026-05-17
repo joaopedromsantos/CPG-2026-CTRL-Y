@@ -226,7 +226,7 @@ func _build_screen() -> void:
 	_version_label = Label.new()
 	add_child(_version_label)
 	var game_version := String(ProjectSettings.get_setting(\"application/config/version\", \"0.0.0\"))
-	_apply_label_style(_version_label, \"v%s\" % game_version, _font_regular, 12, Color(1.0, 1.0, 1.0, 0.58), 0, Color(0, 0, 0, 0))
+	_apply_label_style(_version_label, game_version, _font_regular, 12, Color(1.0, 1.0, 1.0, 0.58), 0, Color(0, 0, 0, 0))
 	_version_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
 	_version_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 

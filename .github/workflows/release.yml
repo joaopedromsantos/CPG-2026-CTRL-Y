@@ -61,4 +61,3 @@ jobs:
           name: "Release ${{ github.ref_name }}"
           files: |
             build/*.zip
-            build/*.exe
