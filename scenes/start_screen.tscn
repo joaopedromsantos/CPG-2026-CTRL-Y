@@ -33,8 +33,6 @@ var _font_semi: Font
 var _font_regular: Font
 
 var _art: StartArt
-var _highscore_tag: Label
-var _highscore_value: Label
 var _start_button: Button
 var _settings_button: Button
 var _help_button: Button
@@ -84,7 +82,6 @@ func _ready() -> void:
 	_font_regular = load(FONT_REGULAR)
 	_build_screen()
 	_layout()
-	_update_highscore_display()
 	_update_player_name_display()
 	_play_menu_music()
 
@@ -129,13 +126,6 @@ func _build_screen() -> void:
 	add_child(_art)
 	move_child(_art, 1)
 
-	_highscore_tag = $HighscoreTag
-	_apply_label_style(_highscore_tag, \"// HIGHSCORE\", _font_semi, 14, Color(0.55, 0.92, 1.0, 0.85), 0, Color(0, 0, 0, 0))
-	_highscore_tag.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-
-	_highscore_value = $HighscoreValue
-	_apply_label_style(_highscore_value, \"1450\", _font_bold, 30, NEON_CYAN, 0, Color(0, 0, 0, 0))
-	_highscore_value.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 
 	_start_button = $StartButton
 	_start_button.text = \"Começar\"
@@ -176,8 +166,18 @@ func _build_screen() -> void:
 	_setup_icon_button(_help_button, 28)
 
 	_ranking_button = $RankingButton
-	_ranking_button.text = \"🏆\"
-	_setup_icon_button(_ranking_button, 26)
+	_ranking_button.text = \"\"
+	_ranking_button.icon = load(\"res://assets/hud/trophy.svg\")
+	_ranking_button.expand_icon = true
+	_ranking_button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_ranking_button.focus_mode = Control.FOCUS_NONE
+	_ranking_button.add_theme_constant_override(\"icon_max_width\", 26)
+	_ranking_button.add_theme_color_override(\"icon_normal_color\", Color.WHITE)
+	_ranking_button.add_theme_color_override(\"icon_hover_color\", Color.WHITE)
+	_ranking_button.add_theme_color_override(\"icon_pressed_color\", Color(0.8, 0.8, 0.8))
+	_ranking_button.add_theme_stylebox_override(\"normal\", _button_style(Color(0.04, 0.16, 0.30), Color(0.36, 0.97, 1.0)))
+	_ranking_button.add_theme_stylebox_override(\"hover\", _button_style(Color(0.06, 0.22, 0.40), Color(0.52, 1.0, 1.0)))
+	_ranking_button.add_theme_stylebox_override(\"pressed\", _button_style(Color(0.03, 0.12, 0.24), Color(0.30, 0.82, 0.92)))
 	_ranking_button.pressed.connect(_on_ranking_pressed)
 
 	_player_name_label = $PlayerNameLabel
@@ -185,7 +185,7 @@ func _build_screen() -> void:
 	_player_name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 
 	_change_name_button = $ChangeNameButton
-	_change_name_button.text = \"Trocar usu\u00e1rio\"
+	_change_name_button.text = \"Trocar player\"
 	_change_name_button.focus_mode = Control.FOCUS_NONE
 	_change_name_button.add_theme_font_override(\"font\", _font_semi)
 	_change_name_button.add_theme_font_size_override(\"font_size\", 11)
@@ -325,14 +325,6 @@ func _layout() -> void:
 
 	var title_rect: Rect2 = rect.call(160, 38, 710, 76)
 
-	var hs_tag_rect: Rect2 = rect.call(832, 28, 160, 22)
-	_highscore_tag.set_position(hs_tag_rect.position)
-	_highscore_tag.set_size(hs_tag_rect.size)
-
-	var hs_val_rect: Rect2 = rect.call(832, 54, 160, 42)
-	_highscore_value.set_position(hs_val_rect.position)
-	_highscore_value.set_size(hs_val_rect.size)
-
 	var btn_rect: Rect2 = rect.call(386, 405, 252, 64)
 	_start_button.set_position(btn_rect.position)
 	_start_button.set_size(btn_rect.size)
@@ -349,11 +341,11 @@ func _layout() -> void:
 	_ranking_button.set_position(ranking_rect.position)
 	_ranking_button.set_size(ranking_rect.size)
 
-	var player_name_rect: Rect2 = rect.call(832, 100, 160, 20)
+	var player_name_rect: Rect2 = rect.call(832, 28, 160, 24)
 	_player_name_label.set_position(player_name_rect.position)
 	_player_name_label.set_size(player_name_rect.size)
 
-	var change_name_rect: Rect2 = rect.call(832, 122, 160, 26)
+	var change_name_rect: Rect2 = rect.call(832, 56, 160, 26)
 	_change_name_button.set_position(change_name_rect.position)
 	_change_name_button.set_size(change_name_rect.size)
 
@@ -386,15 +378,7 @@ func _layout() -> void:
 	_difficulty_prev_button.add_theme_font_size_override(\"font_size\", maxi(16, int(30 * scale)))
 	_difficulty_badge.add_theme_font_size_override(\"font_size\", maxi(13, int(21 * scale)))
 	_difficulty_next_button.add_theme_font_size_override(\"font_size\", maxi(16, int(30 * scale)))
-	_highscore_tag.label_settings.font_size = maxi(10, int(14 * scale))
-	_highscore_value.label_settings.font_size = maxi(16, int(30 * scale))
 	_art.queue_redraw()
-
-
-func _update_highscore_display() -> void:
-	if _highscore_value == null:
-		return
-	_highscore_value.text = PlayerRecord.get_high_score_text()
 
 
 func _start_game() -> void:
@@ -530,26 +514,6 @@ texture = ExtResource("3_background")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="HighscoreTag" type="Label" parent="." unique_id=809046786]
-layout_mode = 0
-offset_left = 832.0
-offset_top = 28.0
-offset_right = 992.0
-offset_bottom = 50.0
-text = "// HIGHSCORE"
-horizontal_alignment = 2
-vertical_alignment = 1
-
-[node name="HighscoreValue" type="Label" parent="." unique_id=644945730]
-layout_mode = 0
-offset_left = 832.0
-offset_top = 54.0
-offset_right = 992.0
-offset_bottom = 96.0
-text = "1450"
-horizontal_alignment = 2
-vertical_alignment = 1
-
 [node name="StartButton" type="Button" parent="." unique_id=1332176397]
 layout_mode = 0
 offset_left = 386.0
@@ -588,14 +552,14 @@ offset_top = 130.0
 offset_right = 66.0
 offset_bottom = 176.0
 focus_mode = 0
-text = "🏆"
+text = ""
 
 [node name="PlayerNameLabel" type="Label" parent="."]
 layout_mode = 0
 offset_left = 832.0
-offset_top = 100.0
+offset_top = 28.0
 offset_right = 992.0
-offset_bottom = 120.0
+offset_bottom = 52.0
 text = ""
 horizontal_alignment = 2
 vertical_alignment = 1
@@ -603,9 +567,9 @@ vertical_alignment = 1
 [node name="ChangeNameButton" type="Button" parent="."]
 layout_mode = 0
 offset_left = 832.0
-offset_top = 122.0
+offset_top = 56.0
 offset_right = 992.0
-offset_bottom = 148.0
+offset_bottom = 82.0
 focus_mode = 0
 text = "Trocar usuário"
 
