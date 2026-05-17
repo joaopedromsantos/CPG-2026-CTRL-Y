@@ -1,10 +1,14 @@
 extends Node
 
+const PLAYER_RECORD_STORE_SCRIPT = preload("res://scripts/player/record/player_record_store.gd")
+
 const SAVE_PATH := "user://player_record.cfg"
 const SECTION := "player"
 const KEY_HIGH_SCORE := "high_score"
 
+var save_path := SAVE_PATH
 var high_score := 0
+var _store = PLAYER_RECORD_STORE_SCRIPT.new()
 
 
 func _ready() -> void:
@@ -12,13 +16,7 @@ func _ready() -> void:
 
 
 func load_high_score() -> void:
-	var config := ConfigFile.new()
-	var error := config.load(SAVE_PATH)
-	if error != OK:
-		high_score = 0
-		return
-
-	high_score = int(config.get_value(SECTION, KEY_HIGH_SCORE, 0))
+	high_score = _store.load_high_score(save_path, SECTION, KEY_HIGH_SCORE)
 
 
 func update_high_score(score: int) -> bool:
@@ -35,9 +33,4 @@ func get_high_score_text() -> String:
 
 
 func _save() -> bool:
-	var config := ConfigFile.new()
-	if FileAccess.file_exists(SAVE_PATH):
-		config.load(SAVE_PATH)
-
-	config.set_value(SECTION, KEY_HIGH_SCORE, high_score)
-	return config.save(SAVE_PATH) == OK
+	return _store.save_high_score(save_path, SECTION, KEY_HIGH_SCORE, high_score)
