@@ -173,10 +173,10 @@ A tela inicial usa um seletor com setas e badge central. As dificuldades são sa
 
 | Rótulo | Valor interno | Vidas | Observação |
 | --- | --- | ---: | --- |
-| Fácil | `easy` | 6 | sem cones |
-| Médio | `medium` | 5 | com cones |
-| Difícil | `hard` | 4 | com cones |
-| Impossível | `impossible` | 3 | com cones |
+| Fácil | `easy` | 6 | sem obstáculoss |
+| Médio | `medium` | 5 | com obstáculoss |
+| Difícil | `hard` | 4 | com obstáculos |
+| Impossível | `impossible` | 3 | com obstáculos |
 
 As perguntas vêm de `data/equations.json`, com 260 questões:
 
