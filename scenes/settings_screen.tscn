@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dcihh0dum4d51" path="res://scripts/settings_screen.gd" id="1_settings_script"]
 [ext_resource type="Texture2D" uid="uid://dxl2a8c6y6ohx" path="res://assets/hud/close-x.svg" id="2_close_x"]
+[ext_resource type="Texture2D" uid="uid://w6jaoweuw1am" path="res://assets/background/background.png" id="3_background"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
 content_margin_left = 38.0
@@ -69,14 +70,16 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_settings_script")
 
-[node name="Background" type="ColorRect" parent="." unique_id=1046072895]
+[node name="Background" type="TextureRect" parent="." unique_id=1046072895]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.02, 0.04, 0.08, 0.68)
+texture = ExtResource("3_background")
+expand_mode = 1
+stretch_mode = 6
 
 [node name="Panel" type="PanelContainer" parent="." unique_id=111149208]
 layout_mode = 1
