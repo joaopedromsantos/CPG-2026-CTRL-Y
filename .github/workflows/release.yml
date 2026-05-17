@@ -1,110 +1,64 @@
-name: Build and Release
+name: Release Game
 
 on:
   push:
     tags:
       - "v*"
-  workflow_dispatch:
 
 permissions:
   contents: write
 
-concurrency:
-  group: release-${{ github.ref }}
-  cancel-in-progress: true
-
 env:
-  GODOT_VERSION: 4.6-stable
-  EXPORT_PRESET: Windows Desktop
-  GAME_NAME: CPG_CTRL_Y
+  GODOT_VERSION: 4.6
+  EXPORT_NAME: MathRunner
 
 jobs:
   build-windows:
-    name: Build Windows Release
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Godot
-        shell: bash
+      - name: Set version from git tag
         run: |
-          set -euo pipefail
+          VERSION=${GITHUB_REF_NAME}
+          echo "Using version: $VERSION"
+          sed -i 's/config\/version=".*"/config\/version="'"$VERSION"'"/' project.godot
 
-          curl -L -o godot.zip "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}/Godot_v${GODOT_VERSION}_linux.x86_64.zip"
-          unzip -q godot.zip
-          chmod +x "Godot_v${GODOT_VERSION}_linux.x86_64"
-          sudo mv "Godot_v${GODOT_VERSION}_linux.x86_64" /usr/local/bin/godot
-
-          curl -L -o export_templates.tpz "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}/Godot_v${GODOT_VERSION}_export_templates.tpz"
-          unzip -q export_templates.tpz -d export_templates
-
-          templates_dir="$HOME/.local/share/godot/export_templates/${GODOT_VERSION/-/.}"
-          mkdir -p "$templates_dir"
-          mv export_templates/templates/* "$templates_dir/"
-
-      - name: Read game version
-        id: game
-        shell: bash
+      - name: Download Godot
         run: |
-          set -euo pipefail
+          wget https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip
+          unzip Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip
+          chmod +x Godot_v${GODOT_VERSION}-stable_linux.x86_64
 
-          version="$(sed -n 's/^config\/version="\([^"]*\)"/\1/p' project.godot | head -n 1)"
-          if [ -z "$version" ]; then
-            echo "application/config/version is missing in project.godot" >&2
-            exit 1
-          fi
-
-          echo "version=$version" >> "$GITHUB_OUTPUT"
-          echo "tag=v$version" >> "$GITHUB_OUTPUT"
-
-      - name: Check export preset
-        shell: bash
+      - name: Download export templates
         run: |
-          set -euo pipefail
+          mkdir -p ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
+          wget https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_export_templates.tpz
+          unzip Godot_v${GODOT_VERSION}-stable_export_templates.tpz
+          mv templates/* ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable/
 
-          test -f export_presets.cfg
-          grep -q 'name="Windows Desktop"' export_presets.cfg
+      - name: Create build directory
+        run: mkdir -p build
 
-      - name: Import project
-        shell: bash
+      - name: Export Windows build
         run: |
-          set -euo pipefail
-          godot --headless --import --quit
+          ./Godot_v${GODOT_VERSION}-stable_linux.x86_64 \
+            --headless \
+            --path . \
+            --export-release "Windows Desktop" \
+            build/${EXPORT_NAME}.exe
 
-      - name: Export Windows executable
-        shell: bash
+      - name: Create zip
         run: |
-          set -euo pipefail
+          cd build
+          zip ${EXPORT_NAME}-${GITHUB_REF_NAME}-windows.zip *
 
-          mkdir -p build/windows
-          godot --headless --export-release "$EXPORT_PRESET" "build/windows/${GAME_NAME}.exe"
-          test -f "build/windows/${GAME_NAME}.exe"
-          test -f "build/windows/${GAME_NAME}.pck"
-
-      - name: Package build
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          cd build/windows
-          zip -9 -r "../${GAME_NAME}-windows-${{ steps.game.outputs.tag }}.zip" .
-
-      - name: Create or update GitHub release
-        env:
-          GH_TOKEN: ${{ github.token }}
-          TAG: ${{ steps.game.outputs.tag }}
-          VERSION: ${{ steps.game.outputs.version }}
-          ASSET: build/${{ env.GAME_NAME }}-windows-${{ steps.game.outputs.tag }}.zip
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          if gh release view "$TAG" >/dev/null 2>&1; then
-            gh release upload "$TAG" "$ASSET" --clobber
-          else
-            gh release create "$TAG" "$ASSET" \
-              --title "$TAG" \
-              --notes "Build automatico da versao $VERSION para Windows."
-          fi
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "Release ${{ github.ref_name }}"
+          files: |
+            build/*.zip
+            build/*.exe
