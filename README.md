@@ -1,4 +1,11 @@
+<div align="center">
+
 # CPG_CTRL_Y - Math Runner
+
+<img src=".github/workflows/readme/image1.png" width="45%" /> <img src=".github/workflows/readme/image2.png" width="45%" />
+<img src=".github/workflows/readme/image3.png" width="45%" /> <img src=".github/workflows/readme/image4.png" width="45%" />
+
+</div>
 
 Jogo 3D educativo feito em Godot no estilo endless runner. O jogador controla um robô em três faixas, resolve equações escolhendo blocos de resposta, evita obstáculos, coleta power-ups e tenta alcançar a maior pontuação possível.
 
@@ -29,7 +36,7 @@ Entrega final implementada:
 Versão do projeto em `project.godot`:
 
 ```text
-1.0.0
+1.0.4
 ```
 
 ## Requisitos
