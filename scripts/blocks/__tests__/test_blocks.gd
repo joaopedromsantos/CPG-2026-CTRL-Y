@@ -120,6 +120,51 @@ func test_reset_removes_active_rows_and_resets_spawn_distance() -> void:
 	assert_eq(_blocks.get_distance_to_next_spawn(), 1.0)
 
 
+func test_mark_closest_wrong_block_destroys_one_wrong_and_keeps_correct() -> void:
+	_blocks.set_equation_options(_options_with_correct_value(20), [20])
+	_blocks.tick(0.1, Vector3(0.0, 1.0, 8.5))
+
+	assert_true(_blocks.mark_closest_wrong_block_destroyed())
+
+	var row := _blocks.get_child(0)
+	var destroyed_count := 0
+	for block in row.get_children():
+		if bool((block as Node3D).get_meta("is_destroyed", false)):
+			destroyed_count += 1
+			assert_false(bool((block as Node3D).get_meta("answer_is_correct", false)))
+	assert_eq(destroyed_count, 1)
+
+
+func test_mark_closest_wrong_block_when_no_row_marks_next_spawn() -> void:
+	_blocks.set_equation_options(_options_with_correct_value(20), [20])
+
+	assert_true(_blocks.mark_closest_wrong_block_destroyed())
+	_blocks.tick(0.1, Vector3(0.0, 1.0, 8.5))
+
+	var row := _blocks.get_child(0)
+	var destroyed_count := 0
+	for block in row.get_children():
+		if bool((block as Node3D).get_meta("is_destroyed", false)):
+			destroyed_count += 1
+			assert_false(bool((block as Node3D).get_meta("answer_is_correct", false)))
+	assert_eq(destroyed_count, 1)
+
+
+func test_mark_closest_wrong_block_twice_marks_both_wrong_blocks() -> void:
+	_blocks.set_equation_options(_options_with_correct_value(20), [20])
+	_blocks.tick(0.1, Vector3(0.0, 1.0, 8.5))
+
+	_blocks.mark_closest_wrong_block_destroyed()
+	_blocks.mark_closest_wrong_block_destroyed()
+
+	var row := _blocks.get_child(0)
+	var destroyed_count := 0
+	for block in row.get_children():
+		if bool((block as Node3D).get_meta("is_destroyed", false)):
+			destroyed_count += 1
+	assert_eq(destroyed_count, 2)
+
+
 func _spawn_and_resolve(player_position: Vector3) -> void:
 	_blocks.tick(0.1, Vector3(0.0, 1.0, 8.5))
 	_blocks.tick(0.1, player_position)

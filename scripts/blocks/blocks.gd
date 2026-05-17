@@ -16,6 +16,8 @@ var _current_options: Array = []
 var _current_correct_answers: Array = []
 var _highlight_correct_answers := false
 var _auto_correct_rows := false
+var _pending_lightning_mark := false
+var _last_player_z := 0.0
 var _drawer := RunnerBlockDrawer.new()
 var _logic := RunnerBlockLogic.new()
 
@@ -33,6 +35,7 @@ func reset() -> void:
 
 	_block_rows.clear()
 	_distance_since_spawn = 0.0
+	_pending_lightning_mark = false
 
 
 func set_equation_options(options: Array, correct_answers: Array) -> void:
@@ -67,7 +70,15 @@ func set_auto_correct_rows(enabled: bool) -> void:
 	_auto_correct_rows = enabled
 
 
+func mark_closest_wrong_block_destroyed() -> bool:
+	if _try_mark_closest_unresolved_row():
+		return true
+	_pending_lightning_mark = true
+	return true
+
+
 func tick(delta: float, player_position: Vector3) -> void:
+	_last_player_z = player_position.z
 	_distance_since_spawn += world_speed * delta
 	if _distance_since_spawn >= float(steps_per_spawn) * step_distance:
 		if _spawn_block_row():
@@ -115,7 +126,42 @@ func _spawn_block_row() -> bool:
 		block.set_meta("base_y", block.position.y)
 		row.add_child(block)
 
+	if _pending_lightning_mark and _mark_one_wrong_block_in_row(row):
+		_pending_lightning_mark = false
+
 	return true
+
+
+func _try_mark_closest_unresolved_row() -> bool:
+	var target_row: Node3D = null
+	var target_z := -INF
+	for row in _block_rows:
+		if bool(row.get_meta("resolved", false)):
+			continue
+		if row.position.z >= _last_player_z:
+			continue
+		if row.position.z > target_z:
+			target_z = row.position.z
+			target_row = row
+
+	if target_row == null:
+		return false
+
+	return _mark_one_wrong_block_in_row(target_row)
+
+
+func _mark_one_wrong_block_in_row(row: Node3D) -> bool:
+	for block in row.get_children():
+		var node := block as Node3D
+		if node == null:
+			continue
+		if bool(node.get_meta("answer_is_correct", false)):
+			continue
+		if bool(node.get_meta("is_destroyed", false)):
+			continue
+		_drawer.apply_block_destroyed_visual(node)
+		return true
+	return false
 
 
 func _resolve_row(row: Node3D, player_position: Vector3) -> void:

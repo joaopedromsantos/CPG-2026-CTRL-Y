@@ -11,8 +11,6 @@ const TYPE_LIGHTNING := "lightning"
 const TYPE_HOURGLASS := "hourglass"
 const TYPE_DOUBLE := "double"
 
-const LIGHTNING_PLAYER_SPEED_MULTIPLIER := 2.0
-
 var config: PowerUpConfig
 var player: RunnerPlayer
 var blocks: RunnerBlocks
@@ -77,6 +75,13 @@ func activate(type: String, slot: int, current_lives: int) -> bool:
 	if is_slot_active(slot):
 		return false
 
+	if type == TYPE_LIGHTNING:
+		if blocks == null:
+			return false
+		blocks.mark_closest_wrong_block_destroyed()
+		power_up_slot_changed.emit(slot, type, 0.0, 0.0, false)
+		return true
+
 	var duration := config.duration_for(type)
 	if duration <= 0.0:
 		return false
@@ -106,8 +111,6 @@ func get_world_speed_multiplier() -> float:
 
 
 func get_player_speed_multiplier() -> float:
-	if _has_active_type(TYPE_LIGHTNING):
-		return LIGHTNING_PLAYER_SPEED_MULTIPLIER
 	return 1.0
 
 

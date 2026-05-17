@@ -54,7 +54,7 @@ func _build_tables() -> void:
 		{
 			"icon": "res://assets/power-ups/slots/lightning.png",
 			"name": "Raio",
-			"effect": "Acelera a velocidade do jogador por 6s."
+			"effect": "Cai um raio em um número, mostrando que não é o correto."
 		},
 		{
 			"icon": "res://assets/power-ups/slots/lupa.png",
