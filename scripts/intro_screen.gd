@@ -32,6 +32,7 @@ const TYPEWRITER_SPEED := 38.0
 const TYPEWRITER_DELAY := 0.20
 const ORANGE_GLITCH_DURATION := 0.85
 const MONITOR_GLOW_SPEED := 3.0
+const ENTER_PROMPT_BLINK_SPEED := 4.2
 
 const CYAN := Color(0.11, 0.91, 0.98)
 const CYAN_SOFT := Color(0.11, 0.91, 0.98, 0.55)
@@ -552,6 +553,10 @@ func _draw_left_panels() -> void:
 
 
 func _draw_panel(rect: Rect2) -> void:
+	_draw_panel_tinted(rect, CYAN, 1.0)
+
+
+func _draw_panel_tinted(rect: Rect2, border_color: Color, alpha: float) -> void:
 	var cut := 18.0
 	var points := PackedVector2Array([
 		Vector2(rect.position.x + cut, rect.position.y),
@@ -564,15 +569,34 @@ func _draw_panel(rect: Rect2) -> void:
 		Vector2(rect.position.x, rect.position.y + cut),
 	])
 	draw_colored_polygon(points, PANEL_FILL)
-	draw_polyline(_closed(points), CYAN, 3.0)
-	draw_line(Vector2(rect.position.x + cut, rect.position.y), Vector2(rect.position.x + 32, rect.position.y), Color(0.58, 1.0, 1.0), 3.0)
-	draw_line(Vector2(rect.end.x - 42, rect.position.y + 3), Vector2(rect.end.x - 18, rect.position.y + 3), CYAN_SOFT, 3.0)
+	for width in [9.0, 5.0]:
+		var width_float: float = width
+		draw_polyline(_closed(points), Color(border_color.r, border_color.g, border_color.b, alpha * 0.16 * (width_float / 9.0)), width_float)
+	draw_polyline(_closed(points), Color(border_color.r, border_color.g, border_color.b, alpha), 3.0)
+	draw_line(Vector2(rect.position.x + cut, rect.position.y), Vector2(rect.position.x + 32, rect.position.y), Color(0.72, 1.0, 1.0, alpha), 3.0)
+	draw_line(Vector2(rect.end.x - 42, rect.position.y + 3), Vector2(rect.end.x - 18, rect.position.y + 3), Color(border_color.r, border_color.g, border_color.b, alpha * 0.55), 3.0)
+
+
+func _draw_prompt_glow_text(text: String, pos: Vector2, font_size: int, color: Color, pulse: float) -> void:
+	var glow_alpha := lerpf(0.18, 0.58, pulse)
+	_draw_text_alpha(text, pos + Vector2(-2, 0), font_size, Color(0.72, 1.0, 1.0, glow_alpha), _font_bold)
+	_draw_text_alpha(text, pos + Vector2(2, 0), font_size, Color(0.72, 1.0, 1.0, glow_alpha), _font_bold)
+	_draw_text_alpha(text, pos + Vector2(0, -2), font_size, Color(0.72, 1.0, 1.0, glow_alpha), _font_bold)
+	_draw_text_alpha(text, pos + Vector2(0, 2), font_size, Color(0.72, 1.0, 1.0, glow_alpha), _font_bold)
+	_draw_text_alpha(text, pos, font_size, color, _font_bold)
 
 
 func _draw_continue_box() -> void:
-	_draw_panel(Rect2(1086, 42, 288, 128))
-	_draw_text("PRESSIONE [ENTER]", Vector2(1118, 98), 26, CYAN, _font_bold)
-	_draw_text("PARA CONTINUAR", Vector2(1134, 133), 25, CYAN, _font_bold)
+	var pulse: float = 0.5 + sin(_intro_elapsed() * ENTER_PROMPT_BLINK_SPEED) * 0.5
+	var bright_cyan := Color(
+		lerpf(CYAN.r, 0.70, pulse),
+		lerpf(CYAN.g, 1.0, pulse),
+		lerpf(CYAN.b, 1.0, pulse),
+		1.0
+	)
+	_draw_panel_tinted(Rect2(1086, 42, 288, 128), bright_cyan, lerpf(0.72, 1.0, pulse))
+	_draw_prompt_glow_text("PRESSIONE [ENTER]", Vector2(1118, 98), 26, bright_cyan, pulse)
+	_draw_prompt_glow_text("PARA CONTINUAR", Vector2(1134, 133), 25, bright_cyan, pulse)
 
 
 func _draw_monitor() -> void:
