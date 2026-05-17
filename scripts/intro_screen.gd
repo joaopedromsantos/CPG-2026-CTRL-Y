@@ -6,6 +6,11 @@ const ROBOT_SCENE := preload("res://assets/player/Robot.fbx")
 const DESIGN_SIZE := Vector2(1408.0, 1152.0)
 const FONT_REGULAR := "res://assets/fonts/fredoka/Fredoka_Condensed-Medium.ttf"
 const FONT_BOLD := "res://assets/fonts/fredoka/Fredoka_Condensed-Bold.ttf"
+const ROBOT_ROTATION_SPEED := 1.8
+const ROBOT_IDLE_ANIMATION := "RobotArmature|Robot_Idle"
+const ROBOT_IDLE_SWAY_SPEED := 1.8
+const ROBOT_IDLE_SWAY_ANGLE := 0.035
+const ROBOT_IDLE_BOB_HEIGHT := 0.035
 
 const CYAN := Color(0.11, 0.91, 0.98)
 const CYAN_SOFT := Color(0.11, 0.91, 0.98, 0.55)
@@ -27,6 +32,8 @@ var _sparks: Array[Vector2] = []
 var _robot_viewport_container: SubViewportContainer
 var _robot_viewport: SubViewport
 var _robot: Node3D
+var _robot_animation: AnimationPlayer
+var _robot_base_position := Vector3.ZERO
 
 
 func _ready() -> void:
@@ -55,6 +62,19 @@ func _unhandled_input(event: InputEvent) -> void:
 	if key_event.keycode == KEY_ENTER or key_event.keycode == KEY_KP_ENTER:
 		get_tree().root.set_input_as_handled()
 		get_tree().change_scene_to_file(GAME_SCENE)
+
+
+func _process(delta: float) -> void:
+	if _robot == null:
+		return
+	var rotation_direction := 0.0
+	if Input.is_key_pressed(KEY_LEFT) or Input.is_key_pressed(KEY_A):
+		rotation_direction -= 1.0
+	if Input.is_key_pressed(KEY_RIGHT) or Input.is_key_pressed(KEY_D):
+		rotation_direction += 1.0
+	if not is_zero_approx(rotation_direction):
+		_robot.rotate_y(rotation_direction * ROBOT_ROTATION_SPEED * delta)
+	_update_robot_idle_sway()
 
 
 func _draw() -> void:
@@ -94,7 +114,9 @@ func _build_robot_viewport() -> void:
 	_robot.name = "Robot"
 	_robot.scale = Vector3.ONE * 0.4
 	_robot.rotation_degrees = Vector3(0.0, -28.0, 0.0)
+	_robot_base_position = _robot.position
 	world.add_child(_robot)
+	_setup_robot_idle_animation()
 
 	var key_light := DirectionalLight3D.new()
 	key_light.light_energy = 3.2
@@ -112,6 +134,34 @@ func _build_robot_viewport() -> void:
 	camera.fov = 31.0
 	camera.current = true
 	world.add_child(camera)
+
+
+func _setup_robot_idle_animation() -> void:
+	_robot_animation = _find_animation_player(_robot)
+	if _robot_animation == null or not _robot_animation.has_animation(ROBOT_IDLE_ANIMATION):
+		return
+	_robot_animation.play(ROBOT_IDLE_ANIMATION)
+
+
+func _find_animation_player(node: Node) -> AnimationPlayer:
+	if node is AnimationPlayer:
+		return node as AnimationPlayer
+	for child in node.get_children():
+		var found := _find_animation_player(child)
+		if found:
+			return found
+	return null
+
+
+func _update_robot_idle_sway() -> void:
+	if _robot_animation and not _robot_animation.is_playing():
+		_robot_animation.play(ROBOT_IDLE_ANIMATION)
+	var time := Time.get_ticks_msec() * 0.001
+	var sway := sin(time * ROBOT_IDLE_SWAY_SPEED)
+	var bob := sin(time * ROBOT_IDLE_SWAY_SPEED * 2.0)
+	_robot.rotation.x = sway * ROBOT_IDLE_SWAY_ANGLE * 0.45
+	_robot.rotation.z = sway * ROBOT_IDLE_SWAY_ANGLE
+	_robot.position = _robot_base_position + Vector3(0.0, bob * ROBOT_IDLE_BOB_HEIGHT, 0.0)
 
 
 func _layout_robot_viewport() -> void:
