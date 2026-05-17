@@ -224,6 +224,7 @@ func _build_power_up_effect_controller() -> void:
 	_power_up_effects = RunnerPowerUpEffectController.new()
 	add_child(_power_up_effects)
 	_power_up_effects.setup(_player, _blocos, POWER_UP_CONFIG, _max_lives, _lives)
+	_power_up_effects.setup(_player, _blocos, POWER_UP_CONFIG, _max_lives, _lives)
 	_power_up_effects.lives_changed.connect(_on_power_up_lives_changed)
 	_power_up_effects.power_up_slot_changed.connect(_on_power_up_slot_changed)
 	_power_up_effects.power_up_slot_changed.connect(hud.on_power_up_slot_active_changed)
@@ -269,6 +270,7 @@ func _build_audio() -> void:
 func _restart() -> void:
 	_game_over_sequence_id += 1
 	_score = 0.0
+	_max_lives = DifficultySettings.get_max_lives(_resolve_current_difficulty())
 	world_speed = BASE_WORLD_SPEED
 	_cenario.world_speed = world_speed
 	_blocos.world_speed = world_speed
@@ -290,7 +292,9 @@ func _restart() -> void:
 	_blocos.reset()
 	_power_ups.reset()
 	_cones.reset()
+	_power_up_effects.max_lives = _max_lives
 	_power_up_effects.reset(_lives)
+	hud.set_max_lives(_max_lives)
 	for i in range(POWER_UP_SLOT_COUNT):
 		_power_up_slots[i] = ""
 	power_up_slots_event.emit(_power_up_slots.duplicate())
@@ -328,6 +332,7 @@ func _end_game() -> void:
 	if sequence_id != _game_over_sequence_id:
 		return
 	game_over.emit(int(_score))
+	_submit_online_score()
 
 
 func _on_hud_pause_event() -> void:
@@ -450,6 +455,7 @@ func _update_camera_shake(delta: float) -> void:
 
 
 func _on_power_up_lives_changed(lives: int) -> void:
+	_lives = clampi(lives, 0, _max_lives)
 	_lives = clampi(lives, 0, _max_lives)
 	lives_event.emit(_lives)
 
