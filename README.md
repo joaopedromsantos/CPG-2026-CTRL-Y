@@ -197,7 +197,7 @@ Configuração:
 
 ```text
 assets/power-ups/power_up_config.tres
-scripts/power_up_config.gd
+scripts/power_ups/power_up_config.gd
 ```
 
 ## HUD
@@ -304,7 +304,7 @@ user://game_settings.cfg
 Autoloads configurados em `project.godot`:
 
 ```text
-PlayerRecord="*res://scripts/player_record.gd"
+PlayerRecord="*res://scripts/player/record/player_record.gd"
 GameSettings="*res://scripts/game_settings.gd"
 ```
 
@@ -366,13 +366,10 @@ Volumes são aplicados por categoria:
 │   ├── difficulty_settings.gd
 │   ├── equation_sequence.gd
 │   ├── game_settings.gd
-│   ├── hud.gd
+│   ├── hud/
 │   ├── main.gd
-│   ├── player.gd
-│   ├── player_record.gd
-│   ├── power-ups.gd
-│   ├── power_up_config.gd
-│   ├── power_up_effect_controller.gd
+│   ├── player/
+│   ├── power_ups/
 │   ├── settings_screen.gd
 │   ├── sound_settings.gd
 │   └── timer.gd
@@ -385,18 +382,18 @@ Volumes são aplicados por categoria:
 | Arquivo | Função |
 | --- | --- |
 | `scripts/main.gd` | controla ciclo principal, pontuação, vidas, pausa, áudio, game over e conexões entre sistemas |
-| `scripts/player.gd` | controla o personagem, pistas, pulo e animações |
+| `scripts/player/player.gd` | controla o personagem, pistas, pulo e animações |
 | `scripts/blocks/blocks.gd` | gera blocos de resposta, resolve a resposta escolhida e emite acerto/erro |
 | `scripts/cones.gd` | gera obstáculos e detecta colisão com o jogador |
 | `scripts/scenario/scenario.gd` | cria e atualiza o cenário 3D |
-| `scripts/power-ups.gd` | gera power-ups na pista e detecta coleta |
-| `scripts/power_up_effect_controller.gd` | aplica efeitos temporários dos power-ups |
+| `scripts/power_ups/power_ups.gd` | gera power-ups na pista e detecta coleta |
+| `scripts/power_ups/effects/power_up_effect_controller.gd` | aplica efeitos temporários dos power-ups |
 | `scripts/equation_sequence.gd` | carrega, filtra, embaralha e entrega equações |
 | `scripts/difficulty_settings.gd` | centraliza dificuldades, labels e validação |
 | `scripts/sound_settings.gd` | normaliza e aplica volume em players de áudio |
 | `scripts/settings_screen.gd` | controla o modal de configurações |
-| `scripts/hud.gd` | atualiza interface, vidas, score, timer, feedback, pause e game over |
-| `scripts/player_record.gd` | salva e carrega o high score local |
+| `scripts/hud/hud.gd` | atualiza interface, vidas, score, timer, feedback, pause e game over |
+| `scripts/player/record/player_record.gd` | salva e carrega o high score local |
 | `scripts/game_settings.gd` | carrega, salva e aplica preferências do usuário |
 | `scripts/timer.gd` | cronômetro do HUD |
 

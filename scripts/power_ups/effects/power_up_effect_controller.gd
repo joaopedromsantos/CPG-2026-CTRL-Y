@@ -20,6 +20,7 @@ var max_lives := 3
 
 var _active_effects: Array[Dictionary] = []
 var _current_lives := 3
+var _logic := PowerUpEffectLogic.new()
 
 
 func setup(
@@ -52,8 +53,7 @@ func set_current_lives(current_lives: int) -> void:
 func tick(delta: float) -> void:
 	var changed := false
 	for i in range(_active_effects.size() - 1, -1, -1):
-		var effect := _active_effects[i]
-		effect["remaining"] = float(effect.get("remaining", 0.0)) - delta
+		var effect := _logic.tick_effect(_active_effects[i], delta)
 		if String(effect.get("type", "")) == TYPE_HEART:
 			effect["heal_elapsed"] = float(effect.get("heal_elapsed", 0.0)) + delta
 			if float(effect["heal_elapsed"]) >= config.heart_heal_interval:
@@ -82,13 +82,7 @@ func activate(type: String, slot: int, current_lives: int) -> bool:
 		return false
 
 	_current_lives = current_lives
-	var effect := {
-		"type": type,
-		"slot": slot,
-		"remaining": duration,
-		"duration": duration,
-		"heal_elapsed": 0.0,
-	}
+	var effect := _logic.make_effect(type, slot, duration)
 	_active_effects.append(effect)
 
 	if type == TYPE_HEART:
@@ -128,6 +122,10 @@ func consume_revive_if_available(current_lives: int) -> bool:
 	return false
 
 
+func is_slot_active(slot: int) -> bool:
+	return _logic.is_slot_active(_active_effects, slot)
+
+
 func _heal(amount: int) -> void:
 	var next_lives := clampi(_current_lives + amount, 0, max_lives)
 	if next_lives == _current_lives:
@@ -145,17 +143,7 @@ func _sync_effect_state() -> void:
 
 
 func _has_active_type(type: String) -> bool:
-	for effect in _active_effects:
-		if String(effect.get("type", "")) == type:
-			return true
-	return false
-
-
-func is_slot_active(slot: int) -> bool:
-	for effect in _active_effects:
-		if int(effect.get("slot", -1)) == slot:
-			return true
-	return false
+	return _logic.has_active_type(_active_effects, type)
 
 
 func _emit_slot_changed(effect: Dictionary, active: bool) -> void:

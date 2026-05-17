@@ -1,6 +1,10 @@
 {
 	"dirs": [
 		"res://scripts/blocks/__tests__",
+		"res://scripts/hud/__tests__",
+		"res://scripts/hud/slots/__tests__",
+		"res://scripts/player/__tests__",
+		"res://scripts/power_ups/__tests__",
 		"res://scripts/scenario/__tests__"
 	],
 	"include_subdirs": true,

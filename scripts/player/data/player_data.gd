@@ -1,5 +1,7 @@
 extends Node
 
+const PLAYER_PROFILE_STORE_SCRIPT = preload("res://scripts/player/data/player_profile_store.gd")
+
 const SAVE_PATH := "user://player_data.cfg"
 const SECTION := "player"
 const KEY_DISPLAY_NAME := "display_name"
@@ -7,9 +9,11 @@ const KEY_DISPLAY_NAME := "display_name"
 const MIN_NAME_LENGTH := 3
 const MAX_NAME_LENGTH := 30
 
+var save_path := SAVE_PATH
 var display_name := ""
 var difficulty := DifficultySettings.DEFAULT_DIFFICULTY
 var _session_name_confirmed := false
+var _store = PLAYER_PROFILE_STORE_SCRIPT.new()
 
 
 func _ready() -> void:
@@ -35,21 +39,12 @@ func save_name(new_name: String) -> bool:
 	if sanitized.length() > MAX_NAME_LENGTH:
 		sanitized = sanitized.substr(0, MAX_NAME_LENGTH)
 	display_name = sanitized
-
-	var config := ConfigFile.new()
-	if FileAccess.file_exists(SAVE_PATH):
-		config.load(SAVE_PATH)
-	config.set_value(SECTION, KEY_DISPLAY_NAME, display_name)
-	return config.save(SAVE_PATH) == OK
+	return _store.save_display_name(save_path, SECTION, KEY_DISPLAY_NAME, display_name)
 
 
-func set_difficulty(d: String) -> void:
-	difficulty = DifficultySettings.normalize_difficulty(d)
+func set_difficulty(new_difficulty: String) -> void:
+	difficulty = DifficultySettings.normalize_difficulty(new_difficulty)
 
 
 func _load() -> void:
-	var config := ConfigFile.new()
-	if config.load(SAVE_PATH) != OK:
-		display_name = ""
-		return
-	display_name = String(config.get_value(SECTION, KEY_DISPLAY_NAME, ""))
+	display_name = _store.load_display_name(save_path, SECTION, KEY_DISPLAY_NAME)
