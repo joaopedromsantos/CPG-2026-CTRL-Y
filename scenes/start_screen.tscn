@@ -95,7 +95,7 @@ func _redirect_to_name_input() -> void:
 
 func _play_menu_music() -> void:
 	_menu_audio = AudioStreamPlayer.new()
-	_menu_audio.stream = load(\"res://assets/sounds/sobrecarga-ciberntica.wav")
+	_menu_audio.stream = load(\"res://assets/sounds/sobrecarga-ciberntica.wav\")
 	add_child(_menu_audio)
 	_menu_audio.finished.connect(_menu_audio.play)
 	var game_settings := get_node_or_null(\"/root/GameSettings\")
