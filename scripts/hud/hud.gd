@@ -293,6 +293,7 @@ func on_power_up_slot_active_changed(slot: int, _type: String, remaining: float,
 
 func on_restart_game() -> void:
 	endgame_overlay.visible = false
+	pause_screen.hide_pause()
 	pause_button.visible = true
 	pause_button.texture_normal = PAUSE_BUTTON_IMAGE
 	_reset_endgame_celebration()
