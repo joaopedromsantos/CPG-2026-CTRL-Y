@@ -28,7 +28,6 @@ var _font_regular: Font
 
 var _art: StartArt
 var _title: Label
-var _subtitle: Label
 var _highscore_tag: Label
 var _highscore_value: Label
 var _start_button: Button
@@ -74,12 +73,10 @@ class StartArt:
 		_draw_city(pf, scale)
 		_draw_floor(pf, scale)
 		_draw_highscore_frame(pf, scale)
-		_draw_pause_button(pf, scale)
 		_draw_equation(pf, scale)
 		_draw_robot(pf, scale)
 		_draw_side_tile(pf.call(335, 445), \"6\", scale)
 		_draw_side_tile(pf.call(689, 445), \"7\", scale)
-		_draw_subtitle_brackets(pf, scale)
 
 	func _draw_sky(s: Vector2) -> void:
 		var steps := 32
@@ -163,17 +160,6 @@ class StartArt:
 		var rect := Rect2(top_left, bottom_right - top_left)
 		_draw_neon_panel(rect, scale)
 
-	func _draw_pause_button(pf: Callable, scale: float) -> void:
-		var top_left: Vector2 = pf.call(20, 18)
-		var bottom_right: Vector2 = pf.call(78, 76)
-		var rect := Rect2(top_left, bottom_right - top_left)
-		_draw_neon_panel(rect, scale)
-		var bar_w := rect.size.x * 0.16
-		var bar_h := rect.size.y * 0.45
-		var center := rect.get_center()
-		var gap := rect.size.x * 0.10
-		draw_rect(Rect2(center - Vector2(bar_w + gap * 0.5, bar_h * 0.5), Vector2(bar_w, bar_h)), NEON_CYAN)
-		draw_rect(Rect2(center - Vector2(-gap * 0.5, bar_h * 0.5), Vector2(bar_w, bar_h)), NEON_CYAN)
 
 	func _draw_neon_panel(rect: Rect2, scale: float) -> void:
 		draw_rect(rect, Color(0.04, 0.08, 0.18, 0.55))
@@ -245,12 +231,6 @@ class StartArt:
 				NEON_CYAN
 			)
 
-	func _draw_subtitle_brackets(pf: Callable, scale: float) -> void:
-		# subtle cyan glow band under MATH RUNNER
-		var top_left: Vector2 = pf.call(160, 105)
-		var bottom_right: Vector2 = pf.call(870, 137)
-		var rect := Rect2(top_left, bottom_right - top_left)
-		draw_rect(rect, Color(0.36, 0.97, 1.0, 0.04))
 
 	func _draw_robot(pf: Callable, scale: float) -> void:
 		var yellow := Color(0.98, 0.66, 0.13)
@@ -370,9 +350,6 @@ func _build_screen() -> void:
 
 	_title = _make_label(\"MATH RUNNER\", _font_bold, 72, NEON_CYAN, 0, Color(0, 0, 0, 0))
 	add_child(_title)
-
-	_subtitle = _make_label(\"> SISTEMA v2.0   //   ONLINE\", _font_semi, 18, Color(0.55, 0.92, 1.0, 0.85), 0, Color(0, 0, 0, 0))
-	add_child(_subtitle)
 
 	_highscore_tag = $HighscoreTag
 	_apply_label_style(_highscore_tag, \"// HIGHSCORE\", _font_semi, 14, Color(0.55, 0.92, 1.0, 0.85), 0, Color(0, 0, 0, 0))
@@ -494,10 +471,6 @@ func _layout() -> void:
 	_title.set_position(title_rect.position)
 	_title.set_size(title_rect.size)
 
-	var sub_rect: Rect2 = rect.call(220, 108, 590, 30)
-	_subtitle.set_position(sub_rect.position)
-	_subtitle.set_size(sub_rect.size)
-
 	var hs_tag_rect: Rect2 = rect.call(832, 28, 160, 22)
 	_highscore_tag.set_position(hs_tag_rect.position)
 	_highscore_tag.set_size(hs_tag_rect.size)
@@ -523,7 +496,6 @@ func _layout() -> void:
 
 	_start_button.add_theme_font_size_override(\"font_size\", maxi(18, int(34 * scale)))
 	_title.label_settings.font_size = maxi(28, int(72 * scale))
-	_subtitle.label_settings.font_size = maxi(12, int(18 * scale))
 	_highscore_tag.label_settings.font_size = maxi(10, int(14 * scale))
 	_highscore_value.label_settings.font_size = maxi(16, int(30 * scale))
 	_art.queue_redraw()
