@@ -92,7 +92,7 @@ func _build_robot_viewport() -> void:
 
 	_robot = ROBOT_SCENE.instantiate()
 	_robot.name = "Robot"
-	_robot.scale = Vector3.ONE * 1.15
+	_robot.scale = Vector3.ONE * 0.4
 	_robot.rotation_degrees = Vector3(0.0, -28.0, 0.0)
 	world.add_child(_robot)
 
@@ -108,7 +108,7 @@ func _build_robot_viewport() -> void:
 	world.add_child(fill_light)
 
 	var camera := Camera3D.new()
-	camera.look_at_from_position(Vector3(0.0, 1.45, 5.1), Vector3(0.0, 1.05, 0.0), Vector3.UP)
+	camera.look_at_from_position(Vector3(0.0, 1.35, 5.8), Vector3(0.0, 0.9, 0.0), Vector3.UP)
 	camera.fov = 31.0
 	camera.current = true
 	world.add_child(camera)
