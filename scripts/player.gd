@@ -70,6 +70,13 @@ func die() -> void:
 	_current_animation = "RobotArmature|Robot_Death"
 
 
+func take_damage() -> void:
+	if _is_dead:
+		return
+	_anim.play("RobotArmature|Robot_No")
+	_current_animation = "RobotArmature|Robot_No"
+
+
 func tick(delta: float) -> void:
 	var weight := 1.0 - exp(-lane_change_speed * delta)
 	position.x = lerpf(position.x, _target_x, weight)

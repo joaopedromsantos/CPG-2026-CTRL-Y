@@ -359,6 +359,7 @@ func _lose_life() -> bool:
 	if _lives <= 0:
 		_end_game()
 		return true
+	_player.take_damage()
 	_snd_wrong.play()
 	return false
 
