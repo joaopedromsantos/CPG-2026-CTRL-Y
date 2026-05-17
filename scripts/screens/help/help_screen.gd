@@ -185,7 +185,7 @@ func _make_row_content() -> HBoxContainer:
 
 func _make_badge(text: String) -> Label:
 	var label := _make_label(text, 17, Color(0.04, 0.08, 0.18), HORIZONTAL_ALIGNMENT_CENTER)
-	label.custom_minimum_size = Vector2(48.0 if text.length() > 2 else 36.0, 32.0)
+	label.custom_minimum_size = Vector2(36.0, 32.0)
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	label.add_theme_stylebox_override("normal", _make_box(ORANGE, Color(1.0, 0.82, 0.30), 2, 6, Vector2.ZERO))
 	return label
