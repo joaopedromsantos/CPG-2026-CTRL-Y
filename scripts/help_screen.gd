@@ -9,6 +9,7 @@ const ROW_BG := Color(0.02, 0.04, 0.10, 0.72)
 const HEADER_BG := Color(0.10, 0.30, 0.46, 0.92)
 const ORANGE := Color(1.0, 0.62, 0.13)
 const WHITE := Color(1.0, 1.0, 1.0)
+const DIFFICULTY_BADGE_LEFT_MARGIN := 16.0
 
 @onready var close_button: Button = $CloseButton
 @onready var power_up_rows: VBoxContainer = $Panel/Content/Scroll/HelpRows/PowerUpsTable/PowerUpsContent/Rows
@@ -41,7 +42,7 @@ func _build_tables() -> void:
 	var power_ups := [
 		{
 			"icon": "res://assets/power-ups/slots/heart.png",
-			"name": "Coracao",
+			"name": "Coração",
 			"effect": "Recupera 1 vida ao ativar e continua curando por 5s."
 		},
 		{
@@ -52,7 +53,7 @@ func _build_tables() -> void:
 		{
 			"icon": "res://assets/power-ups/slots/lightning.png",
 			"name": "Raio",
-			"effect": "Ativa respostas corretas automaticas por 5s."
+			"effect": "Ativa respostas corretas automáticas por 5s."
 		},
 		{
 			"icon": "res://assets/power-ups/slots/lupa.png",
@@ -67,7 +68,7 @@ func _build_tables() -> void:
 		{
 			"icon": "res://assets/power-ups/slots/revive.png",
 			"name": "Revive",
-			"effect": "Salva a partida uma vez se voce perder em ate 10s."
+			"effect": "Salva a partida uma vez se você perder em até 10s."
 		},
 	]
 
@@ -75,10 +76,10 @@ func _build_tables() -> void:
 		power_up_rows.add_child(_make_power_up_row(item))
 
 	var difficulties := [
-		{"badge": "I", "name": "Facil", "effect": "Equacoes mais simples para comecar a partida."},
-		{"badge": "II", "name": "Medio", "effect": "Equacoes intermediarias para uma partida normal."},
-		{"badge": "III", "name": "Dificil", "effect": "Equacoes mais exigentes e menos previsiveis."},
-		{"badge": "IV", "name": "Impossivel", "effect": "Grupo mais severo de equacoes do jogo."},
+		{"badge": "I", "name": "Fácil", "effect": "Equações mais simples para começar a partida."},
+		{"badge": "II", "name": "Médio", "effect": "Equações intermediárias para uma partida normal."},
+		{"badge": "III", "name": "Difícil", "effect": "Equações mais exigentes e menos previsíveis."},
+		{"badge": "IV", "name": "Impossível", "effect": "Grupo mais severo de equações do jogo."},
 	]
 
 	for item in difficulties:
@@ -122,11 +123,15 @@ func _make_difficulty_row(item: Dictionary) -> Control:
 
 	var difficulty_cell := HBoxContainer.new()
 	difficulty_cell.custom_minimum_size = Vector2(170.0, 46.0)
-	difficulty_cell.add_theme_constant_override("separation", 10)
+	difficulty_cell.add_theme_constant_override("separation", 8)
 	content.add_child(difficulty_cell)
 
+	var badge_margin := MarginContainer.new()
+	badge_margin.add_theme_constant_override("margin_left", int(DIFFICULTY_BADGE_LEFT_MARGIN))
+	difficulty_cell.add_child(badge_margin)
+
 	var badge := _make_badge(String(item["badge"]))
-	difficulty_cell.add_child(badge)
+	badge_margin.add_child(badge)
 
 	var name_label := _make_label(String(item["name"]), 19, WHITE, HORIZONTAL_ALIGNMENT_LEFT)
 	name_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
