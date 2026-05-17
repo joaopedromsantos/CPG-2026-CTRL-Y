@@ -26,6 +26,8 @@ const OVERCLOCK_VIEW_SCRIPT = preload("res://scripts/hud/overclock/overclock_vie
 @onready var endgame_title_label: Label = $CanvasLayer/RootControl/EndGameOverlay/Panel/Content/Title
 @onready var endgame_subtitle_label: Label = $CanvasLayer/RootControl/EndGameOverlay/Panel/Content/Subtitle
 @onready var endgame_buttons_row: HBoxContainer = $CanvasLayer/RootControl/EndGameOverlay/Panel/Content/ButtonsRow
+@onready var record_container: Control = $CanvasLayer/RootControl/BottomRightContainer
+@onready var record_label: Label = $CanvasLayer/RootControl/BottomRightContainer/RecordPanel/Row/RecordLabel
 @onready var slot_labels: Array[Label] = [
 	$CanvasLayer/RootControl/BottomCenterContainer/SlotsRow/Slot1/ContentLabel,
 	$CanvasLayer/RootControl/BottomCenterContainer/SlotsRow/Slot2/ContentLabel,
@@ -300,6 +302,7 @@ func on_restart_game() -> void:
 	_last_score = 0
 	_last_lives = -1
 	_last_power_up_slots = []
+	record_container.visible = false
 	show_equation({})
 	_hide_feedback()
 	on_overclock_reset()
@@ -433,3 +436,11 @@ func get_current_options() -> Array:
 
 func get_current_correct_answers() -> Array:
 	return _current_equation.get("correctAnswers", [])
+
+
+func set_record_holder(record_name: String, record_score: int) -> void:
+	if record_name == "":
+		record_container.visible = false
+		return
+	record_label.text = "%s - %d" % [record_name, record_score]
+	record_container.visible = true

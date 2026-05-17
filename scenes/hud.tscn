@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://c8kl0kppfkymg" path="res://assets/hud/clock.svg" id="9_clock"]
 [ext_resource type="PackedScene" uid="uid://cubnf6432qwe2" path="res://scenes/pause_screen.tscn" id="10_pause"]
 [ext_resource type="Shader" path="res://assets/shaders/overclock_edges.gdshader" id="11_overclock_shader"]
+[ext_resource type="Texture2D" uid="uid://l15klhyg0qfa" path="res://assets/hud/trophy.svg" id="12_trophy"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_score_panel"]
 content_margin_left = 13.0
@@ -113,6 +114,25 @@ shader_parameter/glitch = 0.0
 shader_parameter/time_scale = 18.0
 shader_parameter/edge_size = 0.18
 shader_parameter/pulse_speed = 9.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_record_panel"]
+content_margin_left = 12.0
+content_margin_top = 6.0
+content_margin_right = 12.0
+content_margin_bottom = 6.0
+bg_color = Color(1, 0.96, 0.82, 0.92)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.85, 0.65, 0.12, 1)
+corner_radius_top_left = 13
+corner_radius_top_right = 13
+corner_radius_bottom_right = 13
+corner_radius_bottom_left = 13
+shadow_color = Color(0, 0, 0, 0.3)
+shadow_size = 5
+shadow_offset = Vector2(0, 2)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_reserve_slot_panel"]
 content_margin_left = 3.0
@@ -521,6 +541,54 @@ theme_override_colors/font_color = Color(0.1, 0.1, 0.1, 1)
 theme_override_fonts/font = ExtResource("4_fredoka")
 theme_override_font_sizes/font_size = 18
 horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BottomRightContainer" type="Control" parent="CanvasLayer/RootControl"]
+visible = false
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -280.0
+offset_top = -62.0
+offset_right = -25.0
+offset_bottom = -20.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="RecordPanel" type="PanelContainer" parent="CanvasLayer/RootControl/BottomRightContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_record_panel")
+
+[node name="Row" type="HBoxContainer" parent="CanvasLayer/RootControl/BottomRightContainer/RecordPanel"]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="TrophyIcon" type="TextureRect" parent="CanvasLayer/RootControl/BottomRightContainer/RecordPanel/Row"]
+self_modulate = Color(0.85, 0.65, 0.12, 1)
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("12_trophy")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="RecordLabel" type="Label" parent="CanvasLayer/RootControl/BottomRightContainer/RecordPanel/Row"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.35, 0.25, 0.05, 1)
+theme_override_fonts/font = ExtResource("4_fredoka")
+theme_override_font_sizes/font_size = 15
+text = ""
+horizontal_alignment = 0
 vertical_alignment = 1
 
 [node name="OverclockLayer" type="Control" parent="CanvasLayer/RootControl" unique_id=1910000001]

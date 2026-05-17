@@ -100,6 +100,7 @@ func _ready() -> void:
 	_power_ups.power_up_collected.connect(_on_power_up_collected)
 	_cones.cone_hit.connect(_on_cone_hit)
 	power_up_slots_event.connect(hud.on_power_up_slots_change)
+	_connect_leaderboard_signal()
 	_restart()
 
 
@@ -319,6 +320,7 @@ func _restart() -> void:
 	score_event.emit(int(_score))
 	lives_event.emit(_lives)
 	_set_active_equation(_equation_sequence.start(EQUATION_QUEUE_SIZE))
+	_fetch_record_holder()
 
 
 func _end_game() -> void:
@@ -507,6 +509,31 @@ func _resolve_current_difficulty() -> String:
 	if game_settings:
 		return String(game_settings.get("selected_difficulty"))
 	return "easy"
+
+
+func _connect_leaderboard_signal() -> void:
+	var ranking_api := get_node_or_null("/root/RankingAPI")
+	if ranking_api == null:
+		return
+	if not ranking_api.is_connected("leaderboard_received", _on_leaderboard_received):
+		ranking_api.connect("leaderboard_received", _on_leaderboard_received)
+
+
+func _fetch_record_holder() -> void:
+	var ranking_api := get_node_or_null("/root/RankingAPI")
+	if ranking_api == null:
+		return
+	ranking_api.call("fetch_leaderboard")
+
+
+func _on_leaderboard_received(data: Dictionary) -> void:
+	var difficulty := _resolve_current_difficulty()
+	var entries: Array = data.get(difficulty, [])
+	if entries.size() == 0:
+		hud.set_record_holder("", 0)
+		return
+	var top: Dictionary = entries[0]
+	hud.set_record_holder(String(top.get("display_name", "")), int(top.get("highscore", 0)))
 
 
 func _use_power_up_slot(slot: int) -> void:
