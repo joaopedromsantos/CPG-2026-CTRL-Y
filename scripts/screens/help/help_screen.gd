@@ -82,6 +82,11 @@ func _build_tables() -> void:
 			"name": "Cone",
 			"effect": "Remove 1 vida ao contato."
 		},
+		{
+			"icon": "res://assets/car-kit/previews/box.png",
+			"name": "Box",
+			"effect": "Remove 1 vida ao contato."
+		},
 	]
 
 	for item in obstacles:
@@ -114,12 +119,16 @@ func _make_power_up_row(item: Dictionary) -> Control:
 	icon_margin.add_theme_constant_override("margin_left", int(FIRST_COLUMN_ICON_LEFT_MARGIN))
 	icon_cell.add_child(icon_margin)
 
-	var icon := TextureRect.new()
-	icon.custom_minimum_size = Vector2(34.0, 34.0)
-	icon.texture = load(String(item["icon"]))
-	icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	icon_margin.add_child(icon)
+	if item.has("icon"):
+		var icon := TextureRect.new()
+		icon.custom_minimum_size = Vector2(34.0, 34.0)
+		icon.texture = load(String(item["icon"]))
+		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		icon_margin.add_child(icon)
+	else:
+		var badge := _make_badge(String(item["badge"]))
+		icon_margin.add_child(badge)
 
 	var name_label := _make_label(String(item["name"]), 19, WHITE, HORIZONTAL_ALIGNMENT_LEFT)
 	name_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -176,7 +185,7 @@ func _make_row_content() -> HBoxContainer:
 
 func _make_badge(text: String) -> Label:
 	var label := _make_label(text, 17, Color(0.04, 0.08, 0.18), HORIZONTAL_ALIGNMENT_CENTER)
-	label.custom_minimum_size = Vector2(36.0, 32.0)
+	label.custom_minimum_size = Vector2(48.0 if text.length() > 2 else 36.0, 32.0)
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	label.add_theme_stylebox_override("normal", _make_box(ORANGE, Color(1.0, 0.82, 0.30), 2, 6, Vector2.ZERO))
 	return label
