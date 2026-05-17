@@ -33,7 +33,7 @@ const NO_ANIMATION := "RobotArmature|Robot_No"
 const NO_UPPER_ANIMATION := "upper_body_no"
 const HEAD_SPIN_TURNS := 2.0
 const HEAD_SPIN_STEPS := 16
-const BODY_SHAKE_ANGLE := 0.08
+const BODY_SHAKE_ANGLE := 0.16
 const BODY_SHAKE_SPEED := 42.0
 const UPPER_BODY_BONES := [
 	"Abdomen",
