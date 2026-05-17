@@ -174,7 +174,7 @@ A tela inicial usa um seletor com setas e badge central. As dificuldades são sa
 | Rótulo | Valor interno | Vidas | Observação |
 | --- | --- | ---: | --- |
 | Fácil | `easy` | 6 | sem obstáculoss |
-| Médio | `medium` | 5 | com obstáculoss |
+| Médio | `medium` | 5 | com obstáculos |
 | Difícil | `hard` | 4 | com obstáculos |
 | Impossível | `impossible` | 3 | com obstáculos |
 
