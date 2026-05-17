@@ -255,7 +255,7 @@ Existem 4 slots visuais:
 | `lupa` | 6s | destaca visualmente os blocos com resposta correta |
 | `revive` | 10s | evita a morte uma vez, restaurando 1 vida quando as vidas chegam a 0 |
 | `heart` | 5s | cura 1 vida ao ativar e cura novamente a cada 2s enquanto ativo |
-| `lightning` | 5s | resolve automaticamente as linhas como corretas |
+| `lightning` | 5s | um raio atinge um bloco com resposta incorreta, marcando-o |
 | `hourglass` | 6s | reduz a velocidade do mundo para 55% |
 | `double` | 8s | dobra a pontuação recebida em acertos |
 
