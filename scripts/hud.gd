@@ -11,6 +11,9 @@ extends Node2D
 @onready var endgame_overlay: Control = $CanvasLayer/RootControl/EndGameOverlay
 @onready var endgame_score_label: Label = $CanvasLayer/RootControl/EndGameOverlay/Panel/Content/StatsRow/ScoreStat/ScoreContent/ScoreValue
 @onready var endgame_time_label: Label = $CanvasLayer/RootControl/EndGameOverlay/Panel/Content/StatsRow/TimeStat/TimeContent/TimeValue
+@onready var endgame_title_label: Label = $CanvasLayer/RootControl/EndGameOverlay/Panel/Content/Title
+@onready var endgame_subtitle_label: Label = $CanvasLayer/RootControl/EndGameOverlay/Panel/Content/Subtitle
+@onready var endgame_buttons_row: HBoxContainer = $CanvasLayer/RootControl/EndGameOverlay/Panel/Content/ButtonsRow
 @onready var slot_labels: Array[Label] = [
 	$CanvasLayer/RootControl/BottomCenterContainer/SlotsRow/Slot1/ContentLabel,
 	$CanvasLayer/RootControl/BottomCenterContainer/SlotsRow/Slot2/ContentLabel,
@@ -54,6 +57,12 @@ const POWER_UP_TYPE_TO_SLOT_ICON := {
 }
 const FEEDBACK_COLOR_CORRECT := Color(0.2, 0.85, 0.3, 1.0)
 const FEEDBACK_COLOR_WRONG := Color(0.95, 0.2, 0.2, 1.0)
+const ENDGAME_DEFAULT_TITLE := "Você morreu!"
+const ENDGAME_DEFAULT_SUBTITLE := "Fim da corrida"
+const ENDGAME_NEW_RECORD_TITLE := "🎉 Novo Recorde!"
+const ENDGAME_SUBMITTING_SUBTITLE := "Salvando ranking..."
+const ENDGAME_DEFAULT_TITLE_COLOR := Color(1, 0.92, 0.26, 1)
+const ENDGAME_NEW_RECORD_TITLE_COLOR := Color(1.0, 0.62, 0.95, 1.0)
 const SLOT_ACTIVE_BORDER_COLOR := Color(0.2, 0.75, 1.0, 1.0)
 const SLOT_ACTIVE_SHADOW_COLOR := Color(0.2, 0.75, 1.0, 0.55)
 const SLOT_COUNTDOWN_FONT_COLOR := Color(1.0, 1.0, 1.0, 1.0)
@@ -101,8 +110,62 @@ func on_game_over(score: int) -> void:
 	_hide_death_fade()
 	endgame_score_label.text = "%d" % [score]
 	endgame_time_label.text = timer.formatted_time()
+	_reset_endgame_celebration()
+	_set_endgame_awaiting_ranking()
 	endgame_overlay.visible = true
 	pause_button.visible = false
+	_connect_ranking_signal()
+
+
+func _reset_endgame_celebration() -> void:
+	if endgame_title_label:
+		endgame_title_label.text = ENDGAME_DEFAULT_TITLE
+		endgame_title_label.add_theme_color_override("font_color", ENDGAME_DEFAULT_TITLE_COLOR)
+	if endgame_subtitle_label:
+		endgame_subtitle_label.text = ENDGAME_DEFAULT_SUBTITLE
+
+
+func _set_endgame_awaiting_ranking() -> void:
+	if endgame_subtitle_label:
+		endgame_subtitle_label.text = ENDGAME_SUBMITTING_SUBTITLE
+	if endgame_buttons_row:
+		endgame_buttons_row.visible = false
+
+
+func _connect_ranking_signal() -> void:
+	var ranking_api := get_node_or_null("/root/RankingAPI")
+	if ranking_api == null:
+		on_score_submission_skipped()
+		return
+	if not ranking_api.is_connected("score_submitted", _on_score_submitted):
+		ranking_api.connect("score_submitted", _on_score_submitted, CONNECT_ONE_SHOT)
+
+
+func on_score_submission_skipped() -> void:
+	_on_score_submitted(false)
+
+
+func _on_score_submitted(is_new_record: bool) -> void:
+	if endgame_subtitle_label:
+		endgame_subtitle_label.text = ENDGAME_DEFAULT_SUBTITLE
+	if is_new_record and endgame_title_label:
+		endgame_title_label.text = ENDGAME_NEW_RECORD_TITLE
+		endgame_title_label.add_theme_color_override("font_color", ENDGAME_NEW_RECORD_TITLE_COLOR)
+		_play_new_record_animation()
+	if endgame_buttons_row:
+		endgame_buttons_row.visible = true
+
+
+func _play_new_record_animation() -> void:
+	if endgame_title_label == null:
+		return
+	endgame_title_label.pivot_offset = endgame_title_label.size * 0.5
+	endgame_title_label.scale = Vector2(0.6, 0.6)
+	var tween := create_tween()
+	tween.tween_property(endgame_title_label, "scale", Vector2(1.25, 1.25), 0.18) \
+		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tween.tween_property(endgame_title_label, "scale", Vector2(1.0, 1.0), 0.18) \
+		.set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
 
 
 func on_pause() -> void:
@@ -312,6 +375,12 @@ func on_restart_game() -> void:
 	endgame_overlay.visible = false
 	pause_button.visible = true
 	pause_button.texture_normal = PAUSE_BUTTON_IMAGE
+	_reset_endgame_celebration()
+	if endgame_buttons_row:
+		endgame_buttons_row.visible = true
+	var ranking_api := get_node_or_null("/root/RankingAPI")
+	if ranking_api and ranking_api.is_connected("score_submitted", _on_score_submitted):
+		ranking_api.disconnect("score_submitted", _on_score_submitted)
 	timer.reset_timer()
 	timer.start_timer()
 	_last_score = 0

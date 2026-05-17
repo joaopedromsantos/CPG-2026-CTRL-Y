@@ -19,6 +19,8 @@ config/icon="res://icon.svg"
 
 PlayerRecord="*res://scripts/player_record.gd"
 GameSettings="*res://scripts/game_settings.gd"
+PlayerData="*res://scripts/player_data.gd"
+RankingAPI="*res://scripts/ranking_api.gd"
 
 [display]
 

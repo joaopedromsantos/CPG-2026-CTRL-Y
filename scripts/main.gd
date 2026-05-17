@@ -302,6 +302,7 @@ func _end_game() -> void:
 	if sequence_id != _game_over_sequence_id:
 		return
 	game_over.emit(int(_score))
+	_submit_online_score()
 
 
 func _on_hud_pause_event() -> void:
@@ -412,6 +413,29 @@ func _update_camera_shake(delta: float) -> void:
 func _on_power_up_lives_changed(lives: int) -> void:
 	_lives = clampi(lives, 0, MAX_LIVES)
 	lives_event.emit(_lives)
+
+
+func _resolve_current_difficulty() -> String:
+	var game_settings := get_node_or_null("/root/GameSettings")
+	if game_settings:
+		return String(game_settings.get("selected_difficulty"))
+	return "easy"
+
+
+func _submit_online_score() -> void:
+	var player_data := get_node_or_null("/root/PlayerData")
+	var ranking_api := get_node_or_null("/root/RankingAPI")
+	if player_data == null or ranking_api == null:
+		hud.on_score_submission_skipped()
+		return
+	var p_name := String(player_data.call("get_display_name"))
+	if p_name == "":
+		hud.on_score_submission_skipped()
+		return
+	var p_difficulty := String(player_data.get("difficulty"))
+	if p_difficulty == "":
+		p_difficulty = _resolve_current_difficulty()
+	ranking_api.call("submit_score", p_name, p_difficulty, int(_score))
 
 
 func _use_power_up_slot(slot: int) -> void:
