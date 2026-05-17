@@ -20,9 +20,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Run GUT tests
-        uses: jamie-pate/run-gut-tests-action@v2.0.3
+      - name: Setup Godot
+        uses: chickensoft-games/setup-godot@v2
         with:
-          directory: .
-          godotFlags: --headless
-          gutConfigPath: .gutconfig.json
+          version: 4.6.stable
+
+      - name: Import project assets
+        run: godot --headless --path . --import --quit
+
+      - name: Run GUT tests
+        run: godot --headless --path . -s addons/gut/gut_cmdln.gd -gexit -gconfig=.gutconfig.json

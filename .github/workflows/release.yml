@@ -42,6 +42,14 @@ jobs:
       - name: Create build directory
         run: mkdir -p build
 
+      - name: Import project assets
+        run: |
+          ./Godot_v${GODOT_VERSION}-stable_linux.x86_64 \
+            --headless \
+            --path . \
+            --import \
+            --quit
+
       - name: Export Windows build
         run: |
           ./Godot_v${GODOT_VERSION}-stable_linux.x86_64 \
