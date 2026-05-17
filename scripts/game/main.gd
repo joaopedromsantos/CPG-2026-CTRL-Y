@@ -13,8 +13,8 @@ signal overclock_reset
 const LANE_WIDTH := 2.8
 const FLOOR_BACK_Z := -18.0
 const FLOOR_FRONT_Z := 11.6
-const BASE_WORLD_SPEED := 8.0
-const WORLD_SPEED_PER_SCORE := 0.002
+const BASE_WORLD_SPEED := 5.6
+const WORLD_SPEED_PER_SCORE := 0.0014
 const BASE_SCORE_PER_CORRECT := 100
 const COMBO_CONTROLLER_SCRIPT = preload("res://scripts/combo/combo_controller.gd")
 const EQUATION_QUEUE_SIZE := 3
