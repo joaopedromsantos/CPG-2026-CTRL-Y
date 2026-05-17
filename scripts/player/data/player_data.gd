@@ -1,6 +1,7 @@
 extends Node
 
 const PLAYER_PROFILE_STORE_SCRIPT = preload("res://scripts/player/data/player_profile_store.gd")
+const DIFFICULTY_SETTINGS_SCRIPT = preload("res://scripts/settings/difficulty_settings.gd")
 
 const SAVE_PATH := "user://player_data.cfg"
 const SECTION := "player"
@@ -11,7 +12,7 @@ const MAX_NAME_LENGTH := 30
 
 var save_path := SAVE_PATH
 var display_name := ""
-var difficulty := DifficultySettings.DEFAULT_DIFFICULTY
+var difficulty := DIFFICULTY_SETTINGS_SCRIPT.DEFAULT_DIFFICULTY
 var _session_name_confirmed := false
 var _store = PLAYER_PROFILE_STORE_SCRIPT.new()
 
@@ -43,7 +44,7 @@ func save_name(new_name: String) -> bool:
 
 
 func set_difficulty(new_difficulty: String) -> void:
-	difficulty = DifficultySettings.normalize_difficulty(new_difficulty)
+	difficulty = DIFFICULTY_SETTINGS_SCRIPT.normalize_difficulty(new_difficulty)
 
 
 func _load() -> void:
