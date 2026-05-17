@@ -11,6 +11,7 @@ config_version=5
 [application]
 
 config/name="CPG_CTRL_Y"
+config/version="1.0.0"
 run/main_scene="res://scenes/start_screen.tscn"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
@@ -29,7 +30,6 @@ window/size/viewport_width=1024
 window/size/viewport_height=580
 window/size/mode=2
 window/stretch/mode="canvas_items"
-window/stretch/aspect="keep"
 
 [editor_plugins]
 
@@ -53,6 +53,6 @@ pause={
 
 [rendering]
 
+rendering_device/driver.windows="d3d12"
 anti_aliasing/quality/msaa_3d=2
 anti_aliasing/quality/screen_space_aa=1
-rendering_device/driver.windows="d3d12"
