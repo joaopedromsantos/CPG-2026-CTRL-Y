@@ -1,6 +1,8 @@
 class_name RunnerScenario
 extends Node3D
 
+const SCENARIO_DRAWING_SCRIPT = preload("res://scripts/scenario/scenario_drawing.gd")
+const SCENARIO_LOGIC_SCRIPT = preload("res://scripts/scenario/scenario_logic.gd")
 const LIGHT_POLE_VARIANTS := [
 	{
 		"scene": preload("res://assets/city-kit-roads/models/light-curved.glb"),
@@ -92,16 +94,14 @@ var _mat_floor_light: StandardMaterial3D
 var _mat_floor_dark: StandardMaterial3D
 var _mat_side_ground: StandardMaterial3D
 var _mat_lane: StandardMaterial3D
-var _mat_tree_trunk: StandardMaterial3D
-var _mat_tree_leaf: StandardMaterial3D
-var _mat_bench_wood: StandardMaterial3D
-var _mat_bench_metal: StandardMaterial3D
 var _rows_actual := 0
 var _road_half_width := 0.0
 var _light_pole_rng := RandomNumberGenerator.new()
 var _light_pole_spawn_timer := 0.0
 var _next_light_pole_side := 1
 var _last_light_pole_variant_idx := -1
+var _drawing := SCENARIO_DRAWING_SCRIPT.new()
+var _logic := SCENARIO_LOGIC_SCRIPT.new()
 
 
 func setup() -> void:
@@ -115,35 +115,26 @@ func setup() -> void:
 
 
 func tick(delta: float) -> void:
-	var depth := float(_rows_actual) * floor_tile_size
-	# Só dá wrap quando o tile sai inteiro do campo de visão, não no centro,
-	# senão a borda da frente pisca ao reciclar.
-	var wrap_z := floor_front_z + floor_tile_size
-
 	for tile in _floor_tiles:
 		tile.position.z += world_speed * delta
-		if tile.position.z > wrap_z:
-			tile.position.z -= depth
+		tile.position.z = _logic.wrapped_z(tile.position.z, _rows_actual, floor_tile_size, floor_front_z)
 
 	for tile in _side_ground_tiles:
 		tile.position.z += world_speed * delta
-		if tile.position.z > wrap_z:
-			tile.position.z -= depth
+		tile.position.z = _logic.wrapped_z(tile.position.z, _rows_actual, floor_tile_size, floor_front_z)
 
 	for marker in _lane_markers:
 		marker.position.z += world_speed * delta
-		if marker.position.z > wrap_z:
-			marker.position.z -= depth
+		marker.position.z = _logic.wrapped_z(marker.position.z, _rows_actual, floor_tile_size, floor_front_z)
 
 	for building in _buildings:
 		building.position.z += world_speed * delta
-		if building.position.z > wrap_z:
-			building.position.z -= depth
+		building.position.z = _logic.wrapped_z(building.position.z, _rows_actual, floor_tile_size, floor_front_z)
 
 	for i in range(_light_poles.size() - 1, -1, -1):
 		var pole := _light_poles[i]
 		pole.position.z += world_speed * delta
-		if pole.position.z > wrap_z:
+		if pole.position.z > _logic.wrap_z(floor_front_z, floor_tile_size):
 			_light_poles.remove_at(i)
 			pole.queue_free()
 
@@ -151,42 +142,22 @@ func tick(delta: float) -> void:
 
 	for prop in _side_props:
 		prop.position.z += world_speed * delta
-		if prop.position.z > wrap_z:
-			prop.position.z -= depth
+		prop.position.z = _logic.wrapped_z(prop.position.z, _rows_actual, floor_tile_size, floor_front_z)
 
 
 func _build_materials() -> void:
-	var asphalt_color := Color(0.05, 0.06, 0.08)
-	var sidewalk_color := Color(0.11, 0.12, 0.14)
-	_mat_floor_light = _make_material(sidewalk_color, 1.0, 0.0)
-	_mat_floor_dark = _make_material(asphalt_color, 0.95, 0.0)
-	_mat_side_ground = _make_material(Color(0.07, 0.12, 0.08), 1.0, 0.0)
-	_mat_lane = _make_material(Color(0.96, 0.93, 0.78), 0.35, 0.0)
-	_mat_lane.emission_enabled = true
-	_mat_lane.emission = Color(0.96, 0.93, 0.78)
-	_mat_lane.emission_energy_multiplier = 0.5
-	_mat_tree_trunk = _make_material(Color(0.34, 0.18, 0.08), 0.9, 0.0)
-	_mat_tree_leaf = _make_material(Color(0.08, 0.34, 0.16), 0.95, 0.0)
-	_mat_bench_wood = _make_material(Color(0.48, 0.25, 0.11), 0.85, 0.0)
-	_mat_bench_metal = _make_material(Color(0.16, 0.17, 0.18), 0.65, 0.1)
-
-
-func _make_material(color: Color, roughness: float, metallic: float) -> StandardMaterial3D:
-	var material := StandardMaterial3D.new()
-	material.albedo_color = color
-	material.roughness = roughness
-	material.metallic = metallic
-	return material
+	_drawing.setup_materials()
+	_mat_floor_light = _drawing.mat_floor_light
+	_mat_floor_dark = _drawing.mat_floor_dark
+	_mat_side_ground = _drawing.mat_side_ground
+	_mat_lane = _drawing.mat_lane
 
 
 func _build_floor() -> void:
-	var floor_mesh := BoxMesh.new()
-	floor_mesh.size = Vector3(floor_tile_size, 0.06, floor_tile_size)
+	var floor_mesh := _drawing.make_floor_mesh(floor_tile_size)
 
 	# Compute how many rows are needed to fully cover visible area and have extra for wrapping
-	var visible_depth := floor_front_z - floor_back_z + floor_tile_size * 2.0
-	var needed_rows := int(ceil(visible_depth / floor_tile_size))
-	_rows_actual = max(floor_rows, needed_rows + 1)
+	_rows_actual = _logic.actual_row_count(floor_rows, floor_back_z, floor_front_z, floor_tile_size)
 
 	var start_x := -float(floor_cols - 1) * floor_tile_size * 0.5
 	for row in range(_rows_actual):
@@ -221,8 +192,7 @@ func _build_floor() -> void:
 
 func _build_lane_markers() -> void:
 	# Faixas tracejadas entre as pistas (divisores) e sólidas nas bordas da rua
-	var dash_mesh := BoxMesh.new()
-	dash_mesh.size = Vector3(0.18, 0.02, floor_tile_size * 0.55)
+	var dash_mesh := _drawing.make_dash_mesh(floor_tile_size)
 
 	var divider_xs := [-lane_width * 0.5, lane_width * 0.5]
 	for x in divider_xs:
@@ -234,8 +204,7 @@ func _build_lane_markers() -> void:
 			add_child(marker)
 			_lane_markers.append(marker)
 
-	var edge_mesh := BoxMesh.new()
-	edge_mesh.size = Vector3(0.22, 0.02, floor_tile_size + 0.02)
+	var edge_mesh := _drawing.make_edge_mesh(floor_tile_size)
 
 	var edge_xs := [-lane_width * 1.5, lane_width * 1.5]
 	for x in edge_xs:
@@ -252,12 +221,7 @@ func _build_scenery() -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 73519
 
-	var star_mat := StandardMaterial3D.new()
-	star_mat.albedo_color = Color(0.95, 0.97, 1.0)
-	star_mat.emission_enabled = true
-	star_mat.emission = Color(0.95, 0.97, 1.0)
-	star_mat.emission_energy_multiplier = 2.5
-	star_mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	var star_mat := _drawing.make_star_material()
 
 	# Faixa "off road" começa após o final da estrada (largura 9 * 1.4 / 2 = 6.3)
 	_road_half_width = float(floor_cols) * floor_tile_size * 0.5
@@ -276,11 +240,7 @@ func _build_scenery() -> void:
 			_buildings.append(building)
 
 	# Estrelas dispersas no céu ao fundo
-	var star_mesh := SphereMesh.new()
-	star_mesh.radius = 0.08
-	star_mesh.height = 0.16
-	star_mesh.radial_segments = 6
-	star_mesh.rings = 4
+	var star_mesh := _drawing.make_star_mesh()
 	for _i in range(60):
 		var star := MeshInstance3D.new()
 		star.mesh = star_mesh
@@ -386,57 +346,10 @@ func _build_pixel_skyline() -> void:
 
 	for spec in side_specs:
 		var typed_spec := spec as Vector4
-		var node := _create_pixel_building(typed_spec.z, typed_spec.w, building_mat, side_mat, window_mat)
+		var node := _drawing.create_pixel_building(typed_spec.z, typed_spec.w, building_mat, side_mat, window_mat)
 		node.position = Vector3(typed_spec.x, 0.0, typed_spec.y)
 		node.rotation_degrees.y = -90.0 if typed_spec.x < 0.0 else 90.0
 		add_child(node)
-
-
-func _create_pixel_building(
-	width: float,
-	height: float,
-	building_mat: StandardMaterial3D,
-	side_mat: StandardMaterial3D,
-	window_mat: StandardMaterial3D
-) -> Node3D:
-	var root := Node3D.new()
-	root.name = "PixelSkylineBuilding"
-
-	var body := MeshInstance3D.new()
-	var body_mesh := BoxMesh.new()
-	body_mesh.size = Vector3(width, height, 1.0)
-	body.mesh = body_mesh
-	body.material_override = building_mat
-	body.position.y = height * 0.5
-	root.add_child(body)
-
-	var side := MeshInstance3D.new()
-	var side_mesh := BoxMesh.new()
-	side_mesh.size = Vector3(0.28, height, 1.04)
-	side.mesh = side_mesh
-	side.material_override = side_mat
-	side.position = Vector3(width * 0.5 + 0.14, height * 0.5, 0.0)
-	root.add_child(side)
-
-	var cols := maxi(1, int(width / 0.55))
-	var rows := maxi(2, int(height / 0.9))
-	for row in range(rows):
-		for col in range(cols):
-			if (row + col) % 3 == 0:
-				continue
-			var window := MeshInstance3D.new()
-			var window_mesh := BoxMesh.new()
-			window_mesh.size = Vector3(0.18, 0.28, 0.04)
-			window.mesh = window_mesh
-			window.material_override = window_mat
-			window.position = Vector3(
-				(float(col) - float(cols - 1) * 0.5) * 0.46,
-				0.8 + float(row) * 0.68,
-				-0.53
-			)
-			root.add_child(window)
-
-	return root
 
 
 func _setup_light_pole_spawner() -> void:
@@ -459,36 +372,17 @@ func _update_light_pole_spawner(delta: float) -> void:
 func _spawn_light_pole(side: int) -> void:
 	var pole_x := _road_half_width + 1.05
 	var spawn_z := floor_back_z + floor_tile_size * 0.6
-	var variant_idx := _pick_light_pole_variant(_light_pole_rng, _last_light_pole_variant_idx)
+	var variant_idx := _logic.pick_light_pole_variant(_light_pole_rng, _last_light_pole_variant_idx, LIGHT_POLE_VARIANTS.size())
 	_last_light_pole_variant_idx = variant_idx
 	var variant: Dictionary = LIGHT_POLE_VARIANTS[variant_idx]
 	var scene := variant["scene"] as PackedScene
 	var pole := scene.instantiate() as Node3D
 	pole.name = "LightPole"
 	pole.position = Vector3(float(side) * pole_x, 0.0, spawn_z)
-	pole.rotation_degrees = _get_light_pole_rotation(side, variant["is_square"] as bool)
+	pole.rotation_degrees = _logic.light_pole_rotation(side, variant["is_square"] as bool)
 	pole.scale = Vector3.ONE * LIGHT_POLE_SCALE
 	add_child(pole)
 	_light_poles.append(pole)
-
-
-func _pick_light_pole_variant(rng: RandomNumberGenerator, previous_variant_idx: int) -> int:
-	var variant_count := LIGHT_POLE_VARIANTS.size()
-	if variant_count <= 1:
-		return 0
-
-	var variant_idx := rng.randi_range(0, variant_count - 1)
-	if variant_idx == previous_variant_idx:
-		variant_idx = (variant_idx + rng.randi_range(1, variant_count - 1)) % variant_count
-
-	return variant_idx
-
-
-func _get_light_pole_rotation(side: int, is_square: bool) -> Vector3:
-	if is_square:
-		return Vector3(0.0, 0.0 if side < 0 else 180.0, 0.0)
-
-	return Vector3(0.0, -90.0 if side < 0 else 90.0, 0.0)
 
 
 func _create_modular_building(side: int, rng: RandomNumberGenerator) -> Node3D:
@@ -531,7 +425,7 @@ func _build_side_props(road_half_width: float, scenery_depth: float) -> void:
 		for i in range(slots_per_side):
 			var remaining_slots := slots_per_side - i
 			var remaining_required := SIDE_PROP_MIN_PER_SIDE - spawned_on_side
-			var should_spawn := remaining_required >= remaining_slots or rng.randf() <= _get_side_prop_spawn_chance(i)
+			var should_spawn := remaining_required >= remaining_slots or rng.randf() <= _logic.side_prop_spawn_chance(i, SIDE_PROP_SPAWN_CHANCE)
 			if not should_spawn:
 				continue
 
@@ -548,11 +442,6 @@ func _build_side_props(road_half_width: float, scenery_depth: float) -> void:
 			add_child(prop)
 			_side_props.append(prop)
 			spawned_on_side += 1
-
-
-func _get_side_prop_spawn_chance(slot_idx: int) -> float:
-	var wave := 0.12 if slot_idx % 3 == 0 else (-0.10 if slot_idx % 3 == 1 else 0.0)
-	return clampf(SIDE_PROP_SPAWN_CHANCE + wave, 0.25, 0.85)
 
 
 func _pick_side_prop_variant(rng: RandomNumberGenerator) -> Dictionary:
@@ -576,76 +465,11 @@ func _create_side_prop(variant: Dictionary, side: int, rng: RandomNumberGenerato
 	var prop_type := variant["type"] as String
 	match prop_type:
 		"tree":
-			return _create_tree_prop(rng)
+			return _drawing.create_tree_prop(rng)
 		"bench":
-			return _create_bench_prop(side, rng)
+			return _drawing.create_bench_prop(side, rng)
 		_:
 			return _create_model_prop(variant, side, rng)
-
-
-func _create_tree_prop(rng: RandomNumberGenerator) -> Node3D:
-	var tree := Node3D.new()
-	tree.name = "SideTree"
-
-	var trunk := MeshInstance3D.new()
-	var trunk_mesh := CylinderMesh.new()
-	trunk_mesh.top_radius = 0.13
-	trunk_mesh.bottom_radius = 0.18
-	trunk_mesh.height = rng.randf_range(1.0, 1.45)
-	trunk_mesh.radial_segments = 8
-	trunk.mesh = trunk_mesh
-	trunk.material_override = _mat_tree_trunk
-	trunk.position.y = trunk_mesh.height * 0.5
-	tree.add_child(trunk)
-
-	var leaves := MeshInstance3D.new()
-	var leaf_mesh := SphereMesh.new()
-	leaf_mesh.radius = rng.randf_range(0.65, 0.9)
-	leaf_mesh.height = leaf_mesh.radius * rng.randf_range(1.55, 1.9)
-	leaf_mesh.radial_segments = 10
-	leaf_mesh.rings = 5
-	leaves.mesh = leaf_mesh
-	leaves.material_override = _mat_tree_leaf
-	leaves.position = Vector3(0.0, trunk_mesh.height + leaf_mesh.height * 0.32, 0.0)
-	tree.add_child(leaves)
-
-	tree.scale = Vector3.ONE * rng.randf_range(1.6, 2.2)
-	return tree
-
-
-func _create_bench_prop(side: int, rng: RandomNumberGenerator) -> Node3D:
-	var bench := Node3D.new()
-	bench.name = "SideBench"
-	bench.rotation_degrees.y = 90.0 if side < 0 else -90.0
-
-	var seat := MeshInstance3D.new()
-	var seat_mesh := BoxMesh.new()
-	seat_mesh.size = Vector3(1.25, 0.16, 0.42)
-	seat.mesh = seat_mesh
-	seat.material_override = _mat_bench_wood
-	seat.position.y = 0.45
-	bench.add_child(seat)
-
-	var back := MeshInstance3D.new()
-	var back_mesh := BoxMesh.new()
-	back_mesh.size = Vector3(1.25, 0.48, 0.12)
-	back.mesh = back_mesh
-	back.material_override = _mat_bench_wood
-	back.position = Vector3(0.0, 0.72, -0.24)
-	bench.add_child(back)
-
-	for leg_x in [-0.48, 0.48]:
-		for leg_z in [-0.13, 0.13]:
-			var leg := MeshInstance3D.new()
-			var leg_mesh := BoxMesh.new()
-			leg_mesh.size = Vector3(0.08, 0.45, 0.08)
-			leg.mesh = leg_mesh
-			leg.material_override = _mat_bench_metal
-			leg.position = Vector3(leg_x, 0.22, leg_z)
-			bench.add_child(leg)
-
-	bench.scale = Vector3.ONE * rng.randf_range(1.35, 1.7)
-	return bench
 
 
 func _create_model_prop(variant: Dictionary, side: int, rng: RandomNumberGenerator) -> Node3D:
@@ -667,28 +491,9 @@ func _create_model_prop(variant: Dictionary, side: int, rng: RandomNumberGenerat
 
 
 func _build_camera() -> void:
-	var camera := Camera3D.new()
-	camera.name = "Camera3D"
-	camera.position = Vector3(0.0, 6.4, 11.0)
-	camera.rotation_degrees = Vector3(-56.0, 0.0, 0.0)
-	camera.fov = 55.0
-	camera.current = true
-	add_child(camera)
+	add_child(_drawing.create_camera())
 
 
 func _build_lighting() -> void:
-	var light := DirectionalLight3D.new()
-	light.name = "Sun"
-	light.rotation_degrees = Vector3(-55.0, -25.0, 0.0)
-	light.light_energy = 2.6
-	add_child(light)
-
-	var ambient := WorldEnvironment.new()
-	var environment := Environment.new()
-	environment.background_mode = Environment.BG_COLOR
-	environment.background_color = Color(0.08, 0.1, 0.13)
-	environment.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
-	environment.ambient_light_color = Color(0.55, 0.62, 0.7)
-	environment.ambient_light_energy = 0.65
-	ambient.environment = environment
-	add_child(ambient)
+	add_child(_drawing.create_sun())
+	add_child(_drawing.create_world_environment())

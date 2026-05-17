@@ -28,6 +28,7 @@ const RESERVE_POWER_UP_SLOT := 3
 const MIN_GAME_OVER_DELAY := 2.0
 const LIFE_LOST_REACTION_DELAY := 0.45
 const EQUATION_SEQUENCE_SCRIPT = preload("res://scripts/equation_sequence.gd")
+const SCENARIO_SCRIPT = preload("res://scripts/scenario/scenario.gd")
 const POWER_UP_CONFIG = preload("res://assets/power-ups/power_up_config.tres")
 
 var _lane_positions: Array[float] = [
@@ -46,7 +47,7 @@ var _power_up_slots: Array[String] = ["", "", "", ""]
 
 var _player: RunnerPlayer
 # var _hud: RunnerHud
-var _cenario: RunnerScenario
+var _scenario
 var _blocks: RunnerBlocks
 var _power_ups: RunnerPowerUps
 var _cones: RunnerCones
@@ -70,7 +71,7 @@ func _ready() -> void:
 	var game_settings := get_node_or_null("/root/GameSettings")
 	if game_settings:
 		_equation_sequence.set_difficulty(String(game_settings.get("selected_difficulty")))
-	_build_cenario()
+	_build_scenario()
 	_build_player()
 	_build_blocks()
 	_build_power_ups()
@@ -110,7 +111,7 @@ func _process(delta: float) -> void:
 
 	_player.tick(delta)
 	_power_up_effects.tick(delta)
-	_cenario.tick(delta)
+	_scenario.tick(delta)
 	_blocks.tick(delta, _player.get_runner_position())
 	_power_ups.tick(delta, _player.get_runner_position())
 	_cones.tick(
@@ -132,7 +133,7 @@ func _update_world_speed(_delta: float) -> void:
 		return
 
 	world_speed = target_speed
-	_cenario.world_speed = world_speed
+	_scenario.world_speed = world_speed
 	_blocks.world_speed = world_speed
 	_power_ups.world_speed = world_speed
 	_cones.world_speed = world_speed
@@ -176,14 +177,14 @@ func _unhandled_input(event: InputEvent) -> void:
 				_restart()
 
 
-func _build_cenario() -> void:
-	_cenario = RunnerScenario.new()
-	_cenario.world_speed = world_speed
-	_cenario.lane_width = LANE_WIDTH
-	_cenario.floor_back_z = FLOOR_BACK_Z
-	_cenario.floor_front_z = FLOOR_FRONT_Z
-	add_child(_cenario)
-	_cenario.setup()
+func _build_scenario() -> void:
+	_scenario = SCENARIO_SCRIPT.new()
+	_scenario.world_speed = world_speed
+	_scenario.lane_width = LANE_WIDTH
+	_scenario.floor_back_z = FLOOR_BACK_Z
+	_scenario.floor_front_z = FLOOR_FRONT_Z
+	add_child(_scenario)
+	_scenario.setup()
 
 
 func _build_player() -> void:
@@ -272,7 +273,7 @@ func _restart() -> void:
 	_score = 0.0
 	_max_lives = DifficultySettings.get_max_lives(_resolve_current_difficulty())
 	world_speed = BASE_WORLD_SPEED
-	_cenario.world_speed = world_speed
+	_scenario.world_speed = world_speed
 	_blocks.world_speed = world_speed
 	_power_ups.world_speed = world_speed
 	_cones.world_speed = world_speed
