@@ -93,12 +93,6 @@ func _stop_menu_music() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton:
-		var mouse_event := event as InputEventMouseButton
-		if mouse_event.button_index == MOUSE_BUTTON_LEFT and mouse_event.pressed and _is_robot_clicked(mouse_event.position):
-			get_tree().root.set_input_as_handled()
-			_play_robot_pushback()
-		return
 	if not (event is InputEventKey):
 		return
 	var key_event := event as InputEventKey
@@ -108,6 +102,14 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_tree().root.set_input_as_handled()
 		_stop_menu_music()
 		get_tree().change_scene_to_file(GAME_SCENE)
+
+
+func _gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		var mouse_event := event as InputEventMouseButton
+		if mouse_event.button_index == MOUSE_BUTTON_LEFT and mouse_event.pressed and _is_robot_clicked(get_global_mouse_position()):
+			accept_event()
+			_play_robot_pushback()
 
 
 func _process(delta: float) -> void:
