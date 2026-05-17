@@ -296,6 +296,7 @@ func _end_game() -> void:
 	_snd_lose.play()
 	_player.die()
 	var death_delay := maxf(MIN_GAME_OVER_DELAY, _player.get_death_animation_duration())
+	hud.show_death_fade(death_delay)
 	await get_tree().create_timer(death_delay).timeout
 	if sequence_id != _game_over_sequence_id:
 		return
