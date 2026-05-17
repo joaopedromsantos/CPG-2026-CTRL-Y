@@ -25,6 +25,7 @@ var _is_dead := false
 var _blink_duration := 2.0
 var _blink_elapsed := 0.0
 var _blink_toggle_time := 0.0
+var _speed_multiplier := 1.0
 
 const DEATH_ANIMATION := "RobotArmature|Robot_Death"
 const RUN_ANIMATION := "RobotArmature|Robot_Running"
@@ -54,6 +55,13 @@ const UPPER_BODY_BONES := [
 func get_runner_position() -> Vector3:
 	return global_position
 
+
+func set_speed_multiplier(multiplier: float) -> void:
+	_speed_multiplier = multiplier
+	if _anim and _current_animation == RUN_ANIMATION:
+		_anim.speed_scale = multiplier
+
+
 func setup(lane_positions: Array[float], start_lane: int) -> void:
 	_model = $Robot
 	_model_base_rotation = _model.rotation
@@ -79,6 +87,9 @@ func reset(start_lane: int) -> void:
 	_is_dead = false
 	_blink_elapsed = 0.0
 	_blink_toggle_time = 0.0
+	_speed_multiplier = 1.0
+	if _anim:
+		_anim.speed_scale = 1.0
 	if _model:
 		_model.visible = true
 		_model.rotation = _model_base_rotation
@@ -130,7 +141,7 @@ func take_damage() -> void:
 
 
 func tick(delta: float) -> void:
-	var weight := 1.0 - exp(-lane_change_speed * delta)
+	var weight := 1.0 - exp(-lane_change_speed * _speed_multiplier * delta)
 	position.x = lerpf(position.x, _target_x, weight)
 
 	if _is_jumping:

@@ -1,15 +1,6 @@
-[gd_resource type="Resource" script_class="PowerUpConfig" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="PowerUpConfig" format=3 uid="uid://c6146hff52fpq"]
 
-[ext_resource type="Script" path="res://scripts/power_up_config.gd" id="1_powerup_config"]
+[ext_resource type="Script" uid="uid://bonj4rh0ox7we" path="res://scripts/power_up_config.gd" id="1_powerup_config"]
 
 [resource]
 script = ExtResource("1_powerup_config")
-lupa_duration = 6.0
-revive_duration = 10.0
-heart_duration = 5.0
-lightning_duration = 5.0
-hourglass_duration = 6.0
-double_duration = 8.0
-heart_heal_interval = 2.0
-hourglass_speed_multiplier = 0.55
-double_score_multiplier = 2
