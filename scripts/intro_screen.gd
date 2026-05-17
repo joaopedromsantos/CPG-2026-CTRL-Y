@@ -11,6 +11,12 @@ const ROBOT_IDLE_ANIMATION := "RobotArmature|Robot_Idle"
 const ROBOT_IDLE_SWAY_SPEED := 1.8
 const ROBOT_IDLE_SWAY_ANGLE := 0.035
 const ROBOT_IDLE_BOB_HEIGHT := 0.035
+const PANEL_STAGGER := 0.38
+const PANEL_ENTER_DURATION := 0.36
+const PANEL_SLIDE_DISTANCE := 42.0
+const TYPEWRITER_SPEED := 38.0
+const TYPEWRITER_DELAY := 0.20
+const ORANGE_GLITCH_DURATION := 0.85
 
 const CYAN := Color(0.11, 0.91, 0.98)
 const CYAN_SOFT := Color(0.11, 0.91, 0.98, 0.55)
@@ -34,9 +40,11 @@ var _robot_viewport: SubViewport
 var _robot: Node3D
 var _robot_animation: AnimationPlayer
 var _robot_base_position := Vector3.ZERO
+var _intro_started_at_msec := 0
 
 
 func _ready() -> void:
+	_intro_started_at_msec = Time.get_ticks_msec()
 	_font_regular = load(FONT_REGULAR)
 	_font_bold = load(FONT_BOLD)
 	mouse_filter = Control.MOUSE_FILTER_STOP
@@ -75,6 +83,7 @@ func _process(delta: float) -> void:
 	if not is_zero_approx(rotation_direction):
 		_robot.rotate_y(rotation_direction * ROBOT_ROTATION_SPEED * delta)
 	_update_robot_idle_sway()
+	queue_redraw()
 
 
 func _draw() -> void:
@@ -177,7 +186,7 @@ func _layout_robot_viewport() -> void:
 
 func _draw_scene() -> void:
 	_draw_background()
-	_draw_left_panels()
+	_draw_left_panels_animated()
 	_draw_monitor()
 	_draw_continue_box()
 
@@ -215,6 +224,136 @@ func _draw_distant_city() -> void:
 	for y in [517, 567, 647]:
 		draw_line(Vector2(0, y), Vector2(118, y), Color(CYAN.r, CYAN.g, CYAN.b, 0.22), 1.0)
 		draw_line(Vector2(664, y), Vector2(832, y), Color(CYAN.r, CYAN.g, CYAN.b, 0.22), 1.0)
+
+
+func _draw_left_panels_animated() -> void:
+	_draw_intro_panel(0, Rect2(36, 66, 568, 160), [
+		{"text": "SISTEMA INICIANDO...", "pos": Vector2(76, 131), "font_size": 38, "color": CYAN, "font": _font_bold, "glitch": false},
+		{"text": "ERRO DETECTADO.", "pos": Vector2(78, 184), "font_size": 31, "color": ORANGE, "font": _font_bold, "glitch": true},
+	])
+
+	_draw_intro_panel(1, Rect2(36, 254, 568, 188), _make_panel_lines([
+		"Voc\u00ea \u00e9 RX-07, um rob\u00f4 criado para",
+		"resolver problemas matem\u00e1ticos.",
+		"Mas algo deu errado na sua",
+		"programa\u00e7\u00e3o."
+	], Vector2(76, 301), 28, CYAN, _font_regular))
+
+	_draw_intro_panel(2, Rect2(36, 462, 568, 188), _make_panel_lines([
+		"Seu n\u00facleo de energia est\u00e1 falhando,",
+		"e a \u00fanica forma de continuar",
+		"funcionando \u00e9 resolver equa\u00e7\u00f5es",
+		"antes que o sistema entre em colapso."
+	], Vector2(76, 510), 28, CYAN, _font_regular))
+
+	_draw_intro_panel(3, Rect2(36, 668, 568, 152), _make_panel_lines([
+		"Cada c\u00e1lculo correto estabiliza",
+		"seus circuitos por mais alguns",
+		"segundos."
+	], Vector2(76, 716), 28, CYAN, _font_regular))
+
+	_draw_intro_panel(4, Rect2(36, 838, 568, 108), _make_panel_lines([
+		"Cada erro aproxima o desligamento",
+		"definitivo."
+	], Vector2(76, 882), 28, CYAN, _font_regular))
+
+	_draw_intro_panel(5, Rect2(36, 965, 568, 118), [
+		{"text": "RESOLVA. SOBREVIVA.", "pos": Vector2(78, 1018), "font_size": 32, "color": ORANGE, "font": _font_bold, "glitch": true},
+		{"text": "REPROGRAME SEU DESTINO.", "pos": Vector2(78, 1062), "font_size": 32, "color": ORANGE, "font": _font_bold, "glitch": true},
+	])
+
+
+func _make_panel_lines(lines: Array[String], pos: Vector2, font_size: int, color: Color, font: Font) -> Array:
+	var panel_lines := []
+	for i in lines.size():
+		panel_lines.append({
+			"text": lines[i],
+			"pos": pos + Vector2(0, i * 39),
+			"font_size": font_size,
+			"color": color,
+			"font": font,
+			"glitch": false,
+		})
+	return panel_lines
+
+
+func _draw_intro_panel(index: int, rect: Rect2, lines: Array) -> void:
+	var elapsed := _intro_elapsed()
+	var start_time := index * PANEL_STAGGER
+	var enter_progress := clampf((elapsed - start_time) / PANEL_ENTER_DURATION, 0.0, 1.0)
+	if enter_progress <= 0.0:
+		return
+
+	var eased := _ease_out_cubic(enter_progress)
+	var offset := Vector2(-PANEL_SLIDE_DISTANCE * (1.0 - eased), 0.0)
+	var alpha := eased
+	_draw_panel_alpha(Rect2(rect.position + offset, rect.size), alpha)
+
+	var text_time := maxf(elapsed - start_time - PANEL_ENTER_DURATION - TYPEWRITER_DELAY, 0.0)
+	var visible_chars := int(text_time * TYPEWRITER_SPEED)
+	for line in lines:
+		var text := String(line["text"])
+		var visible_text := text.substr(0, mini(text.length(), visible_chars))
+		visible_chars = maxi(visible_chars - text.length(), 0)
+		if visible_text.is_empty():
+			continue
+		_draw_intro_text(
+			visible_text,
+			(line["pos"] as Vector2) + offset,
+			int(line["font_size"]),
+			line["color"] as Color,
+			line["font"] as Font,
+			alpha,
+			bool(line["glitch"]) and text_time <= ORANGE_GLITCH_DURATION,
+			index
+		)
+
+
+func _draw_intro_text(text: String, pos: Vector2, font_size: int, color: Color, font: Font, alpha: float, glitch: bool, panel_index: int) -> void:
+	var text_color := _with_alpha(color, alpha)
+	if glitch:
+		var glitch_seed := int(_intro_elapsed() * 22.0) + panel_index * 13
+		if glitch_seed % 5 == 0:
+			_draw_text_alpha(text, pos + Vector2(-3, 0), font_size, Color(CYAN.r, CYAN.g, CYAN.b, alpha * 0.58), font)
+			_draw_text_alpha(text, pos + Vector2(3, 1), font_size, Color(ORANGE.r, ORANGE.g * 0.72, ORANGE.b, alpha * 0.70), font)
+		if glitch_seed % 7 == 0:
+			text_color.a *= 0.45
+	_draw_text_alpha(text, pos, font_size, text_color, font)
+
+
+func _draw_panel_alpha(rect: Rect2, alpha: float) -> void:
+	var cut := 18.0
+	var points := PackedVector2Array([
+		Vector2(rect.position.x + cut, rect.position.y),
+		Vector2(rect.end.x - 22, rect.position.y + 4),
+		Vector2(rect.end.x, rect.position.y + cut),
+		Vector2(rect.end.x, rect.end.y - cut),
+		Vector2(rect.end.x - cut, rect.end.y),
+		Vector2(rect.position.x + cut, rect.end.y),
+		Vector2(rect.position.x, rect.end.y - cut),
+		Vector2(rect.position.x, rect.position.y + cut),
+	])
+	draw_colored_polygon(points, _with_alpha(PANEL_FILL, PANEL_FILL.a * alpha))
+	draw_polyline(_closed(points), _with_alpha(CYAN, alpha), 3.0)
+	draw_line(Vector2(rect.position.x + cut, rect.position.y), Vector2(rect.position.x + 32, rect.position.y), _with_alpha(Color(0.58, 1.0, 1.0), alpha), 3.0)
+	draw_line(Vector2(rect.end.x - 42, rect.position.y + 3), Vector2(rect.end.x - 18, rect.position.y + 3), _with_alpha(CYAN_SOFT, CYAN_SOFT.a * alpha), 3.0)
+
+
+func _draw_text_alpha(text: String, pos: Vector2, font_size: int, color: Color, font: Font) -> void:
+	draw_string(font, pos + Vector2(2, 2), text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, _with_alpha(SHADOW, SHADOW.a * color.a))
+	draw_string(font, pos, text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, color)
+
+
+func _intro_elapsed() -> float:
+	return maxf(float(Time.get_ticks_msec() - _intro_started_at_msec) * 0.001, 0.0)
+
+
+func _ease_out_cubic(t: float) -> float:
+	return 1.0 - pow(1.0 - clampf(t, 0.0, 1.0), 3.0)
+
+
+func _with_alpha(color: Color, alpha: float) -> Color:
+	return Color(color.r, color.g, color.b, clampf(alpha, 0.0, 1.0))
 
 
 func _draw_left_panels() -> void:
