@@ -2,9 +2,9 @@ extends RefCounted
 class_name ComboController
 
 const TIERS := [
-	{"threshold": 2, "multiplier": 2},
-	{"threshold": 3, "multiplier": 4},
-	{"threshold": 4, "multiplier": 6},
+	{"threshold": 5, "multiplier": 2},
+	{"threshold": 10, "multiplier": 4},
+	{"threshold": 15, "multiplier": 6},
 ]
 
 var streak: int = 0
