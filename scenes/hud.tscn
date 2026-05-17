@@ -207,7 +207,7 @@ layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -225.0
+offset_left = -305.0
 offset_top = 25.0
 offset_right = -25.0
 offset_bottom = 210.0
@@ -223,7 +223,7 @@ grow_vertical = 0
 theme_override_constants/separation = 7
 
 [node name="ScoreContainer" type="PanelContainer" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper" unique_id=1070437582]
-custom_minimum_size = Vector2(200, 64)
+custom_minimum_size = Vector2(280, 64)
 layout_mode = 2
 size_flags_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_score_panel")
@@ -254,7 +254,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="LivesContainer" type="PanelContainer" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper"]
-custom_minimum_size = Vector2(200, 50)
+custom_minimum_size = Vector2(280, 50)
 layout_mode = 2
 size_flags_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_lives_panel")
@@ -289,7 +289,7 @@ expand_mode = 1
 stretch_mode = 5
 
 [node name="CronometerContainer" type="PanelContainer" parent="CanvasLayer/RootControl/TopRightContainer/Wrapper" unique_id=1445436165]
-custom_minimum_size = Vector2(200, 48)
+custom_minimum_size = Vector2(280, 48)
 layout_mode = 2
 size_flags_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_time_panel")
@@ -461,10 +461,10 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -38.0
-offset_top = -27.0
-offset_right = 11.0
-offset_bottom = 10.0
+offset_left = 14.0
+offset_top = -38.0
+offset_right = 63.0
+offset_bottom = 0
 grow_horizontal = 0
 grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_reserve_slot_panel")

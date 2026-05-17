@@ -26,6 +26,7 @@ const POWER_UP_SLOT_COUNT := 4
 const ACTIVATABLE_POWER_UP_SLOT_COUNT := 3
 const RESERVE_POWER_UP_SLOT := 3
 const MIN_GAME_OVER_DELAY := 2.0
+const LIFE_LOST_REACTION_DELAY := 0.45
 const EQUATION_SEQUENCE_SCRIPT = preload("res://scripts/equation_sequence.gd")
 const POWER_UP_CONFIG = preload("res://assets/power-ups/power_up_config.tres")
 
@@ -402,13 +403,27 @@ func _lose_life() -> bool:
 		_lives = 1
 		_power_up_effects.set_current_lives(_lives)
 	lives_event.emit(_lives)
+	_play_life_lost_reaction()
 	if _lives <= 0:
-		_end_game()
+		_is_game_over = true
+		_end_game_after_life_lost_reaction()
 		return true
+
+	return false
+
+
+func _play_life_lost_reaction() -> void:
 	_player.take_damage()
 	_start_camera_shake(0.28, 0.18)
 	_snd_wrong.play()
-	return false
+
+
+func _end_game_after_life_lost_reaction() -> void:
+	var sequence_id := _game_over_sequence_id
+	await get_tree().create_timer(LIFE_LOST_REACTION_DELAY).timeout
+	if sequence_id != _game_over_sequence_id:
+		return
+	_end_game()
 
 
 func _start_camera_shake(duration: float, strength: float) -> void:
