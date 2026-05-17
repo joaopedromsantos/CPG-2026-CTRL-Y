@@ -4,7 +4,11 @@ extends Node3D
 signal cone_hit
 
 const CONE_SCENE: PackedScene = preload("res://assets/city-kit-roads/models/construction-cone.glb")
+const MIN_DISTANCE_FROM_BLOCKS := 7.0
+const PLAYER_LANE_TOLERANCE := 0.8
+const CONE_JUMP_CLEARANCE_Y := 0.6
 
+var enabled := true
 var world_speed := 8.0
 var floor_back_z := -18.0
 var floor_front_z := 11.6
@@ -31,15 +35,22 @@ func reset() -> void:
 	_time = 0.0
 
 
-func tick(delta: float, player_position: Vector3) -> void:
+func tick(delta: float, player_position: Vector3, block_z_positions: Array = [], distance_to_next_block: float = INF) -> void:
+	if not enabled:
+		if not _cones.is_empty():
+			reset()
+		return
+
 	_time += delta
 	if _time >= spawn_interval:
 		_time = 0.0
-		_try_spawn_cone()
+		_try_spawn_cone(block_z_positions, distance_to_next_block)
 
 	for active_cone in _cones.duplicate():
+		var was_behind_player: bool = active_cone.position.z < player_position.z
 		active_cone.position.z += world_speed * delta
-		if active_cone.position.z >= player_position.z and _is_player_in_cone_lane(active_cone, player_position):
+		var crossed_player: bool = was_behind_player and active_cone.position.z >= player_position.z
+		if crossed_player and _is_player_hit_by_cone(active_cone, player_position):
 			_cones.erase(active_cone)
 			active_cone.queue_free()
 			cone_hit.emit()
@@ -49,7 +60,7 @@ func tick(delta: float, player_position: Vector3) -> void:
 			active_cone.queue_free()
 
 
-func _try_spawn_cone() -> void:
+func _try_spawn_cone(block_z_positions: Array, distance_to_next_block: float) -> void:
 	if _rng.randf() > spawn_chance:
 		return
 	if _lane_positions.is_empty():
@@ -57,6 +68,11 @@ func _try_spawn_cone() -> void:
 	for existing_cone in _cones:
 		if absf(existing_cone.position.z - floor_back_z) < 2.0:
 			return
+	for block_z in block_z_positions:
+		if absf(float(block_z) - floor_back_z) < MIN_DISTANCE_FROM_BLOCKS:
+			return
+	if distance_to_next_block < MIN_DISTANCE_FROM_BLOCKS:
+		return
 
 	var lane_index := _rng.randi_range(0, _lane_positions.size() - 1)
 	var cone := _make_cone()
@@ -73,5 +89,7 @@ func _make_cone() -> Node3D:
 	return cone
 
 
-func _is_player_in_cone_lane(cone: Node3D, player_position: Vector3) -> bool:
-	return absf(cone.position.x - player_position.x) <= 1.0
+func _is_player_hit_by_cone(cone: Node3D, player_position: Vector3) -> bool:
+	if player_position.y > CONE_JUMP_CLEARANCE_Y:
+		return false
+	return absf(cone.position.x - player_position.x) <= PLAYER_LANE_TOLERANCE

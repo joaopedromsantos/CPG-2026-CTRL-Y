@@ -1,32 +1,31 @@
 # CPG_CTRL_Y - Math Runner
 
-Jogo 3D feito em Godot no estilo endless runner educativo. O jogador controla um robô em uma pista com três faixas e precisa escolher o bloco com a resposta correta para a equação exibida na tela. A corrida acelera conforme a pontuação aumenta, e o jogador usa power-ups para sobreviver, ganhar mais pontos ou facilitar as respostas.
+Jogo 3D feito em Godot no estilo endless runner educativo. O jogador controla um robô em três faixas, escolhe blocos com respostas para equações e usa power-ups para sobreviver, pontuar mais ou facilitar as respostas.
 
 ## Status do Projeto
 
-O projeto já possui um ciclo de jogo funcional:
+O projeto possui um ciclo de jogo funcional:
 
-- tela inicial com seleção de dificuldade;
+- tela inicial com botão de começar, botão de configurações e seletor de dificuldade;
+- modal de configurações com volume de música e efeitos sonoros;
+- persistência local de recorde e preferências do jogador;
 - jogo principal em 3D;
 - geração de equações por dificuldade;
 - blocos de resposta nas três pistas;
-- pontuação, vidas, cronômetro e feedback visual;
-- power-ups coletáveis e ativáveis;
-- pausa;
-- tela de fim de jogo;
-- recorde salvo localmente.
+- obstáculos, power-ups, pontuação, vidas, cronômetro e feedback visual;
+- pausa e tela de fim de jogo.
 
 ## Requisitos
 
-- Godot 4.6 ou compatível com projeto `config/features=PackedStringArray("4.6", "Forward Plus")`.
+- Godot 4.6 ou compatível com `config/features=PackedStringArray("4.6", "Forward Plus")`.
 - Renderizador Forward Plus.
-- Física 3D configurada com Jolt Physics.
+- Física 3D com Jolt Physics.
 
 ## Como Rodar
 
 1. Abra o Godot.
 2. Importe a pasta do projeto.
-3. Abra o arquivo `project.godot`.
+3. Abra `project.godot`.
 4. Execute o projeto.
 
 A cena inicial configurada é:
@@ -37,7 +36,7 @@ res://scenes/start_screen.tscn
 
 ## Gameplay
 
-O jogo é um runner 3D com três pistas. O personagem corre automaticamente e o jogador muda de faixa para escolher uma das três respostas que aparecem em blocos à frente.
+O jogo é um runner 3D com três pistas. O personagem corre automaticamente e o jogador muda de faixa para escolher uma das respostas que aparecem em blocos à frente.
 
 No topo da tela aparece uma equação. Quando uma linha de blocos chega até o jogador, a faixa ocupada pelo personagem define a resposta escolhida.
 
@@ -45,21 +44,21 @@ Se a resposta estiver correta:
 
 - ganha pontos;
 - toca som de acerto;
-- aparece feedback `Acertou!`;
-- uma nova equação é carregada.
+- mostra feedback positivo;
+- carrega uma nova equação.
 
-Se a resposta estiver errada:
+Se a resposta estiver errada ou o jogador bater em um cone:
 
 - perde uma vida;
-- toca som de erro;
-- aparece feedback `Errou!`;
-- uma nova equação é carregada.
+- toca som de erro/impacto;
+- mostra feedback negativo;
+- carrega uma nova equação quando aplicável.
 
 O jogo termina quando as vidas chegam a zero, exceto se houver um revive ativo disponível.
 
 ## Controles
 
-| Ação | Teclas |
+| Ação | Teclas/UI |
 | --- | --- |
 | Mover para a esquerda | `Seta esquerda` ou `A` |
 | Mover para a direita | `Seta direita` ou `D` |
@@ -68,45 +67,76 @@ O jogo termina quando as vidas chegam a zero, exceto se houver um revive ativo d
 | Usar power-up do slot 2 | `2` |
 | Usar power-up do slot 3 | `3` |
 | Reiniciar após game over | `R` |
-| Começar na tela inicial | `Enter` ou botão `COMEÇAR` |
-| Pausar/continuar | Botão de pausa no HUD |
+| Começar na tela inicial | `Enter` ou botão `Começar` |
+| Selecionar dificuldade | setas `<` e `>` na tela inicial |
+| Abrir configurações | botão com ícone de cog |
+| Fechar configurações | botão `X` no modal |
+| Pausar/continuar | botão de pausa no HUD |
 
 ## Dificuldades
 
-A tela inicial permite escolher:
+A tela inicial usa um seletor com setas e badge central. As dificuldades são salvas nas preferências do usuário assim que são alteradas.
 
-- `FACIL`;
-- `MEDIO`;
-- `DIFICIL`.
+| Rótulo | Valor interno | Cor da badge |
+| --- | --- | --- |
+| Fácil | `easy` | verde |
+| Médio | `medium` | azul |
+| Difícil | `hard` | laranja |
+| Impossível | `impossible` | vermelho |
 
-Internamente, as dificuldades usadas são:
-
-- `easy`;
-- `medium`;
-- `hard`.
-
-As perguntas vêm de `data/equations.json`, que contém 200 questões:
+As perguntas vêm de `data/equations.json`, com 260 questões:
 
 - 70 fáceis;
 - 70 médias;
-- 60 difíceis.
+- 60 difíceis;
+- 60 impossíveis.
 
-O arquivo suporta questões de resposta única e múltiplas respostas corretas. As opções são embaralhadas antes de entrarem na fila do jogo.
+## Configurações
+
+O modal de configurações fica em:
+
+```text
+scenes/settings_screen.tscn
+scripts/settings_screen.gd
+```
+
+Ele permite alterar:
+
+- volume da música, de `0` a `10`;
+- volume dos efeitos sonoros, de `0` a `10`.
+
+Botões do modal:
+
+- `Salvar`: persiste os volumes atuais e fecha o modal;
+- `Resetar`: volta música e efeitos para `10/10`, salva e reaplica a música;
+- `X`: fecha o modal sem salvar mudanças pendentes.
+
+As preferências são gerenciadas pelo autoload `GameSettings` e salvas em:
+
+```text
+user://game_settings.cfg
+```
+
+Valores padrão quando não há configuração salva:
+
+- volume da música: `10`;
+- volume dos efeitos sonoros: `10`;
+- dificuldade: `easy`.
 
 ## Sistema de Equações
 
-As equações são carregadas pelo script `scripts/equation_sequence.gd`.
+As equações são carregadas por `scripts/equation_sequence.gd`.
 
 Funcionalidades:
 
-- leitura do arquivo JSON de perguntas;
+- leitura de `data/equations.json`;
 - validação básica dos campos das questões;
 - filtro por dificuldade selecionada;
 - embaralhamento das perguntas;
 - fila de 3 equações;
 - embaralhamento das opções de cada questão.
 
-Cada pergunta usa este formato geral:
+Formato geral:
 
 ```json
 {
@@ -132,6 +162,7 @@ Regras atuais:
 - cada resposta correta soma 1 ponto;
 - com power-up `double` ativo, cada acerto soma 2 pontos;
 - cada erro remove 1 vida;
+- bater em cone remove 1 vida;
 - ao chegar a 0 vidas, o jogo termina;
 - se o power-up `revive` estiver ativo quando as vidas chegam a 0, ele é consumido e o jogador volta com 1 vida.
 
@@ -153,8 +184,6 @@ Existem 4 slots visuais:
 - o quarto slot funciona como reserva;
 - quando um efeito termina, o item da reserva é movido para o slot liberado.
 
-### Tipos Implementados
-
 | Power-up | Duração | Efeito |
 | --- | ---: | --- |
 | `lupa` | 6s | destaca visualmente os blocos com resposta correta |
@@ -164,7 +193,7 @@ Existem 4 slots visuais:
 | `hourglass` | 6s | reduz a velocidade do mundo para 55% |
 | `double` | 8s | dobra a pontuação recebida em acertos |
 
-As configurações ficam em:
+Configuração:
 
 ```text
 assets/power-ups/power_up_config.tres
@@ -201,9 +230,26 @@ Funcionalidades:
 - arte procedural em estilo neon;
 - música de menu em loop;
 - exibição do high score;
-- botão `COMEÇAR`;
-- botões de dificuldade `FACIL`, `MEDIO` e `DIFICIL`;
-- início do jogo por botão ou tecla `Enter`.
+- botão `Começar`;
+- botão de configurações com ícone de cog;
+- seletor de dificuldade com setas;
+- modal de configurações instanciado sobre a própria tela inicial.
+
+### Configurações
+
+Arquivo:
+
+```text
+scenes/settings_screen.tscn
+```
+
+Funcionalidades:
+
+- controle de volume da música;
+- controle de volume dos efeitos sonoros;
+- botão `Salvar`;
+- botão `Resetar`;
+- botão `X` para fechar.
 
 ### Jogo Principal
 
@@ -219,6 +265,7 @@ Responsável por instanciar e conectar:
 - jogador;
 - blocos de resposta;
 - power-ups;
+- cones;
 - controlador de efeitos;
 - HUD;
 - áudio do jogo.
@@ -240,15 +287,26 @@ Mostra:
 - botão `Tela inicial`;
 - botão `Sair do jogo`.
 
-## Recorde Local
+## Persistência Local
 
-O recorde é salvo pelo autoload `PlayerRecord` em:
+Recorde:
 
 ```text
 user://player_record.cfg
 ```
 
-O valor salvo é o maior número de acertos/pontos alcançado.
+Preferências:
+
+```text
+user://game_settings.cfg
+```
+
+Autoloads configurados em `project.godot`:
+
+```text
+PlayerRecord="*res://scripts/player_record.gd"
+GameSettings="*res://scripts/game_settings.gd"
+```
 
 ## Áudio
 
@@ -273,64 +331,39 @@ assets/sounds/punch_sound.wav
 assets/sounds/losing_sound.wav
 ```
 
-## Personagem
+Volumes são aplicados por categoria:
 
-O jogador usa a cena:
-
-```text
-scenes/player.tscn
-```
-
-Funcionalidades do personagem:
-
-- movimentação lateral entre três pistas;
-- interpolação suave até a pista alvo;
-- pulo com gravidade;
-- animação de corrida;
-- animação de pulo;
-- animação de morte;
-- som de pulo.
-
-## Cenário
-
-O cenário é gerado por `scripts/cenario.gd`.
-
-Elementos implementados:
-
-- estrada com tiles recicláveis;
-- três pistas;
-- marcações de pista;
-- prédios laterais;
-- janelas iluminadas;
-- estrelas no fundo;
-- câmera 3D;
-- luz direcional;
-- ambiente com iluminação.
+- música: menu e música do jogo;
+- efeitos: pulo, acerto, erro, impacto e derrota.
 
 ## Estrutura Principal
 
 ```text
 .
 ├── assets/
-│   ├── car-kit/              # assets 3D de veículos
-│   ├── city-kit-roads/       # assets 3D de ruas/cidade
-│   ├── fonts/                # fontes e tema
-│   ├── hud/                  # ícones e imagens da interface
-│   ├── player/               # modelos 3D do jogador
-│   ├── power-ups/            # modelos, ícones e configuração de power-ups
-│   ├── sounds/               # efeitos sonoros e músicas
-│   └── tiles/                # sprites/tilesets adicionais
+│   ├── car-kit/
+│   ├── city-kit-roads/
+│   ├── fonts/
+│   ├── hud/
+│   ├── player/
+│   ├── power-ups/
+│   ├── sounds/
+│   └── tiles/
 ├── data/
-│   └── equations.json        # banco de questões
+│   └── equations.json
 ├── scenes/
 │   ├── end_game_screen.tscn
 │   ├── hud.tscn
 │   ├── main.tscn
+│   ├── pause_screen.tscn
 │   ├── player.tscn
+│   ├── settings_screen.tscn
 │   └── start_screen.tscn
 ├── scripts/
 │   ├── blocos.gd
 │   ├── cenario.gd
+│   ├── cones.gd
+│   ├── difficulty_settings.gd
 │   ├── equation_sequence.gd
 │   ├── game_settings.gd
 │   ├── hud.gd
@@ -340,6 +373,8 @@ Elementos implementados:
 │   ├── power-ups.gd
 │   ├── power_up_config.gd
 │   ├── power_up_effect_controller.gd
+│   ├── settings_screen.gd
+│   ├── sound_settings.gd
 │   └── timer.gd
 ├── project.godot
 └── README.md
@@ -349,29 +384,24 @@ Elementos implementados:
 
 | Arquivo | Função |
 | --- | --- |
-| `scripts/main.gd` | controla o ciclo principal do jogo, pontuação, vidas, pausa, áudio, game over e conexões entre sistemas |
+| `scripts/main.gd` | controla ciclo principal, pontuação, vidas, pausa, áudio, game over e conexões entre sistemas |
 | `scripts/player.gd` | controla o personagem, pistas, pulo e animações |
 | `scripts/blocos.gd` | gera blocos de resposta, resolve a resposta escolhida e emite acerto/erro |
+| `scripts/cones.gd` | gera obstáculos e detecta colisão com o jogador |
 | `scripts/cenario.gd` | cria e atualiza o cenário 3D |
 | `scripts/power-ups.gd` | gera power-ups na pista e detecta coleta |
 | `scripts/power_up_effect_controller.gd` | aplica efeitos temporários dos power-ups |
 | `scripts/equation_sequence.gd` | carrega, filtra, embaralha e entrega equações |
+| `scripts/difficulty_settings.gd` | centraliza dificuldades, labels e validação |
+| `scripts/sound_settings.gd` | normaliza e aplica volume em players de áudio |
+| `scripts/settings_screen.gd` | controla o modal de configurações |
 | `scripts/hud.gd` | atualiza interface, vidas, score, timer, feedback, pause e game over |
 | `scripts/player_record.gd` | salva e carrega o high score local |
-| `scripts/game_settings.gd` | guarda a dificuldade selecionada |
+| `scripts/game_settings.gd` | carrega, salva e aplica preferências do usuário |
 | `scripts/timer.gd` | cronômetro do HUD |
 
-## Autoloads
-
-Configurados em `project.godot`:
-
-```text
-PlayerRecord="*res://scripts/player_record.gd"
-GameSettings="*res://scripts/game_settings.gd"
-```
-
-## Observações do Projeto
+## Observações
 
 - `scripts/hud_old.gd` parece ser uma versão antiga de HUD e não é usada pela cena principal atual.
-- Existem assets e cenas auxiliares que não fazem parte direta do fluxo principal atual, como `scenes/scene.tscn`, `power_ups.tscn` e alguns scripts simples de power-ups individuais.
+- Existem assets e cenas auxiliares fora do fluxo principal, como `scenes/scene.tscn`, `power_ups.tscn` e alguns scripts simples de power-ups individuais.
 - Os assets `car-kit` e `city-kit-roads` estão incluídos com seus arquivos de licença próprios.
