@@ -360,7 +360,7 @@ Volumes são aplicados por categoria:
 │   ├── settings_screen.tscn
 │   └── start_screen.tscn
 ├── scripts/
-│   ├── blocos.gd
+│   ├── blocks/
 │   ├── cenario.gd
 │   ├── cones.gd
 │   ├── difficulty_settings.gd
@@ -386,7 +386,7 @@ Volumes são aplicados por categoria:
 | --- | --- |
 | `scripts/main.gd` | controla ciclo principal, pontuação, vidas, pausa, áudio, game over e conexões entre sistemas |
 | `scripts/player.gd` | controla o personagem, pistas, pulo e animações |
-| `scripts/blocos.gd` | gera blocos de resposta, resolve a resposta escolhida e emite acerto/erro |
+| `scripts/blocks/blocks.gd` | gera blocos de resposta, resolve a resposta escolhida e emite acerto/erro |
 | `scripts/cones.gd` | gera obstáculos e detecta colisão com o jogador |
 | `scripts/cenario.gd` | cria e atualiza o cenário 3D |
 | `scripts/power-ups.gd` | gera power-ups na pista e detecta coleta |

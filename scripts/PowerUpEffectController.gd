@@ -15,7 +15,7 @@ const LIGHTNING_PLAYER_SPEED_MULTIPLIER := 2.0
 
 var config: PowerUpConfig
 var player: RunnerPlayer
-var blocos: RunnerBlocos
+var blocks: RunnerBlocks
 var max_lives := 3
 
 var _active_effects: Array[Dictionary] = []
@@ -24,13 +24,13 @@ var _current_lives := 3
 
 func setup(
 	p_player: RunnerPlayer,
-	p_blocos: RunnerBlocos,
+	p_blocks: RunnerBlocks,
 	p_config: PowerUpConfig,
 	p_max_lives: int,
 	p_current_lives: int
 ) -> void:
 	player = p_player
-	blocos = p_blocos
+	blocks = p_blocks
 	config = p_config
 	max_lives = p_max_lives
 	_current_lives = p_current_lives
@@ -138,8 +138,8 @@ func _heal(amount: int) -> void:
 
 
 func _sync_effect_state() -> void:
-	if blocos:
-		blocos.set_correct_answers_highlighted(_has_active_type(TYPE_LUPA))
+	if blocks:
+		blocks.set_correct_answers_highlighted(_has_active_type(TYPE_LUPA))
 	if player:
 		player.set_speed_multiplier(get_player_speed_multiplier())
 
