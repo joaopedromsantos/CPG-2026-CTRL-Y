@@ -171,15 +171,15 @@ func _setup_power_up_slot_icons() -> void:
 		icon.name = "PowerUpIcon"
 		icon.set_anchors_preset(Control.PRESET_FULL_RECT)
 		if is_reserve_slot:
-			icon.offset_left = 5.0
-			icon.offset_top = 5.0
-			icon.offset_right = -5.0
-			icon.offset_bottom = -5.0
+			icon.offset_left = 4.0
+			icon.offset_top = 4.0
+			icon.offset_right = -4.0
+			icon.offset_bottom = -4.0
 		else:
-			icon.offset_left = 16.0
-			icon.offset_top = 12.0
-			icon.offset_right = -16.0
-			icon.offset_bottom = -12.0
+			icon.offset_left = 11.0
+			icon.offset_top = 8.0
+			icon.offset_right = -11.0
+			icon.offset_bottom = -8.0
 		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -197,7 +197,7 @@ func _setup_power_up_slot_icons() -> void:
 		countdown.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		countdown.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		countdown.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		countdown.add_theme_font_size_override("font_size", 38)
+		countdown.add_theme_font_size_override("font_size", 27)
 		countdown.add_theme_color_override("font_color", SLOT_COUNTDOWN_FONT_COLOR)
 		countdown.add_theme_color_override("font_outline_color", SLOT_COUNTDOWN_OUTLINE_COLOR)
 		countdown.add_theme_constant_override("outline_size", 8)
@@ -275,13 +275,13 @@ func _make_active_slot_style(base_style: StyleBox) -> StyleBoxFlat:
 	var style := base_style.duplicate(true) as StyleBoxFlat
 	if style == null:
 		style = StyleBoxFlat.new()
-	style.border_width_left = maxi(style.border_width_left, 5)
-	style.border_width_top = maxi(style.border_width_top, 5)
-	style.border_width_right = maxi(style.border_width_right, 5)
-	style.border_width_bottom = maxi(style.border_width_bottom, 5)
+	style.border_width_left = maxi(style.border_width_left, 4)
+	style.border_width_top = maxi(style.border_width_top, 4)
+	style.border_width_right = maxi(style.border_width_right, 4)
+	style.border_width_bottom = maxi(style.border_width_bottom, 4)
 	style.border_color = SLOT_ACTIVE_BORDER_COLOR
 	style.shadow_color = SLOT_ACTIVE_SHADOW_COLOR
-	style.shadow_size = maxi(style.shadow_size, 12)
+	style.shadow_size = maxi(style.shadow_size, 8)
 	style.shadow_offset = Vector2.ZERO
 	return style
 
